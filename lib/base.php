@@ -952,10 +952,12 @@ class OC {
 			&& !$systemConfig->getValue('maintenance', false)) {
 			// For logged-in users: Load everything
 			if(\OC::$server->getUserSession()->isLoggedIn()) {
+				//var_dump("isLoggedIn1");
 				OC_App::loadApps();
 			} else {
 				// For guests: Load only filesystem and logging
 				OC_App::loadApps(array('filesystem', 'logging'));
+				//var_dump("handleLogin");
 				self::handleLogin($request);
 			}
 		}
@@ -965,6 +967,7 @@ class OC {
 				if (!$systemConfig->getValue('maintenance', false) && !self::checkUpgrade(false)) {
 					OC_App::loadApps(array('filesystem', 'logging'));
 					OC_App::loadApps();
+
 				}
 				OC_Util::setupFS();
 				OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());
@@ -1008,6 +1011,7 @@ class OC {
 	 * @return boolean
 	 */
 	static function handleLogin(OCP\IRequest $request) {
+
 		$userSession = self::$server->getUserSession();
 		if (OC_User::handleApacheAuth()) {
 			return true;
@@ -1015,6 +1019,11 @@ class OC {
 		if ($userSession->tryTokenLogin($request)) {
 			return true;
 		}
+		if(isset($_COOKIE['clarin-pl-token'])
+			&& $userSession->clarinAuth($_COOKIE['clarin-pl-token'],$request)){
+			return true;
+		}
+
 		if (isset($_COOKIE['nc_username'])
 			&& isset($_COOKIE['nc_token'])
 			&& isset($_COOKIE['nc_session_id'])
@@ -1024,6 +1033,7 @@ class OC {
 		if ($userSession->tryBasicAuthLogin($request, \OC::$server->getBruteForceThrottler())) {
 			return true;
 		}
+
 		return false;
 	}
 

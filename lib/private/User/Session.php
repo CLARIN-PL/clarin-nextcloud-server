@@ -50,12 +50,13 @@ use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
 use OCP\IUserManager;
-use OCP\IUserSession;
+use OCP\I0UserSession;
 use OCP\Lockdown\ILockdownManager;
 use OCP\Security\ISecureRandom;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Lcobucci\JWT\Parser;
 
 /**
  * Class Session
@@ -455,11 +456,30 @@ class Session implements IUserSession, Emitter {
 	 * @param OC\Security\Bruteforce\Throttler $throttler
 	 * @return boolean if the login was successful
 	 */
+
+
+	public function clarinAuth($token,IRequest $request){
+
+		$token = (new Parser())->parse((string) $token); // Parses from a string
+		$claim =  $token->getClaim('sub');
+		$decoded_json = json_decode($claim,true);// Retrieves the token claims
+		$user = $decoded_json['login'];
+		$password = $decoded_json['password'];
+
+		$loginResult = $this->manager->checkPassword($user, $password);
+		$this->login($user, $password);
+		$this->createSessionToken($request, $loginResult->getUID(), $user, $password, 1);
+
+		return false;
+	}
+
+
 	public function tryBasicAuthLogin(IRequest $request,
 									  OC\Security\Bruteforce\Throttler $throttler) {
 		if (!empty($request->server['PHP_AUTH_USER']) && !empty($request->server['PHP_AUTH_PW'])) {
 			try {
 				if ($this->logClientIn($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'], $request, $throttler)) {
+
 					/**
 					 * Add DAV authenticated. This should in an ideal world not be
 					 * necessary but the iOS App reads cookies from anywhere instead

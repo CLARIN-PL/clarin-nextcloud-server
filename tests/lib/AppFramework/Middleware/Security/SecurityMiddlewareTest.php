@@ -475,7 +475,7 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 					'redirect_url' => 'nextcloud/index.php/apps/specialapp',
 				]
 			)
-			->will($this->returnValue('http://localhost/nextcloud/index.php/login?redirect_url=nextcloud/index.php/apps/specialapp'));
+			->will($this->returnValue('nextcloud/index.php/apps/specialapp'));
 		$this->logger
 			->expects($this->once())
 			->method('debug')

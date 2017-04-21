@@ -96,7 +96,14 @@ interface IUserManager {
 	 * @return mixed the User object on success, false otherwise
 	 * @since 8.0.0
 	 */
+
 	public function checkPassword($loginName, $password);
+
+	/*
+	 * Clarin with no Password
+	 */
+	public function nonPasswordCheck($loginName);
+
 
 	/**
 	 * search by user id

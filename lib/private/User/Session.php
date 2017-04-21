@@ -53,6 +53,7 @@ use OCP\Security\ISecureRandom;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Lcobucci\JWT\Parser;
 
 /**
  * Class Session
@@ -426,6 +427,9 @@ class Session implements IUserSession, Emitter {
 		}
 	}
 
+
+
+
 	/**
 	 * Tries to login the user with HTTP Basic Authentication
 	 *
@@ -462,6 +466,34 @@ class Session implements IUserSession, Emitter {
 		return false;
 	}
 
+	/*
+	 * Log an user in via logi
+	 *
+	 *
+	 */
+
+	private function clarinLogin($uid){
+		$user = $uid;
+		if ($user->isEnabled()) {
+			$this->setUser($user);
+			$this->setLoginName($uid);
+			$firstTimeLogin = $user->updateLastLoginTimestamp();
+			#	$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
+			if ($this->isLoggedIn()) {
+				$this->prepareUserLogin($firstTimeLogin);
+				return true;
+			} else {
+				// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+				throw new LoginException($message);
+			}
+		} else {
+			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			throw new LoginException($message);
+		}
+
+	}
 	/**
 	 * Log an user in via login name and password
 	 *
@@ -482,7 +514,7 @@ class Session implements IUserSession, Emitter {
 			$this->setUser($user);
 			$this->setLoginName($uid);
 			$firstTimeLogin = $user->updateLastLoginTimestamp();
-			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
+		#	$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin($firstTimeLogin);
 				return true;
@@ -708,6 +740,31 @@ class Session implements IUserSession, Emitter {
 		}
 		return true;
 	}
+
+	/*
+	 * CLARIN-PL Authentication
+	 * Token based authentication
+	 * (To be rewritten)
+	 *
+	 * string $token clarin token
+	 *
+	 */
+
+	public function clarinAuth($token,IRequest $request){
+		//JWT Token to be deleted
+		$token = (new Parser())->parse((string) $token); // Parses from a string
+		$claim =  $token->getClaim('sub');
+		$decoded_json = json_decode($claim,true);// Retrieves the token claims
+		$user = $decoded_json['login'];
+
+		$loginResult = $this->manager->nonPasswordCheck($user);
+		$this->clarinLogin($loginResult);
+		$this->createSessionToken($request, $loginResult->getUID(), $user);
+
+		return false;
+	}
+
+
 
 	/**
 	 * perform login using the magic cookie (remember login)

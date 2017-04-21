@@ -62,6 +62,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * Class for user management in a SQL Database (e.g. MySQL, SQLite)
  */
 class Database extends Backend implements IUserBackend {
+
+	
 	/** @var CappedMemoryCache */
 	private $cache;
 
@@ -201,6 +203,23 @@ class Database extends Backend implements IUserBackend {
 
 		return $displayNames;
 	}
+
+	/*Clarin-PL getUser
+	 *
+	 */
+
+	public function noPasswordCheck ($uid){
+		$query = \OC_DB::prepare('SELECT `uid` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
+		$result = $query->execute(array($uid));
+
+		$row = $result->fetchRow();
+		if ($row) {
+			return $row['uid'];
+		}
+
+		return false;
+	}
+
 
 	/**
 	 * Check if the password is correct

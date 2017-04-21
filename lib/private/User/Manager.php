@@ -184,10 +184,21 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $password
 	 * @return mixed the User object on success, false otherwise
 	 */
+	public function nonPasswordCheck($loginName){
+		foreach ($this->backends as $backend) {
+			if ($backend->implementsActions(Backend::CHECK_PASSWORD)) {
+				$uid = $backend->noPasswordCheck($loginName);
+				if ($uid !== false) {
+					return $this->getUserObject($uid, $backend);
+				}
+			}
+		}
+
+	}
 	public function checkPassword($loginName, $password) {
 		$loginName = str_replace("\0", '', $loginName);
 		$password = str_replace("\0", '', $password);
-		
+
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(Backend::CHECK_PASSWORD)) {
 				$uid = $backend->checkPassword($loginName, $password);

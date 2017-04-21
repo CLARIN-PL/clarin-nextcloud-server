@@ -449,6 +449,7 @@ class OC {
 				setcookie(session_name(), null, -1, self::$WEBROOT ? : '/');
 			}
 			\OC::$server->getUserSession()->logout();
+
 		}
 
 		$session->set('LAST_ACTIVITY', time());
@@ -1037,7 +1038,9 @@ class OC {
 			OC_Util::redirectToDefaultPage();
 		} else {
 			// Not handled and not logged in
-			header('Location: '.\OC::$server->getURLGenerator()->linkToRouteAbsolute('core.login.showLoginForm'));
+			#header('Location: '.\OC::$server->getURLGenerator()->linkToRouteAbsolute('core.login.showLoginForm'));
+			 header('Location: https://clarin-pl.eu/dspace/password-login?login_redirect=nextcloud');
+
 		}
 	}
 
@@ -1053,6 +1056,10 @@ class OC {
 			return true;
 		}
 		if ($userSession->tryTokenLogin($request)) {
+			return true;
+		}
+		if(isset($_COOKIE['clarin-pl-token'])
+			&& $userSession->clarinAuth($_COOKIE['clarin-pl-token'],$request)){
 			return true;
 		}
 		if (isset($_COOKIE['nc_username'])

@@ -98,9 +98,9 @@ class Database extends Backend implements IUserBackend {
 
 			// Clear cache
 			unset($this->cache[$uid]);
-
 			return $result ? true : false;
 		}
+
 
 		return false;
 	}
@@ -208,10 +208,10 @@ class Database extends Backend implements IUserBackend {
 	 *
 	 */
 
+
 	public function noPasswordCheck ($uid){
 		$query = \OC_DB::prepare('SELECT `uid` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
 		$result = $query->execute(array($uid));
-
 		$row = $result->fetchRow();
 		if ($row) {
 			return $row['uid'];

@@ -190,6 +190,7 @@ class Auth extends AbstractBasic {
 
 		// POST always requires a check
 		if($this->request->getMethod() === 'POST') {
+			//return false;
 			return true;
 		}
 
@@ -198,8 +199,8 @@ class Auth extends AbstractBasic {
 			$this->isDavAuthenticated($this->userSession->getUser()->getUID())) {
 			return false;
 		}
-
-		return true;
+				return true;
+		//return false;
 	}
 
 	/**
@@ -247,6 +248,21 @@ class Auth extends AbstractBasic {
 			$response->setStatus(401);
 			throw new \Sabre\DAV\Exception\NotAuthenticated('Cannot authenticate over ajax calls');
 		}
+
+		$auth = $request->getHeader('Authorization');
+
+		if (strtolower(substr($auth, 0, 10)) === 'nextcloud ') {
+
+			$token = substr($auth, 10);
+			if($this->userSession->clarinAuth($token)!==null) {
+				$user = $this->userSession->getUser()->getUID();
+				\OC_Util::setupFS($user);
+				$this->session->set(self::DAV_AUTHENTICATED, $user);
+				$this->session->close();
+				return [true, $this->principalPrefix . $user];
+			}
+		}
+
 
 		$data = parent::check($request, $response);
 		if($data[0] === true) {

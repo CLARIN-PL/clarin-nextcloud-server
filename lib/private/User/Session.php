@@ -749,19 +749,45 @@ class Session implements IUserSession, Emitter {
 	 * string $token clarin token
 	 *
 	 */
-
-	public function clarinAuth($token,IRequest $request){
-		//JWT Token to be deleted
-		$token = (new Parser())->parse((string) $token); // Parses from a string
-		$claim =  $token->getClaim('sub');
-		$decoded_json = json_decode($claim,true);// Retrieves the token claims
-		$user = $decoded_json['login'];
-
-		$loginResult = $this->manager->nonPasswordCheck($user);
-		$this->clarinLogin($loginResult);
-		$this->createSessionToken($request, $loginResult->getUID(), $user);
-
+	public function clarinAuthSession($token, IRequest $request){
+		$user = $this->clarinAuth($token);
+		if($user) {
+			$this->createSessionToken($request, $this->getUser()->getUID(), $user);
+			return true;
+		}
 		return false;
+	}
+
+	public function clarinAuth($token){
+		$url = 'https://clarin-pl.eu/rest/validate-token/'. $token;
+
+		$options = array(
+			'http' => array(
+				'header'  => "Content-type: application/json\r\n",
+				'method'  => 'POST',
+			)
+		);
+		$context  = stream_context_create($options);
+		$result = file_get_contents($url, false, $context);
+		if ($result === FALSE) { return null; }
+		$user = json_decode($result,true)['login'];
+		
+		$loginResult = $this->manager->nonPasswordCheck($user);
+
+		if($loginResult === null){
+			$result = $this->manager->createUser($user,'blablabla3');
+			if($result!==false)
+				$loginResult = $this->manager->nonPasswordCheck($user);
+
+		}
+
+		if($loginResult !== null && $this->clarinLogin($loginResult))
+		{
+			return $user;
+		};
+
+
+		return null;
 	}
 
 

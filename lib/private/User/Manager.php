@@ -193,6 +193,7 @@ class Manager extends PublicEmitter implements IUserManager {
 				}
 			}
 		}
+		return null;
 
 	}
 	public function checkPassword($loginName, $password) {

@@ -993,6 +993,7 @@ class OC {
 			// For logged-in users: Load everything
 			if(OC_User::isLoggedIn()) {
 				OC_App::loadApps();
+
 			} else {
 				// For guests: Load only filesystem and logging
 				OC_App::loadApps(array('filesystem', 'logging'));
@@ -1039,7 +1040,7 @@ class OC {
 		} else {
 			// Not handled and not logged in
 			#header('Location: '.\OC::$server->getURLGenerator()->linkToRouteAbsolute('core.login.showLoginForm'));
-			 header('Location: https://clarin-pl.eu/dspace/password-login?login_redirect=nextcloud');
+			 header('Location: https://clarin-pl.eu/dspace/password-login?login_redirect=https://nextcloud.clarin-pl.eu/');
 
 		}
 	}
@@ -1059,12 +1060,13 @@ class OC {
 			return true;
 		}
 		if(isset($_COOKIE['clarin-pl-token'])
-			&& $userSession->clarinAuth($_COOKIE['clarin-pl-token'],$request)){
+			&& $userSession->clarinAuthSession($_COOKIE['clarin-pl-token'],$request)){
 			return true;
 		}
 		if (isset($_COOKIE['nc_username'])
 			&& isset($_COOKIE['nc_token'])
 			&& isset($_COOKIE['nc_session_id'])
+			&& isset($_COOKIE['clarin-pl-token'])
 			&& $userSession->loginWithCookie($_COOKIE['nc_username'], $_COOKIE['nc_token'], $_COOKIE['nc_session_id'])) {
 			return true;
 		}

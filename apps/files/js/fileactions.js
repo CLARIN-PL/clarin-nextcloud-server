@@ -13,10 +13,10 @@
 	var TEMPLATE_FILE_ACTION_TRIGGER =
 		'<a class="action action-{{nameLowerCase}}" href="#" data-action="{{name}}">' +
 		'{{#if icon}}' +
-			'<img class="svg" alt="{{altText}}" src="{{icon}}" />' +
+		'<img class="svg" alt="{{altText}}" src="{{icon}}" />' +
 		'{{else}}' +
-			'{{#if iconClass}}<span class="icon {{iconClass}}" />{{/if}}' +
-			'{{#unless hasDisplayName}}<span class="hidden-visually">{{altText}}</span>{{/unless}}' +
+		'{{#if iconClass}}<span class="icon {{iconClass}}" />{{/if}}' +
+		'{{#unless hasDisplayName}}<span class="hidden-visually">{{altText}}</span>{{/unless}}' +
 		'{{/if}}' +
 		'{{#if displayName}}<span> {{displayName}}</span>{{/if}}' +
 		'</a>';
@@ -768,7 +768,7 @@
 	window.FileActions.register = function (mime, name, permissions, icon, action, displayName) {
 		console.warn('FileActions.register() is deprecated, please use OCA.Files.fileActions.register() instead', arguments);
 		OCA.Files.FileActions.prototype.register.call(
-				window.FileActions, mime, name, permissions, icon, action, displayName
+			window.FileActions, mime, name, permissions, icon, action, displayName
 		);
 	};
 	window.FileActions.display = function (parent, triggerEvent, fileList) {

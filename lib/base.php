@@ -990,6 +990,7 @@ class OC {
 		// Load minimum set of apps
 		if (!self::checkUpgrade(false)
 			&& !$systemConfig->getValue('maintenance', false)) {
+			//Kamil Tagowski - zmiany Clarin
 			// For logged-in users: Load everything
 			if(OC_User::isLoggedIn()) {
 				OC_App::loadApps();
@@ -998,6 +999,14 @@ class OC {
 				// For guests: Load only filesystem and logging
 				OC_App::loadApps(array('filesystem', 'logging'));
 				self::handleLogin($request);
+				//if (self::handleLogin($request))
+				//{
+				//	OC_App::loadApps(array('filesystem', 'logging'));
+				//}else//if (self::handleLogin($request))
+				//{
+				//	OC_App::loadApps(array('filesystem', 'logging'));
+				//}//else//if (self::handleLogin($request))
+
 			}
 		}
 
@@ -1040,8 +1049,7 @@ class OC {
 		} else {
 			// Not handled and not logged in
 			#header('Location: '.\OC::$server->getURLGenerator()->linkToRouteAbsolute('core.login.showLoginForm'));
-			 header('Location: https://clarin-pl.eu/dspace/password-login?login_redirect=https://nextcloud.clarin-pl.eu/');
-
+			 header('Location: https://ctj.clarin-pl.eu/auth/?login-redirect=https://nextcloud.clarin-pl.eu/');
 		}
 	}
 
@@ -1052,6 +1060,17 @@ class OC {
 	 * @return boolean
 	 */
 	static function handleLogin(OCP\IRequest $request) {
+
+		if(!isset($_COOKIE['clarin-pl-token']))
+		{
+			$userSession = self::$server->getUserSession();
+			if (!is_null($userSession))
+			{
+				$userSession->logout();
+			}//if (!is_null($userSession))
+			return false;
+		}//if(isset($_COOKIE['clarin-pl-token']))
+
 		$userSession = self::$server->getUserSession();
 		if (OC_User::handleApacheAuth()) {
 			return true;

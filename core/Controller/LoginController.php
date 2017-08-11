@@ -103,7 +103,7 @@ class LoginController extends Controller {
 			$this->config->deleteUserValue($this->userSession->getUser()->getUID(), 'login_token', $loginToken);
 		}
 		$this->userSession->logout();
-		return new RedirectResponse("https://clarin-pl.eu/dspace/");
+		return new RedirectResponse("https://clarin-pl.eu/dspace/logout");
 	}
 
 	/**
@@ -117,7 +117,7 @@ class LoginController extends Controller {
 	 *
 	 * @return TemplateResponse|RedirectResponse
 	 */
-	public function showLoginForm($user, $redirect_url, $remember_login) {
+	public function showLoginFormAdmin($user, $redirect_url, $remember_login) {
 		if ($this->userSession->isLoggedIn()) {
 			return new RedirectResponse(OC_Util::getDefaultPageUrl());
 		}

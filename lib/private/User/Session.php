@@ -252,6 +252,24 @@ class Session implements IUserSession, Emitter {
 	 * @return bool if logged in
 	 */
 	public function isLoggedIn() {
+		global  $_COOKIE,$_SERVER;
+		if (
+			(!isset($_COOKIE['clarin-pl-token']))
+			&&
+			($_SERVER['HTTP_AUTHORIZATION']==='')
+			) {
+			return false;
+		}
+		/*$cookie_set = isset($_COOKIE['clarin-pl-token']);
+		$http_set = isset($_SERVER['HTTP_AUTHORIZATION']);
+		var_dump($cookie_set);
+		var_dump($http_set);
+		var_dump($_SERVER['HTTP_AUTHORIZATION']);
+		$test_string = '';
+		var_dump(isset($test_string));
+		var_dump($_COOKIE['clarin-pl-token']);
+		die();
+		*/
 		$user = $this->getUser();
 		if (is_null($user)) {
 			return false;
@@ -758,6 +776,11 @@ class Session implements IUserSession, Emitter {
 		return false;
 	}
 
+	public function createCryptoPass($bytes){
+		$bytes = openssl_random_pseudo_bytes($bytes, $cstrong);
+		return bin2hex($bytes);
+
+	}
 	public function clarinAuth($token){
 		$url = 'https://clarin-pl.eu/rest/validate-token/'. $token;
 
@@ -769,13 +792,19 @@ class Session implements IUserSession, Emitter {
 		);
 		$context  = stream_context_create($options);
 		$result = file_get_contents($url, false, $context);
-		if ($result === FALSE) { return null; }
+
+		if ($result === FALSE) {
+			return null;
+		}
+
 		$user = json_decode($result,true)['login'];
 		
 		$loginResult = $this->manager->nonPasswordCheck($user);
 
 		if($loginResult === null){
-			$result = $this->manager->createUser($user,'blablabla3');
+			#loremipsum221
+
+			$result = $this->manager->createUser($user,$this->createCryptoPass(128));
 			if($result!==false)
 				$loginResult = $this->manager->nonPasswordCheck($user);
 

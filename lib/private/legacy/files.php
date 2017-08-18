@@ -102,15 +102,16 @@ class OC_Files {
 	 * @param string $dir
 	 * @param string $files ; separated list of files to download
 	 * @param array $params ; 'head' boolean to only send header of the request ; 'range' http range header
+	 * @param bool $tozip ; will single file be zipped? (CLARIN.PL)
 	 */
-	public static function get($dir, $files, $params = null) {
+	public static function get($dir, $files, $params = null, $tozip = false) {
 
 		$view = \OC\Files\Filesystem::getView();
 		$getType = self::FILE;
 		$filename = $dir;
 		try {
 
-			if (is_array($files) && count($files) === 1) {
+			if (is_array($files) && count($files) && $tozip==false) {
 				$files = $files[0];
 			}
 

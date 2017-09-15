@@ -85,12 +85,12 @@
 						</a>
 					</li>
 				<?php endforeach; ?>
-					<li>
-						<a id="logout" <?php print_unescaped(OC_User::getLogoutAttribute()); ?>>
-							<img alt="" src="<?php print_unescaped(image_path('', 'actions/logout.svg') . '?v=' . $_['versionHash']); ?>">
-							<?php p($l->t('Log out'));?>
-						</a>
-					</li>
+<!--					<li>-->
+<!--						<a id="logout" --><?php //print_unescaped(OC_User::getLogoutAttribute()); ?><!-->-->
+<!--							<img alt="" src="--><?php //print_unescaped(image_path('', 'actions/logout.svg') . '?v=' . $_['versionHash']); ?><!--">-->
+<!--							--><?php //p($l->t('Log out'));?>
+<!--						</a>-->
+<!--					</li>-->
 				</ul>
 				</div>
 			</div>

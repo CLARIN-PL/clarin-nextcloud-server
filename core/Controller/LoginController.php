@@ -103,7 +103,7 @@ class LoginController extends Controller {
 			$this->config->deleteUserValue($this->userSession->getUser()->getUID(), 'login_token', $loginToken);
 		}
 		$this->userSession->logout();
-		return new RedirectResponse("https://clarin-pl.eu/dspace/logout");
+//		return new RedirectResponse("https://clarin-pl.eu/dspace/logout");
 	}
 
 	/**

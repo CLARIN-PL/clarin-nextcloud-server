@@ -282,8 +282,9 @@
 		 *
 		 * @param {string} url download URL
 		 * @param {function} callback function to call once the download has started
+		 * @param zip to zip CLARIN.PL
 		 */
-		handleDownload: function(url, callback) {
+		handleDownload: function(url, callback,tozip) {
 			var randomToken = Math.random().toString(36).substring(2),
 				checkForDownloadCookie = function() {
 					if (!OC.Util.isCookieSetToValue('ocDownloadStarted', randomToken)){
@@ -299,7 +300,11 @@
 			} else {
 				url += '?';
 			}
-			OC.redirect(url + 'downloadStartSecret=' + randomToken);
+			var zip = '';
+			if(tozip) {
+				zip = '&toZip=' + tozip;
+			}
+			OC.redirect(url + 'downloadStartSecret=' + randomToken + zip);
 			OC.Util.waitFor(checkForDownloadCookie, 500);
 		}
 	};

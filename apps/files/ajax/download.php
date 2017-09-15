@@ -49,6 +49,12 @@ if(isset($_GET['downloadStartSecret'])
 	&& !isset($_GET['downloadStartSecret'][32])
 	&& preg_match('!^[a-zA-Z0-9]+$!', $_GET['downloadStartSecret']) === 1) {
 	setcookie('ocDownloadStarted', $_GET['downloadStartSecret'], time() + 20, '/');
+	if(isset($_GET['toZip'])){
+			$tozip = $_GET['toZip'];
+	}
+	else{
+		$tozip = false;
+	}
 }
 
 $server_params = array( 'head' => \OC::$server->getRequest()->getMethod() == 'HEAD' );
@@ -60,4 +66,4 @@ if (isset($_SERVER['HTTP_RANGE'])) {
 	$server_params['range'] = \OC::$server->getRequest()->getHeader('Range');
 }
 
-OC_Files::get($dir, $files_list, $server_params);
+OC_Files::get($dir, $files_list, $server_params, $tozip);

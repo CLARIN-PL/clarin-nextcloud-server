@@ -688,9 +688,18 @@ html.ie8 .column-mtime .selectedActions {
 #fileList tr a.action.action-download.disabled {
 	color: #000000;
 }
-
 #fileList tr:hover a.action.disabled:hover * {
 	cursor: default;
+}
+
+/*
+Clarin Files APP update
+Adding download as zip button.
+*/
+
+#selectedActionsList a.download-zip.disabled,
+#fileList tr a.action.action-download-zip.disabled {
+	color: #ff0000;
 }
 
 .summary {

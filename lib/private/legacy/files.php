@@ -102,18 +102,16 @@ class OC_Files {
 	 * @param string $dir
 	 * @param string $files ; separated list of files to download
 	 * @param array $params ; 'head' boolean to only send header of the request ; 'range' http range header
+	 * @param bool $tozip ; will single file be zipped? (CLARIN.PL)
 	 */
-	public static function get($dir, $files, $params = null) {
-
+	public static function get($dir, $files, $params = null, $tozip = false) {
 		$view = \OC\Files\Filesystem::getView();
 		$getType = self::FILE;
 		$filename = $dir;
 		try {
-
-			if (is_array($files) && count($files) === 1) {
+			if (is_array($files) && count($files) && $tozip==false) {
 				$files = $files[0];
 			}
-
 			if (!is_array($files)) {
 				$filename = $dir . '/' . $files;
 				if (!$view->is_dir($filename)) {
@@ -121,7 +119,6 @@ class OC_Files {
 					return;
 				}
 			}
-
 			$name = 'download';
 			if (is_array($files)) {
 				$getType = self::ZIP_FILES;
@@ -129,7 +126,6 @@ class OC_Files {
 				if ($basename) {
 					$name = $basename;
 				}
-
 				$filename = $dir . '/' . $name;
 			} else {
 				$filename = $dir . '/' . $files;
@@ -139,12 +135,9 @@ class OC_Files {
 					$name = $files;
 				}
 			}
-
 			$streamer = new Streamer();
 			OC_Util::obEnd();
-
 			self::lockFiles($view, $dir, $files);
-
 			$streamer->sendHeaders($name);
 			$executionTime = intval(OC::$server->getIniWrapper()->getNumeric('max_execution_time'));
 			set_time_limit(0);

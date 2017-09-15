@@ -51,6 +51,13 @@
 							<span class="icon icon-download"></span>
 							<span><?php p($l->t('Download'))?></span>
 						</a>
+						<!-- clarin update !-->
+
+						<a href="" class="download-zip">
+							<span class="icon icon-download"></span>
+							<span><?php p($l->t('Download as zip'))?></span>
+						</a>
+
 					</span>
 				</div>
 			</th>

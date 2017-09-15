@@ -330,6 +330,7 @@
 			this.$el.on('urlChanged', _.bind(this._onUrlChanged, this));
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
 			this.$el.find('.download').click(_.bind(this._onClickDownloadSelected, this));
+			this.$el.find('.download-zip').click(_.bind(this.onClickDownloadZipSelected, this))
 			this.$el.find('.delete-selected').click(_.bind(this._onClickDeleteSelected, this));
 
 			this.$el.find('.selectedActions a').tooltip({placement:'top'});
@@ -671,6 +672,13 @@
 				// hide sidebar
 				this._updateDetailsView(null);
 			}
+			//Clarin block Download Buttton
+			var summary = this._selectionSummary.summary;
+			if(summary.totalFiles < 2 && summary.totalDirs < 1){
+				$('#selectedActionsList').find('.download').show();
+			} else{
+				$('#selectedActionsList').find('.download').hide();
+			}
 		},
 
 		/**
@@ -730,6 +738,40 @@
 				first = this.getSelectedFiles()[0];
 				OCA.Files.Files.handleDownload(this.getDownloadUrl(first.name, dir, true), disableLoadingState);
 			}
+			return false;
+		},
+
+		/**
+		 * Clarin on zip download
+		 *
+		 *
+		 */
+		onClickDownloadZipSelected: function(event) {
+			var files;
+			var dir = this.getCurrentDirectory();
+			if (this.isAllSelected() && this.getSelectedFiles().length > 1) {
+				files = OC.basename(dir);
+				dir = OC.dirname(dir) || '/';
+			}
+			else {
+				files = _.pluck(this.getSelectedFiles(), 'name');
+			}
+
+			var downloadFileaction = $('#selectedActionsList').find('.download-zip');
+
+			// don't allow a second click on the download action
+			if(downloadFileaction.hasClass('disabled')) {
+				event.preventDefault();
+				return;
+			}
+
+			var disableLoadingState = function(){
+				OCA.Files.FileActions.updateFileActionSpinner(downloadFileaction, false);
+			};
+
+			OCA.Files.FileActions.updateFileActionSpinner(downloadFileaction, true);
+			OCA.Files.Files.handleDownload(this.getDownloadUrl(files, dir, true), disableLoadingState,true);
+
 			return false;
 		},
 

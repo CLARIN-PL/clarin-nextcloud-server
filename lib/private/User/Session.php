@@ -252,14 +252,31 @@ class Session implements IUserSession, Emitter {
 	 * @return bool if logged in
 	 */
 	public function isLoggedIn() {
-		global  $_COOKIE,$_SERVER;
-		if (
-			(!isset($_COOKIE['clarin-pl-token']))
-			&&
-			($_SERVER['HTTP_AUTHORIZATION']==='')
-			) {
+		$user = $this->getUser();
+		if (is_null($user)) {
 			return false;
 		}
+		global  $_COOKIE,$_SERVER;
+		$group = \OC::$server->getGroupManager()->get('admin');
+		if ($group->inGroup($user)) {
+			return $user->isEnabled();
+		}
+
+		if (
+			(!isset($_COOKIE['clarin-pl-token']))
+				&&
+			($_SERVER['HTTP_AUTHORIZATION']==='')
+			) {
+
+			return false;
+		}
+		else if(isset($_COOKIE['clarin-pl-token'])){
+			if(!$this->validateClarinToken($_COOKIE['clarin-pl-token'])){
+				$this->logout();
+				return false;
+			}
+		}
+
 		/*$cookie_set = isset($_COOKIE['clarin-pl-token']);
 		$http_set = isset($_SERVER['HTTP_AUTHORIZATION']);
 		var_dump($cookie_set);
@@ -270,10 +287,7 @@ class Session implements IUserSession, Emitter {
 		var_dump($_COOKIE['clarin-pl-token']);
 		die();
 		*/
-		$user = $this->getUser();
-		if (is_null($user)) {
-			return false;
-		}
+
 
 		return $user->isEnabled();
 	}
@@ -521,6 +535,7 @@ class Session implements IUserSession, Emitter {
 	 * @throws LoginException if an app canceld the login process or the user is not enabled
 	 */
 	private function loginWithPassword($uid, $password) {
+
 		$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
 		$user = $this->manager->checkPassword($uid, $password);
 		if ($user === false) {
@@ -532,8 +547,11 @@ class Session implements IUserSession, Emitter {
 			$this->setUser($user);
 			$this->setLoginName($uid);
 			$firstTimeLogin = $user->updateLastLoginTimestamp();
+
+//			var_dump($user);
 		#	$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
-			if ($this->isLoggedIn()) {
+			if ($this->isLoggedIn())
+			{
 				$this->prepareUserLogin($firstTimeLogin);
 				return true;
 			} else {
@@ -595,8 +613,9 @@ class Session implements IUserSession, Emitter {
 			$this->prepareUserLogin(false); // token login cant be the first
 		} else {
 			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-			throw new LoginException($message);
+			//$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+			//throw new LoginException($message);
+			return false;
 		}
 
 		return true;
@@ -781,7 +800,8 @@ class Session implements IUserSession, Emitter {
 		return bin2hex($bytes);
 
 	}
-	public function clarinAuth($token){
+	public function validateClarinToken($token){
+
 		$url = 'https://clarin-pl.eu/rest/validate-token/'. $token;
 
 		$options = array(
@@ -792,6 +812,10 @@ class Session implements IUserSession, Emitter {
 		);
 		$context  = stream_context_create($options);
 		$result = file_get_contents($url, false, $context);
+		return $result;
+	}
+	public function clarinAuth($token){
+		$result = $this->validateClarinToken($token);
 
 		if ($result === FALSE) {
 			return null;

@@ -1,0 +1,437 @@
+/* ----------------------- */
+/* ----- Lucas tests ----- */
+/* ----------------------- */
+
+/* General info */
+body {
+	color: #9D9892;
+	font-size: 16px;
+	font-weight: 400;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.row {
+	margin-right: 0px;
+	margin-left:0px;
+}
+
+div.required label:after {
+	content: " *";
+	color: #FF0528;
+	font-size: 27px;
+	line-height: 10px;
+	margin: 5px;
+	position: absolute;
+}
+
+div[class^="col-"] {
+	padding:0;
+}
+
+textarea, input[type="text"], input[type="email"], input[type="submit"] {
+	width: 100%;
+	border-radius: 0;
+}
+
+textarea:focus, input[type="text"]:focus, input[type="email"]:focus, input[type="submit"]:focus {
+	box-shadow: none;
+}
+
+textarea, textarea.form-control, input[type="text"] {
+	width: 95%;
+	/*margin: 0 auto 5px;*/
+	height: 35px;
+	padding: 0 10px;
+	border: 0;
+	border-radius: 0;
+	border: 1px solid #C4C0B4;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	-moz-transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	transition: all 0.5s;
+}
+
+
+/*TODO*/
+.table>thead>tr>th {
+	/* vertical-align: bottom; */
+	 border:0;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	border:0;
+}
+.table-hover>tbody>tr:hover {
+	background:inherit;
+}
+
+.tbody tr:hover, tbody tr:focus, tbody tr:active {
+	background: inherit;
+}
+.mytable{
+	background: #333a74;
+	color: #fff;
+}
+/* Top navigation */
+#body-user #header {
+	background-color: #a7a7a7;
+}
+
+#body-user #header a.menutoggle {
+	padding-top: 12px;
+}
+
+#body-user #header a.menutoggle h1 {
+	font-size: 20px;
+}
+
+/* Padding between tiles */
+#resource-basic-information, #creation-circumstances, #access,
+#resource-content, #selected-files {
+	background-color: white;
+}
+
+
+
+/*#creation-circumstances, #resource-content, #selected-files {*/
+	/*padding: 0 20px 20px;*/
+/*}*/
+
+/*#access {*/
+	/*padding: 0 20px 20px 0;*/
+/*}*/
+
+/* Main content */
+#app-content {
+	background-color: #fff;
+}
+
+#app-content #app-content-wrapper form.form-horizontal {
+	background-color: #fff;
+}
+
+
+#app-content #app-content-wrapper form.form-horizontal .right-container {
+	position:fixed;
+	padding:0;
+	/*top:0;*/
+	/*left:0;*/
+	height: 100%;
+	margin: 0 auto;
+	background: #323a73;
+}
+#app-content #app-content-wrapper form.form-horizontal .form-main-container {
+	width: 100%;
+	float:left;
+	margin: 0 auto;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-main-container .form-header {
+	padding: 15px;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-main-container .block {
+	padding: 0 8% 1px;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-main-container .form-header h3 {
+	margin: 0;
+	color: #000;
+	font-size: 22px;
+	font-weight: bold;
+	text-align: left;
+	/*letter-spacing: 0px;*/
+	/*text-transform: uppercase;*/
+	border-bottom: 1px solid rgba(78, 78, 78, 0.15);
+	padding-bottom: 5px;
+}
+
+#app-content form.form-horizontal .form-main-container .form-body {
+	background-color: white;
+	padding: 0;
+  margin: 0;
+}
+
+#app-content form.form-horizontal .form-main-container .form-body .row-all {
+	margin: 0 10px;
+}
+
+#app-content form.form-horizontal .form-main-container .form-body .row.optional {
+	border-top: 10px solid #615286;
+}
+
+#app-content form.form-horizontal .form-main-container .form-body .row.optional h3 {
+	margin: 0;
+	padding: 10px;
+	color: white;
+	background-color: #615286;
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+#app-content form.form-horizontal .form-main-container .form-body .row.optional svg {
+	fill: white;
+	margin-bottom: 2px;
+}
+
+#app-content form.form-horizontal .form-main-container .form-body .row-margin-first {
+	margin: 10px 10px 0;
+}
+
+#app-content form.form-horizontal .form-main-container .form-body .row-margin-last {
+	margin: 0 10px 10px;
+}
+
+/* Table */
+#app-content form.form-horizontal .form-main-container .form-body table#filesTable {
+	table-layout: fixed;
+	width: 100%;
+}
+
+#app-content form.form-horizontal .form-main-container .form-body table#filesTable td {
+	 white-space: -o-pre-wrap;
+	 word-wrap: break-word;
+	 white-space: pre-wrap;
+	 white-space: -moz-pre-wrap;
+	 white-space: -pre-wrap;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group {
+	margin: 15px;
+	text-align: left;
+	/*border: 5px solid #615286;*/
+	/*border: 5px solid #7F6CAF;*/
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group-adjust {
+	margin: 20px 10px;
+}
+
+/*#app-content #app-content-wrapper form.form-horizontal .form-group input#resourceClass {
+	position: relative;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group input#resourceClass~svg {
+	position: absolute;
+	right: 12%;
+	bottom: 22%;
+	opacity: 0.8;
+}*/
+
+input::-webkit-calendar-picker-indicator {
+  /*display: none;*/
+	opacity: 1;
+	padding: 20px;
+	cursor: pointer;
+	background-color: transparent;
+}
+
+
+#app-content #app-content-wrapper form.form-horizontal .form-group-select {
+	/*border: 17px solid #7F6CAF;*/
+	border-top: 0;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group-adjust-textarea {
+	margin: 20px 0px 20px 0;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group-adjust-textarea textarea:focus {
+	/*border-bottom: 2px solid black;*/
+	/*box-shadow: none;*/
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group-last {
+	margin: 0;
+	border: 0;
+	text-align: center;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group .select-wrapper {
+	width: 100%;
+  margin: 0 auto;
+  position: relative;
+  display: inline-block;
+}
+#app-content #app-content-wrapper form.form-horizontal .form-group .select-wrapper::before {
+	/* Cant hide default arrow nor use font awesome / glyphicons */
+	/*content: '\e114';
+	font-family: 'Glyphicons Halflings';
+	content: '>';*/
+	pointer-events: none;
+	color: #606060;
+	font-size: 16px;
+	position: absolute;
+	right: 12px;
+	top: 7px;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group .select-wrapper::after {
+	content: '';
+	height: 100%;
+	pointer-events: none;
+	/*border-left: 2px solid black;*/
+	position: absolute;
+	right: 40px;
+	top: 0;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group .select-wrapper select {
+	color: #606060;
+	background-color: #F9F9F9;
+	display: inline-block;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	padding: 0 20px;
+	/*border: 2px solid black;*/
+	border-radius: 0;
+	box-shadow: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+/* Labels */
+#app-content #app-content-wrapper form.form-horizontal .form-group label {
+	width: 100%;
+	/*padding: 10px;*/
+	margin: 0;
+	font-weight: 200;
+	color: #000000;
+	/*background-color: #615286;*/
+	/*background-color: #7F6CAF;*/
+}
+
+#app-content #app-content-wrapper form.form-horizontal .optional .form-group-adjust {
+	margin: 20px;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .optional .optional-form-group-adjust input {
+	width: 60%;
+	margin: 5px auto;
+	display: inline-block;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .optional .optional-form-group-adjust .select-wrapper {
+	width: 35%;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .optional .form-group-contact {
+	/*border: 5px solid #615286;*/
+	margin: 20px 20px 20px 0;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .optional .form-group-contact .contact-label {
+	/*background-color: #615286;*/
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group textarea.form-control {
+	resize: none;
+	padding: 0;
+	min-height: 123px;
+	line-height: 150%;
+	width: 90%;
+	margin: 0 auto;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group button {
+	width: 70%;
+	color: white;
+	background-color: #7F6CAF;
+	padding: 7px;
+	border-radius: 0;
+	-o-transition: all .3s;
+	-moz-transition: all .3s;
+	-webkit-transition: all .3s;
+	-ms-transition: all .3s;
+	transition: all .3s;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group button.button-submit {
+	background-color: #63C542;
+	border: 5px solid #63C542;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group button.button-submit:hover {
+	color: #63C542;
+	background-color: white;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group button.button-cancel {
+	background-color: #D9534F;
+	border: 5px solid #D9534F;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group button.button-cancel:hover {
+	color: #D9534F;
+	background-color: white;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group button span {
+	font-size: 20px;
+	/*font-weight: bold;*/
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+#resource-basic-information {
+	margin-top:5%;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-main-container .form-buttons {
+	width: 60%;
+	background-color: white;
+	padding-bottom: 15px;
+	margin: 3% auto 0;
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+	#app-content #app-content-wrapper form.form-horizontal .form-group-adjust-textarea {
+	    margin: 0 20px 20px;
+	}
+	#app-content #app-content-wrapper form.form-horizontal .form-group button {
+		margin: 0 0 20px;
+	}
+	#access {
+    padding: 0 20px 20px;
+	}
+}
+
+/* Landscape phone to portrait tablet */
+@media (min-width: 481px) and (max-width: 767px) {
+	#app-content #app-content-wrapper form.form-horizontal .form-group-adjust-textarea {
+	    margin: 0 20px 20px;
+	}
+	#app-content #app-content-wrapper form.form-horizontal .form-group button {
+		margin: 0 0 20px;
+	}
+	#access {
+    padding: 0 20px 20px;
+	}
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+	#app-content #app-content-wrapper form.form-horizontal .form-group-adjust-textarea {
+	    margin: 0 20px 20px;
+	}
+	#access {
+    padding: 0 20px 20px;
+	}
+}
+
+/* Large desktop */
+@media (min-width: 980px) and (max-width: 1199px) {
+
+}
+
+/* Larger desktop */
+@media (min-width: 1200px) and (max-width: 1360px) {
+
+}

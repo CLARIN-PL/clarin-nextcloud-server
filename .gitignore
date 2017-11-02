@@ -39,7 +39,8 @@
 /apps/files_external/3rdparty/irodsphp/prods/test*
 /apps/files_external/tests/config.*.php
 
-
+# unignore clarin apps
+!/apps/clarin
 
 # ignore themes except the example and the README
 /themes/*

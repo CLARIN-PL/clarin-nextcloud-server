@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>clarin</id>
+    <name>Clarin</name>
+    <summary>Clarin nextcloud extension</summary>
+    <description><![CDATA[Clarin nextcloud extension]]></description>
+    <licence>agpl</licence>
+    <author mail="kamil.tagowski@pwr.edu.pl" >Kamil Tagowski</author>
+    <version>0.0.1</version>
+    <namespace>Clarin</namespace>
+    <category>tools</category>
+    <bugs>https://github.com/CLARIN-PL/</bugs>
+    <dependencies>
+        <owncloud min-version="9.2"/>
+        <nextcloud min-version="11" max-version="11"/>
+    </dependencies>
+</info>

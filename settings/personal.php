@@ -76,7 +76,7 @@ $languageCodes = \OC::$server->getL10NFactory()->findAvailableLanguages();
 
 // array of common languages
 $commonLangCodes = array(
-	'en', 'es', 'fr', 'de', 'de_DE', 'ja', 'ar', 'ru', 'nl', 'it', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'tr', 'zh_CN', 'ko'
+	'en', 'es', 'fr', 'de', 'de_DE', 'ja', 'ar', 'ru', 'nl', 'it', 'pl', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'tr', 'zh_CN', 'ko'
 );
 
 $languages=array();
@@ -165,7 +165,11 @@ $tmpl->assign('email', $userData[\OC\Accounts\AccountManager::PROPERTY_EMAIL]['v
 $tmpl->assign('languages', $languages);
 $tmpl->assign('commonlanguages', $commonLanguages);
 $tmpl->assign('activelanguage', $userLang);
+/*CLARIN-PL
+ ktagowski
+ Disable Password Change
 $tmpl->assign('passwordChangeSupported', OC_User::canUserChangePassword(OC_User::getUser()));
+*/
 $tmpl->assign('displayNameChangeSupported', OC_User::canUserChangeDisplayName(OC_User::getUser()));
 $tmpl->assign('displayName', $userData[\OC\Accounts\AccountManager::PROPERTY_DISPLAYNAME]['value']);
 

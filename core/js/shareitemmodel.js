@@ -108,12 +108,14 @@
 		 * TODO: this should be a separate model
 		 */
 		saveLinkShare: function(attributes, options) {
+
 			options = options || {};
 			attributes = _.extend({}, attributes);
 
 			var shareId = null;
 			var call;
-
+			console.log('defualt date');
+			console.log(this.configModel.getDefaultExpirationDateString());
 			// oh yeah...
 			if (attributes.expiration) {
 				attributes.expireDate = attributes.expiration;
@@ -147,6 +149,7 @@
 		},
 
 		addShare: function(attributes, options) {
+			
 			var shareType = attributes.shareType;
 			options = options || {};
 			attributes = _.extend({}, attributes);
@@ -173,6 +176,7 @@
 			}
 
 			var self = this;
+			console.log(attributes);
 			return $.ajax({
 				type: 'POST',
 				url: this._getUrl('shares'),

@@ -39,7 +39,7 @@ namespace OCP\AppFramework\Http;
  */
 class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	/** @var bool Whether inline JS snippets are allowed */
-	protected $inlineScriptAllowed = false;
+	protected $inlineScriptAllowed = true;
 	/**
 	 * @var bool Whether eval in JS scripts is allowed
 	 * TODO: Disallow per default
@@ -49,6 +49,8 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	/** @var array Domains from which scripts can get loaded */
 	protected $allowedScriptDomains = [
 		'\'self\'',
+		'http://ctj.clarin-pl.eu/',
+		'https://maxcdn.bootstrapcdn.com/',
 	];
 	/**
 	 * @var bool Whether inline CSS is allowed
@@ -59,15 +61,19 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	/** @var array Domains from which CSS can get loaded */
 	protected $allowedStyleDomains = [
 		'\'self\'',
+		'http://ctj.clarin-pl.eu/',
+		'https://maxcdn.bootstrapcdn.com/',
 	];
 	/** @var array Domains from which images can get loaded */
 	protected $allowedImageDomains = [
+		'http://ctj.clarin-pl.eu/',
 		'\'self\'',
 		'data:',
 		'blob:',
 	];
 	/** @var array Domains to which connections can be done */
 	protected $allowedConnectDomains = [
+		'http://clarin-pl.eu/',
 		'\'self\'',
 	];
 	/** @var array Domains from which media elements can be loaded */
@@ -80,6 +86,9 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	protected $allowedFrameDomains = [];
 	/** @var array Domains from which fonts can be loaded */
 	protected $allowedFontDomains = [
+		'https://maxcdn.bootstrapcdn.com/',
+		'https://ctj.clarin-pl.eu/',
+		'data:',
 		'\'self\'',
 	];
 	/** @var array Domains from which web-workers and nested browsing content can load elements */

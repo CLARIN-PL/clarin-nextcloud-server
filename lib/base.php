@@ -1049,7 +1049,7 @@ class OC {
 		} else {
 			// Not handled and not logged in
 			#header('Location: '.\OC::$server->getURLGenerator()->linkToRouteAbsolute('core.login.showLoginForm'));
-			 header('Location: https://ctj.clarin-pl.eu/auth/?login-redirect=http://nextcloud-tests.clarin-pl.eu/dev/');
+			 header('Location: https://ctj.clarin-pl.eu/auth/?login-redirect=http://nextcloud.clarin-pl.eu/dev/');
 		}
 	}
 

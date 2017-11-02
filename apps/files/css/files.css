@@ -696,7 +696,12 @@ Clarin Files APP update
 
 #selectedActionsList a.download-zip.disabled,
 #fileList tr a.action.action-download-zip.disabled {
-	color: #ff0000;
+	color: #000000;
+}
+
+#selectedActionsList a.dspace.disabled,
+#fileList tr a.action.action-dspace.disabled {
+	color: #000000;
 }
 
 

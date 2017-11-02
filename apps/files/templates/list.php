@@ -58,6 +58,16 @@
 							<span><?php p($l->t('Download as zip'))?></span>
 						</a>
 
+						<a href="" class="dspace">
+							<span class="icon icon-external"></span>
+							<span><?php p($l->t('Export to dspace'))?></span>
+						</a>
+
+						<a href="" class="ccl">
+							<span class="icon icon-download"></span>
+							<span><?php p($l->t('Export to ccl'))?></span>
+						</a>
+
 					</span>
 					<span id="test" class="selectedActions">
 				</div>

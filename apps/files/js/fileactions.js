@@ -378,10 +378,22 @@
 				altText: t('files', 'Actions'),
 				action: this._showMenuClosure
 			}, false, context);
+			/* Clarin-PL CCL MENU */
+			// var $el2 = this._renderInlineAction({
+			// 	name: 'CCL',
+			// 	displayName: 'CCL',
+			// 	iconClass: '',
+			// 	altText: '',
+			// 	action: this._showMenuClosure
+			// }, false, context);
 
+			// $el2.addClass('permanent');
 			$el.addClass('permanent');
 		},
 
+		_triggerCcLAction: function(){
+
+		},
 		/**
 		 * Renders the action element by calling actionSpec.render() and
 		 * registers the click event to process the action.

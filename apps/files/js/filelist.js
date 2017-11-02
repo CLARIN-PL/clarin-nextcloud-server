@@ -331,6 +331,9 @@
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
 			this.$el.find('.download').click(_.bind(this._onClickDownloadSelected, this));
 			this.$el.find('.download-zip').click(_.bind(this.onClickDownloadZipSelected, this));
+			this.$el.find('.dspace').click(_.bind(this._onDspaceExport, this));
+			this.$el.find('.ccl').click(_.bind(this._onCCLExportSelected, this));
+
 			this.$el.find('.delete-selected').click(_.bind(this._onClickDeleteSelected, this));
 
 			this.$el.find('.selectedActions a').tooltip({placement:'top'});
@@ -775,6 +778,160 @@
 
 			return false;
 		},
+
+		/**
+		 * DSPace Event Handler CLARIN!
+		 *
+		 *
+		 */
+
+
+
+		_makeClarinDSpacePost: function(data){
+			files = JSON.stringify(data);
+			var baseUrl = OC.generateUrl('/apps/clarin');
+			var url = baseUrl + '/files'
+
+			console.log(url);
+
+			var form = document.createElement('form');
+			form.method = 'post';
+			form.action = url;
+
+			var input = document.createElement('input');
+			input.type = "text";
+			input.name = "files";
+			input.value = JSON.stringify(data);
+			form.appendChild(input);
+
+			document.body.appendChild(form);
+			console.log(form);
+			form.submit();
+
+		},
+
+		_saveLinkShare: function(filePath,links, endcallback, tablelength) {
+
+			options = {};
+			attributes = {};
+			attributes = _.defaults(attributes, {
+				password: '',
+				passwordChanged: false,
+				path: filePath,
+				permissions: OC.PERMISSION_READ,
+				expireDate: "",
+				shareType: OC.Share.SHARE_TYPE_LINK
+			});
+
+			call = this._addShare(attributes, options, links, this._addLinkToList, endcallback, tablelength);
+			return call;
+		},
+
+		_getUrl: function(base, params) {
+			params = _.extend({format: 'json'}, params || {});
+			return OC.linkToOCS('apps/files_sharing/api/v1', 2) + base + '?' + OC.buildQueryString(params);
+		},
+
+		_addLinkToList: function(links, response, endcallback, tablelength) {
+			var file = {};
+			console.log(response);
+			file.url = response['ocs']['data']['url'];
+			file.path = response['ocs']['data']['path'];
+			file.mimetype = response['ocs']['data']['mimetype'];
+			file.icon =  OC.MimeType.getIconUrl(file.mimetype);
+			if(file.url && file.path){
+				links.push(file);
+				if(links.length === tablelength){
+					endcallback(links);
+				}
+			}
+
+		},
+
+		_addShare: function(attributes, options,links, callback, endcallback, tablelength) {
+
+			var shareType = attributes.shareType;
+			options = options || {};
+			attributes = _.extend({}, attributes);
+
+			// Default permissions are Edit (CRUD) and Share
+			// Check if these permissions are possible
+			var permissions = OC.PERMISSION_READ;
+
+			attributes.permissions = permissions;
+
+			var self = this;
+			var response_text;
+			$.ajax({
+				type: 'POST',
+				url: this._getUrl('shares'),
+				data: attributes,
+				dataType: 'json',
+				success: function(res) {
+					callback(links,res,endcallback,tablelength);
+					// then you can manipulate your text as you wish
+				},
+				error: function(res){
+					callback(links,res,endcallback,tablelength);
+				}
+			});
+		},
+
+		_onDspaceExport: function(event){
+			event.preventDefault();
+			console.log('sending files to dspace');
+			console.log(this.getSelectedFiles());
+
+			var response;
+			var links = [];
+			var files = this.getSelectedFiles();
+			for(var i=0; i<files.length; ++i){
+				var path = files[i]['path'];
+				var name = files[i]['name'];
+
+				var filepath = path+name;
+				this._saveLinkShare(filepath,links,this._makeClarinDSpacePost, files.length);
+
+				
+			}
+			//this._makeClarinDSpacePost(this.getSelectedFiles());
+
+		},
+
+		_onCCLExportSelected: function(event){
+			event.preventDefault();
+			console.log('sending files to dspace');
+			console.log(this.getSelectedFiles());
+
+			var response;
+			var links = [];
+			var files = this.getSelectedFiles();
+			for(var i=0; i<files.length; ++i){
+				var path = files[i]['path'];
+				var name = files[i]['name'];
+
+				var filepath = path+name;
+			}
+
+			$.ajax({
+				type: 'POST',
+				url:  OC.generateUrl('/apps/clarin/ccl/'),
+				data: files,
+				dataType: 'json',
+				success: function(res) {
+					callback(links,res,endcallback,tablelength);
+					// then you can manipulate your text as you wish
+				},
+				error: function(res){
+					callback(links,res,endcallback,tablelength);
+				}
+			});
+			/*
+			TO DO!
+			 */
+		},
+
+
 		/**
 		 * Event handler for when clicking on "Delete" for the selected files
 		 */
@@ -1086,6 +1243,8 @@
 		 * @return {string} icon URL
 		 */
 		_getIconUrl: function(fileInfo) {
+			console.log('fileInfo');
+			console.log(fileInfo);
 			var mimeType = fileInfo.mimetype || 'application/octet-stream';
 			if (mimeType === 'httpd/unix-directory') {
 				// use default folder icon

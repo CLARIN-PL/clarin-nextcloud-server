@@ -987,7 +987,7 @@ class OC {
 		// Always load authentication apps
 		OC_App::loadApps(['authentication']);
 
-		// Load minimum set of apps
+		 //Load minimum set of apps
 		if (!self::checkUpgrade(false)
 			&& !$systemConfig->getValue('maintenance', false)) {
 			//Kamil Tagowski - zmiany Clarin
@@ -1009,6 +1009,19 @@ class OC {
 
 			}
 		}
+
+		// Load minimum set of apps
+//		if (!self::checkUpgrade(false)
+//			&& !$systemConfig->getValue('maintenance', false)) {
+//			// For logged-in users: Load everything
+//			if(OC_User::isLoggedIn()) {
+//				OC_App::loadApps();
+//			} else {
+//				// For guests: Load only filesystem and logging
+//				OC_App::loadApps(array('filesystem', 'logging'));
+//				self::handleLogin($request);
+//			}
+//		}
 
 		if (!self::$CLI) {
 			try {
@@ -1049,7 +1062,7 @@ class OC {
 		} else {
 			// Not handled and not logged in
 			#header('Location: '.\OC::$server->getURLGenerator()->linkToRouteAbsolute('core.login.showLoginForm'));
-			 header('Location: https://ctj.clarin-pl.eu/auth/?login-redirect=http://nextcloud.clarin-pl.eu/dev/');
+			 header('Location: https://ctj.clarin-pl.eu/auth/?login-redirect=https://nextcloud.clarin-pl.eu/');
 		}
 	}
 
@@ -1061,21 +1074,21 @@ class OC {
 	 */
 	static function handleLogin(OCP\IRequest $request) {
 
-		if(!isset($_COOKIE['clarin-pl-token']))
-		{
-			$userSession = self::$server->getUserSession();
-			if (!is_null($userSession))
-			{
-				$userSession->logout();
-			}//if (!is_null($userSession))
-			return false;
-		}//if(isset($_COOKIE['clarin-pl-token']))
+//		if(!isset($_COOKIE['clarin-pl-token']))
+//		{
+//			$userSession = self::$server->getUserSession();
+//			if (!is_null($userSession))
+//			{
+//				$userSession->logout();
+//			}//if (!is_null($userSession))
+//			return false;
+//		}//if(isset($_COOKIE['clarin-pl-token']))
 
 		$userSession = self::$server->getUserSession();
-		if (OC_User::handleApacheAuth()) {
+		if (OC_User::handleApacheAuth()) {;
 			return true;
 		}
-		if ($userSession->tryTokenLogin($request)) {
+		if ($userSession->tryTokenLogin($request)) {;
 			return true;
 		}
 		if(isset($_COOKIE['clarin-pl-token'])
@@ -1092,6 +1105,7 @@ class OC {
 		if ($userSession->tryBasicAuthLogin($request, \OC::$server->getBruteForceThrottler())) {
 			return true;
 		}
+
 		return false;
 	}
 

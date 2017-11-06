@@ -1061,8 +1061,8 @@ class OC {
 			OC_Util::redirectToDefaultPage();
 		} else {
 			// Not handled and not logged in
-			#header('Location: '.\OC::$server->getURLGenerator()->linkToRouteAbsolute('core.login.showLoginForm'));
-			 header('Location: https://ctj.clarin-pl.eu/auth/?login-redirect=https://nextcloud.clarin-pl.eu/');
+			$url_redirect = "Location: https://ctj.clarin-pl.eu/auth/?login-redirect=". \OC::$server->getURLGenerator()->getAbsoluteURL("/");
+			header($url_redirect);
 		}
 	}
 

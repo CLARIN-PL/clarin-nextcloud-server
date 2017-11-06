@@ -334,6 +334,8 @@
 			this.$el.find('.dspace').click(_.bind(this._onDspaceExport, this));
 			this.$el.find('.ccl').click(_.bind(this._onCCLExportSelected, this));
 
+			this.$el.find('.zip').click(_.bind(this._onZipFiles, this));
+
 			this.$el.find('.delete-selected').click(_.bind(this._onClickDeleteSelected, this));
 
 			this.$el.find('.selectedActions a').tooltip({placement:'top'});
@@ -881,7 +883,7 @@
 			event.preventDefault();
 			console.log('sending files to dspace');
 			console.log(this.getSelectedFiles());
-
+			// return;
 			var response;
 			var links = [];
 			var files = this.getSelectedFiles();
@@ -892,10 +894,30 @@
 				var filepath = path+name;
 				this._saveLinkShare(filepath,links,this._makeClarinDSpacePost, files.length);
 
-				
-			}
-			//this._makeClarinDSpacePost(this.getSelectedFiles());
 
+			}
+			// this._makeClarinDSpacePost(files);
+
+		},
+		_onZipFiles: function(event){
+			event.preventDefault();
+			var files = this.getSelectedFiles();
+			console.log(files);
+			$.ajax({
+				type: 'POST',
+				url:  OC.generateUrl('/apps/clarin/zip'),
+				data: jQuery.param({data: {files:JSON.stringify(files), name: 'testName'}}),
+				dataType: 'json',
+				success: function(res) {
+					console.log(res);
+					// callback(links,res,endcallback,tablelength);
+					// then you can manipulate your text as you wish
+				},
+				error: function(res){
+					console.log(res);
+					// callback(links,res,endcallback,tablelength);
+				}
+			});
 		},
 
 		_onCCLExportSelected: function(event){

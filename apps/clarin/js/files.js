@@ -4,12 +4,31 @@
 
 $(document).ready(function() {
 	addRows(files);
-	JSONtoDataList('/dev/apps/clarin/json/resourceclass.json','resourceClass-datalist','resourceClass');
-	JSONtoDataList('/dev/apps/clarin/json/mimetype.json','mimeType-DLU-datalist','MimeType');
-	JSONtoDataList('/dev/apps/clarin/json/modalities.json','modalityInfo-datalist','Modalities');
-	JSONtoDataList('/dev/apps/clarin/json/countries.json','countries-datalist','Countries');
 
+	// todo - make dynamic link
+	// JSONtoDataList('/nextcloud-dev/apps/clarin/json/resourceclass.json','resourceClass-datalist','resourceClass');
+	// JSONtoDataList('/nextcloud-dev/apps/clarin/json/mimetype.json','mimeType-DLU-datalist','MimeType');
+	// JSONtoDataList('/nextcloud-dev/apps/clarin/json/modalities.json','modalityInfo-datalist','Modalities');
+	// JSONtoDataList('/nextcloud-dev/apps/clarin/json/countries.json','countries-datalist','Countries');
 
+	function DSpaceConnector(){
+		this.url = 'http://someurl...';
+		this.submitBtn = $('#submit-dspace-form-btn');
+		this.form = $('#export-form');
+		this.submitBtn.on('click', this.submit.bind(this));
+		this.init();
+	}
+	DSpaceConnector.prototype.init = function(){
+
+	};
+	DSpaceConnector.prototype.submit = function(event){
+		var self = this;
+		event.preventDefault();
+		var formData = self.form.serializeArray();
+		console.log(formData);
+	};
+
+	var dSpaceConnector = new DSpaceConnector();
 }, this);
 
 function addRow(data) {
@@ -56,7 +75,7 @@ function JSONtoDataList(file,id,arrayId) {
 					var option = document.createElement('option');
 					// Set the value using the item in the JSON array.
 					option.value = item;
-					// Add the <option> element to the <datalist>.
+					// console.log(jsonOptions);
 					dataList.appendChild(option);
 				});
 			}

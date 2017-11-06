@@ -68,6 +68,12 @@
 							<span><?php p($l->t('Export to ccl'))?></span>
 						</a>
 
+<!--						try to zip files-->
+						<a href="" class="zip">
+							<span class="icon icon-download"></span>
+							<span><?php p($l->t('Zip files'))?></span>
+						</a>
+
 					</span>
 					<span id="test" class="selectedActions">
 				</div>

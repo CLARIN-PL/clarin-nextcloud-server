@@ -3,22 +3,21 @@ namespace OCA\Clarin\Utils;
 
 
 class ZipCreator extends \ZipArchive{
-	private $userDirAbsPath = null;
+	private $srcDirAbsPath = null;
 
-	public function __construct($userPath) {
-//		parent::__construct();
-		$this->userDirAbsPath = \OC::$server->getSystemConfig()->getValue("datadirectory").$userPath;
+	public function __construct($srcDirPath) {
+		$this->srcDirAbsPath = \OC::$server->getSystemConfig()->getValue("datadirectory").$srcDirPath;
 	}
 
 	public function addFiles($files){
-		if (!$this->userDirAbsPath)
+		if (!$this->srcDirAbsPath)
 			throw new \Exception('User absolute dir path not specified with initUserDir(...)');
 
 		foreach ($files as $file) {
 			$filename = $file['name'];
 			$filePath = $file['path'] .'/'. $file['name'];
 			if (\OC\Files\Filesystem::is_file($filePath)) {
-				$this->addFile($this->userDirAbsPath.$filePath, $filename);
+				$this->addFile($this->srcDirAbsPath.$filePath, $filename);
 
 			} elseif (\OC\Files\Filesystem::is_dir($filePath)) {
 				$this->addDirRecursive($filePath);
@@ -41,7 +40,7 @@ class ZipCreator extends \ZipArchive{
 			$filename = $file['name'];
 			$filePath = $internalDir.$file['name'];// .'/'. $file['name'];
 			if (\OC\Files\Filesystem::is_file($filePath)) {
-				$this->addFile($this->userDirAbsPath.'/'.$filePath, $internalDir.$filename);
+				$this->addFile($this->srcDirAbsPath.'/'.$filePath, $internalDir.$filename);
 
 			} elseif (\OC\Files\Filesystem::is_dir($filePath)) {
 				$this->addDirRecursive($filePath, $internalDir);

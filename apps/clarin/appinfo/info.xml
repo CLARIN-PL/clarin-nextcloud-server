@@ -6,6 +6,7 @@
     <summary>Clarin nextcloud extension</summary>
     <description><![CDATA[Clarin nextcloud extension]]></description>
     <licence>agpl</licence>
+    <author mail="wojciech.rauk@pwr.edu.pl" >Wojciech Rauk</author>
     <author mail="kamil.tagowski@pwr.edu.pl" >Kamil Tagowski</author>
     <version>0.0.1</version>
     <namespace>Clarin</namespace>

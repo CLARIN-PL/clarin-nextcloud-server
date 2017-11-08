@@ -12,6 +12,7 @@ use OCA\Clarin\Utils\DbUtil;
 
 class PageController extends Controller {
 	private $userId;
+	private $dSpaceUserId = "dSpace";
 
 	public function __construct($AppName, IRequest $request, $UserId){
 		parent::__construct($AppName, $request);
@@ -19,18 +20,12 @@ class PageController extends Controller {
 	}
 
 	/**
-	 * CAUTION: the @Stuff turns off security checks; for this page no admin is
-	 *          required and no CSRF check. If you don't know what CSRF is, read
-	 *          it up in the docs or you might create a security hole. This is
-	 *          basically the only required method to add this exemption, don't
-	 *          add it to any other method if you don't exactly know what it does
-	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function index() {
-		return new TemplateResponse('clarin', 'index');  // templates/index.php
-	}
+//	public function index() {
+//		return new TemplateResponse('clarin', 'index');  // templates/index.php
+//	}
 
 	public function ccl() {
 		return new DataResponse('Test');
@@ -38,7 +33,7 @@ class PageController extends Controller {
 
 	/**
 	* 	handle post request from files application
-	*allowing non admins to access the page
+	*	allowing non admins to access the page
 	*
 	* @NoAdminRequired
 	* @NoCSRFRequired
@@ -51,8 +46,9 @@ class PageController extends Controller {
 	}
 
 	/**
-	 * 	handle post request from files application
-	 *allowing non admins to access the page
+	 * 	handle post request
+	 *	zip files provided in files filed => put them in dSpace user catalog
+	 *  => share those files with user
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -62,9 +58,8 @@ class PageController extends Controller {
 		$files = json_decode($data['files'], true);
 		$zipName = $data['name'] . ".zip";
 
-		$userId = $this->userId;
-		$userHome = \OC::$server->getUserFolder($userId);
-		$node = $userHome->newFolder('exported to dSpace');
+		$dSpaceHome = \OC::$server->getUserFolder($this->dSpaceUserId);
+		$node = $dSpaceHome->newFolder('exported_by_users');
 
 		// make sure filename is unique
 		$cnt = 1;
@@ -72,32 +67,43 @@ class PageController extends Controller {
 			$zipName= $data['name'].'_'.$cnt. ".zip";
 			$cnt++;
 		}
+		// create new file in dSpace_user_dir/exported_by_users
 		$file = $node->newFile($zipName);
-
 		$absoluteZipFilePath = \OC::$server->getSystemConfig()->getValue("datadirectory").$file->getPath();
 
 		// todo -- lock files
-		$this->addFilesToZip($absoluteZipFilePath, $userHome->getPath(), $files);
+		$this->addFilesToZip($absoluteZipFilePath, \OC::$server->getUserFolder($this->userId)->getPath(), $files);
 
-
-
+		// share folder with user
 		$shareManager = \OC::$server->getShareManager();
 		$share = $shareManager->newShare();
 		$share->setNode($file)
 			->setShareType(\OCP\Share::SHARE_TYPE_USER)
-			->setSharedWith('admin')
-			->setSharedBy($userId)
+			->setSharedWith($this->userId)
+			->setSharedBy($this->dSpaceUserId)
 			->setPermissions(\OCP\Constants::PERMISSION_READ);
 		$shareManager->createShare($share);
 
-		DbUtil::setFilePermissions($file->getId(), \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_SHARE);
-		return new JSONResponse('{"success": true}');
+		// create share link
+		$share = $shareManager->newShare();
+		$share->setNode($file)
+			->setShareType(\OCP\Share::SHARE_TYPE_LINK)
+			->setSharedBy($this->dSpaceUserId)
+			->setPermissions(\OCP\Constants::PERMISSION_READ);
+		$shareManager->createShare($share);
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		$response = [
+			"success" => true,
+			"link_zip" =>  $urlGenerator->getAbsoluteURL("index.php/s/" . $share->getToken()."/download")
+		];
+		return new JSONResponse($response);
 	}
 
 	private static function addFilesToZip($zipPath, $userHomePath, $files){
 
 		$zip = new ZipCreator($userHomePath);
-		// detete first
+
 		if ($zip->open($zipPath,\ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE) != TRUE) {
 			die ("Could not open archive");
 		}

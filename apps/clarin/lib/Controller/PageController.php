@@ -38,11 +38,11 @@ class PageController extends Controller {
 	* @NoAdminRequired
 	* @NoCSRFRequired
 	*/
-	public function files(){
+	public function exportToDspace(){
 		$filesJson = $this->request->getParam('files');
 		$files = json_decode($this->request->getParam('files'), true);
 
-		return new TemplateResponse('clarin', 'files', ['files' => $files, 'filesJson'=>$filesJson]);
+		return new TemplateResponse('clarin', 'exportDSpace', ['files' => $files, 'filesJson'=>$filesJson]);
 	}
 
 	/**
@@ -81,7 +81,7 @@ class PageController extends Controller {
 			->setShareType(\OCP\Share::SHARE_TYPE_USER)
 			->setSharedWith($this->userId)
 			->setSharedBy($this->dSpaceUserId)
-			->setPermissions(\OCP\Constants::PERMISSION_READ);
+			->setPermissions(\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_SHARE);
 		$shareManager->createShare($share);
 
 		// create share link
@@ -91,6 +91,13 @@ class PageController extends Controller {
 			->setSharedBy($this->dSpaceUserId)
 			->setPermissions(\OCP\Constants::PERMISSION_READ);
 		$shareManager->createShare($share);
+
+		// add comment to created file
+		$commentManager = \OC::$server->getCommentsManager();
+		$comment = $commentManager->create("dSpace service", $this->dSpaceUserId, "files", ''.$file->getId());
+		$comment->setMessage("Link to file automatically created for dSpace service, you can safely delete it you don't need it. For help please contact Clarin-PL staff.");
+		$comment->setVerb("comment");
+		$commentManager->save($comment);
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$response = [

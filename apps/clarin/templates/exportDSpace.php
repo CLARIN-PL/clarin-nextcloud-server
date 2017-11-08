@@ -1,16 +1,12 @@
 <?php
 script('clarin', 'bootstrap.min');
-script('clarin', 'files');
+script('clarin', 'exportDSpace');
 style('clarin', 'bootstrap.min');
 style('clarin', 'style');
 ?>
 
-<!--
-<link href="https://fonts.googleapis.com/css?family=Roboto|Saira+Semi+Condensed:400,700&amp;subset=latin-ext" rel="stylesheet">
--->
-
 <div id="app">
-	<?php //print_unescaped($this->inc('navigation/index')); ?>
+	<?php print_unescaped($this->inc('navigation/index')); ?>
 	<?php //print_unescaped($this->inc('settings/index')); ?>
 
 	<div id="app-content" class="app-content">
@@ -31,12 +27,19 @@ style('clarin', 'style');
 										<thead>
 										<tr>
 											<th style="width: 10%"></th>
-											<th style="width: 25%">Filename</th>
-											<th style="width: 25%">Path</th>
-											<th style="width: 40%">URL</th>
+											<th style="width: 40%">Filename</th>
+											<th style="width: 40%">Path</th>
 										</tr>
 										</thead>
 										<tbody>
+										<?php
+										foreach($_['files'] as $key => $file){
+											echo("<tr>
+													<td><input name=\"file-select-".$key."\" type=\"checkbox\" checked></td>
+													<td>".$file['name']."</td>
+													<td>".$file['path']."</td>
+												</tr>");
+										} ?>
 										</tbody>
 									</table>
 								</div>
@@ -244,7 +247,7 @@ style('clarin', 'style');
 <script nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"
 		type="text/javascript">
 
-	var files =<?php echo(json_encode($_['files'])); ?>;
+	var dSpacePossibleFiles =<?php echo(json_encode($_['files'])); ?>;
 
 </script>
 

@@ -11,8 +11,8 @@ return [
     'routes' => [
 //	   ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 //	   ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
-		['name' => 'page#files', 'url' => '/files', 'verb' => 'POST'],
 		['name' => 'page#ccl', 'url' => '/ccl', 'verb' => 'POST'],
 		['name' => 'page#zip', 'url' => '/zip', 'verb' => 'POST'],
+		['name' => 'page#exporttodspace', 'url' => '/dspace_export', 'verb' => 'POST'],
     ]
 ];

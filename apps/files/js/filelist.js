@@ -792,7 +792,7 @@
 		_makeClarinDSpacePost: function(data){
 			files = JSON.stringify(data);
 			var baseUrl = OC.generateUrl('/apps/clarin');
-			var url = baseUrl + '/files'
+			var url = baseUrl + '/dspace_export';
 
 			console.log(url);
 
@@ -892,9 +892,8 @@
 				var name = files[i]['name'];
 
 				var filepath = path+name;
-				this._saveLinkShare(filepath,links,this._makeClarinDSpacePost, files.length);
-
-
+				this._makeClarinDSpacePost(files);
+				// this._saveLinkShare(filepath,links,this._makeClarinDSpacePost, files.length);
 			}
 			// this._makeClarinDSpacePost(files);
 

@@ -1,6 +1,8 @@
 <?php
 script('clarin', 'bootstrap.min');
 script('clarin', 'exportDSpace');
+script('clarin', 'jquery.validate.min');
+script('clarin', 'additional-methods.min');
 style('clarin', 'bootstrap.min');
 style('clarin', 'style');
 ?>
@@ -13,22 +15,28 @@ style('clarin', 'style');
 		<div id="app-content-wrapper">
 			<?php //print_unescaped($this->inc('content/index')); ?>
 
-			<form class="form-horizontal" id="export-form">
-				<div class="form-main-container">
+				<div class="form-main-container container-fluid">
 					<div class="row">
-						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-							<div id="selected-files" class="right-container">
-								<div class="form-header">
-									<h3 style="color:#fff">Selected files</h3>
-								</div>
-								<div class="form-body">
-									<table class="table table-responsive table-hover mytable"
+						<div class="col-xs-12">
+
+							<h3>Create Public DSpace Item</h3>
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3 col-lg-push-9 col-right-content">
+							<div class="row">
+								<h4>Files selected for submission:</h4>
+								<div class="col-xs-12">
+									<table class="table table-responsive"
 										   id="filesTable">
 										<thead>
-										<tr>
-											<th style="width: 10%"></th>
-											<th style="width: 40%">Filename</th>
-											<th style="width: 40%">Path</th>
+										<tr class="table-header-row">
+											<th>
+												<input id="all-files-select-checkbox" type="checkbox" checked>
+											</th>
+											<th>Filename</th>
+											<th>Path</th>
 										</tr>
 										</thead>
 										<tbody>
@@ -45,201 +53,224 @@ style('clarin', 'style');
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+						<div class="col-lg-9 col-lg-pull-3 main-form-content">
 							<div id="resource-basic-information" class="block">
-								<div class="form-header">
-									<h3>Create Public DSpace Item</h3>
-								</div>
+								<div class="row">
 
-								<div class="form-body">
+									<form id="export-form" class="form-horizontal">
 									<div class="row">
-										<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-											<div class="row row-all">
-												<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-													<div class="form-group form-group-adjust required">
-														<label class="label-adjust"
-															   for="resourceName">Resource
-															Name</label>
-														<input type="text"
-															   class="form-control"
-															   id="resourceName"
-															   name="resourceName"
-															   value="Cloud Export Test #1">
-													</div>
-
-													<div class="form-group form-group-adjust form-group-select required">
-														<label class="label-adjust">Resource
-															Class</label>
-														<input type="text"
-															   id="resourceClass"
-															   name="resourceClass"
-															   list="resourceClass-datalist"
-															   placeholder="e.g. Grammar"
-															   value="unknown">
-														<datalist
-																id="resourceClass-datalist"></datalist>
-													</div>
+										<h4>Basic Information</h4>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">Resource name*: </label>
+												<div class="col-sm-7">
+													<input name="name" class="form-control" placeholder="resource name" required>
 												</div>
-
-												<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-													<div class="form-group form-group-adjust required">
-														<label class="label-adjust"
-															   for="metadataTag">Keywords</label>
-														<input type="text"
-															   class="form-control"
-															   id="metadataTag"
-															   name="metadataTag"
-															   required="true"
-															   value="Cloud, Test">
-													</div>
-													<div class="form-group form-group-adjust form-group-select required">
-														<label class="label-adjust"
-															   for="dateIssued">Date
-															Issued:</label>
-														<input type="text"
-															   id="dateIssued"
-															   name="dateIssued"
-															   value="31/09/2020">
-													</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Resource class*: </label>
+												<div class="col-sm-7">
+													<select name="resourceClass" class="form-control" value="" required>
+														<option>1</option>
+													</select>
 												</div>
-
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Date issued*: </label>
+												<div class="col-sm-7">
+													<input name="date" class="form-control" type="date" required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5" for="email">Keywords*: </label>
+												<div class="col-sm-7">
+													<input name="keywords" type="text" class="form-control" placeholder="keywords" required>
+												</div>
 											</div>
 										</div>
-
-										<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
-											<div class="form-group form-group-adjust-textarea required">
-												<label class="label-adjust"
-													   for="description">Description</label>
-												<textarea class="form-control"
-														  rows="5"
-														  id="description"
-														  name="description">Test of files import to public repository</textarea>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">Description: </label>
+												<div class="col-sm-7">
+													<textarea name="description" type="text" class="form-control" placeholder="description"></textarea>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Contact: </label>
+												<div class="col-sm-7">
+													<textarea name="contact" type="text" class="form-control" placeholder="Optional contact information... (Person, Address, Email, Organisation, Telephone, Website)"></textarea>
+												</div>
 											</div>
 										</div>
-
-									</div> <!-- End of row -->
-								</div>    <!-- End of form-body -->
-
-							</div> <!-- End of resource-basic-information -->
-
-							<div id="creation-circumstances" class="block">
-								<div class="form-header">
-									<h3></h3>
-								</div>
-								<div class="form-body">
+									</div>
+									<hr>
 									<div class="row">
-										<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-											<div class="form-group required">
-												<label for="organization">Organization</label>
-												<input type="text"
-													   class="form-control"
-													   id="organization"
-													   name="organization"
-													   value="WroclawKoukaDaigaku">
+										<h4>Creation Circumstances</h4>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">Organization*: </label>
+												<div class="col-sm-7">
+													<input name="organization" class="form-control" placeholder="organization..." required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Project name: </label>
+												<div class="col-sm-7">
+													<input name="projectName" class="form-control" placeholder="optional project name...">
+												</div>
 											</div>
 										</div>
-
-										<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-											<div class="form-group form-first required">
-												<label for="availability">Availability</label>
-												<input type="text"
-													   class="form-control"
-													   id="availability"
-													   name="availability"
-													   value="public">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">Creator: </label>
+												<div class="col-sm-7">
+													<input name="creator" type="text" class="form-control" placeholder="optional creator name...">
+												</div>
 											</div>
-										</div>
-
-										<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-											<div class="form-group required">
-												<label for="iprHolder">Rights
-													Holder</label>
-												<input type="text"
-													   class="form-control"
-													   id="iprHolder"
-													   name="iprHolder"
-													   value="PWR">
-											</div>
-										</div>
-
-										<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-											<div class="form-group form-last required">
-												<label for="licenseName">License
-													Name</label>
-												<input type="text"
-													   class="form-control"
-													   id="licenseName"
-													   name="licenseName"
-													   value="test">
+											<div class="form-group">
+												<label class="control-label col-sm-5">Country: </label>
+												<div class="col-sm-7">
+													<input name="country" type="text" class="form-control" placeholder="optional country...">
+												</div>
 											</div>
 										</div>
 									</div>
-
-								</div>
-							</div>
-
-
-							<div id="resource-content" class="block">
-								<div class="form-header">
-									<h3></h3>
-								</div>
-								<div class="form-body">
-									<div class="row row-margin-first">
-
-										<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-											<div class="form-group required">
-												<label for="modalityInfo">modalityInfo</label>
-												<input type="text"
-													   id="modalityInfo"
-													   name="modalityInfo"
-													   list="modalityInfo-datalist"
-													   placeholder="e.g. written"
-													   value="written">
-												<datalist
-														id="modalityInfo-datalist"></datalist>
+									<hr>
+									<div class="row">
+										<h4>Access information</h4>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">Availability*: </label>
+												<div class="col-sm-7">
+													<input name="availability" type="text" class="form-control" placeholder="availability..." required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Rights holder*: </label>
+												<div class="col-sm-7">
+													<input name="rightsHolder" type="text" class="form-control" placeholder="rights holder..." required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">License*: </label>
+												<div class="col-sm-7">
+													<input name="license" type="text" class="form-control" placeholder="license name..." required>
+												</div>
 											</div>
 										</div>
-
-
-										<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-											<div class="form-group required">
-												<label for="SubjectLanguage">SubjectLanguage</label>
-												<input type="text"
-													   class="form-control"
-													   id="SubjectLanguage"
-													   name="SubjectLanguage"
-													   value="pol">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">License label: </label>
+												<div class="col-sm-7">
+													<input name="license" type="text" class="form-control" placeholder="optional license label...">
+												</div>
 											</div>
-
-											<!-- Empty column? Check it! -->
-											<!--<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>-->
+											<div class="form-group">
+												<label class="control-label col-sm-5">Demo link: </label>
+												<div class="col-sm-7">
+													<input name="demoLink" type="text" class="form-control" placeholder="optional demo link...">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">License label: </label>
+												<div class="col-sm-7">
+													<input name="licenseLabel" type="text" class="form-control" placeholder="optional license label...">
+												</div>
+											</div>
 										</div>
 									</div>
-								</div>
-							</div>
-
-<!--							<div class="form-buttons">-->
-								<div class="form-group form-group-last">
-									<div class="col-xs-12">
-										<button type="submit"
-												class="btn btn-success"
-												id="submit-dspace-form-btn">
-											<span>Submit</span>
-										</button>
+									<hr>
+									<div class="row">
+										<h4>Content</h4>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">Language*: </label>
+												<div class="col-sm-7">
+													<input name="lang" type="text" class="form-control" placeholder="subject language..." required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Modality*: </label>
+												<div class="col-sm-7">
+													<input name="modality" type="text" class="form-control" placeholder="modality..." required>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">subject: </label>
+												<div class="col-sm-7">
+													<input name="subject" type="text" class="form-control" placeholder="optional subject...">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Genre: </label>
+												<div class="col-sm-7">
+													<input name="genre" type="text" class="form-control" placeholder="optional genre...">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Temporal Coverage: </label>
+												<div class="col-sm-7">
+													<input name="temporalCoverage" type="text" class="form-control" placeholder="optional temporal coverage...">
+												</div>
+											</div>
+										</div>
 									</div>
-
-									<!--								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">-->
-									<!--									<button type="submit" class="btn btn-default button-cancel">-->
-									<!--										<span>Cancel</span>-->
-									<!--									</button>-->
-									<!--								</div>-->
-<!--								</div>-->
-							</div>
+									<hr>
+									<div class="row">
+										<h4>Optional publication details</h4>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">Title: </label>
+												<div class="col-sm-7">
+													<input name="title" type="text" class="form-control" placeholder="optional title...">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Author: </label>
+												<div class="col-sm-7">
+													<input name="author" type="text" class="form-control" placeholder="optional author...">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Url: </label>
+												<div class="col-sm-7">
+													<input name="url" type="text" class="form-control" placeholder="optional url...">
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label col-sm-5">Publication Place: </label>
+												<div class="col-sm-7">
+													<input name="publicationPlace" type="text" class="form-control" placeholder="optional publication place...">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Publication date: </label>
+												<div class="col-sm-7">
+													<input name="publicationDate" type="text" class="form-control" placeholder="optional publication date...">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Descriptions: </label>
+												<div class="col-sm-7">
+													<input name="descriptions" type="text" class="form-control" placeholder="optional descriptions...">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-offset-4 col-sm-4">
+											<button type="submit" id="submit-dspace-form-btn" class="btn btn-default">Submit</button>
+										</div>
+									</div>
+								</form>
+								</div>
 						</div>
 					</div>
 				</div>
-
-			</form>
 		</div>
 	</div>
 </div>
@@ -250,39 +281,3 @@ style('clarin', 'style');
 	var dSpacePossibleFiles =<?php echo(json_encode($_['files'])); ?>;
 
 </script>
-
-<!--
-	<tr>
-		<td>
-			<input id="select-1" type="checkbox" checked>
-		</td>
-		<td class="filename">
-			<img src="--><?php //p($_['files'][0]['icon']); ?><!--" class="icon">
-			Test1
-		</td>
-		<td> /Lorem/ipsum/Lorem/ipsum/Lorem/Lorem/ipsum/Lorem/ipsum/Lorem/Lorem/ipsum/Lorem/ipsum/Lorem/Lorem/ipsum/Lorem/ipsum/Lorem/Lorem/ipsum/Lorem/ipsum/Lorem/Lorem/ipsum/Lorem/ipsum/Lorem  </td>
-		<td>
-			<a>http://szefwszystkichszefuff.pl</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input id="select-2" type="checkbox" checked>
-		</td>
-		<td>Test2</td>
-		<td> / </td>
-		<td>
-			<a>http://szefwszystkichszefuff.pl</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input id="select-3" type="checkbox" checked>
-		</td>
-		<td>Test3</td>
-		<td> / </td>
-		<td>
-			<a>http://szefwszystkichszefuff.pl</a>
-		</td>
-	</tr>
--->

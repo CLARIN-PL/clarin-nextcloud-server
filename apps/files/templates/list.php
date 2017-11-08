@@ -75,7 +75,6 @@
 						</a>
 
 					</span>
-					<span id="test" class="selectedActions">
 				</div>
 			</th>
 			<th id="headerSize" class="hidden column-size">

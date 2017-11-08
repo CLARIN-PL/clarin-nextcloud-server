@@ -1264,8 +1264,6 @@
 		 * @return {string} icon URL
 		 */
 		_getIconUrl: function(fileInfo) {
-			console.log('fileInfo');
-			console.log(fileInfo);
 			var mimeType = fileInfo.mimetype || 'application/octet-stream';
 			if (mimeType === 'httpd/unix-directory') {
 				// use default folder icon

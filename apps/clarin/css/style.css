@@ -211,3 +211,7 @@ input::-webkit-calendar-picker-indicator {
 .panel-heading a span.glyphicon{
 	font-size: 1.2em;
 }
+
+hr{
+	margin: 10px;
+}

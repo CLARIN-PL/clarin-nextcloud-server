@@ -19,14 +19,6 @@ class PageController extends Controller {
 		$this->userId = $UserId;
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 */
-//	public function index() {
-//		return new TemplateResponse('clarin', 'index');  // templates/index.php
-//	}
-
 	public function ccl() {
 		return new DataResponse('Test');
 	}
@@ -45,28 +37,7 @@ class PageController extends Controller {
 		return new TemplateResponse('clarin', 'exportDSpace', ['files' => $files, 'filesJson'=>$filesJson]);
 	}
 
-	/**
-	 * 	handle post request
-	 *	zip files provided in files filed => put them in dSpace user catalog
-	 *  => share those files with user
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 */
-	public function zip(){
-		$data = $this->request->getParam('data');
-		$files = json_decode($data['files'], true);
-		$zipName = $data['name'] . ".zip";
-
-		$dSpaceHome = \OC::$server->getUserFolder($this->dSpaceUserId);
-		$node = $dSpaceHome->newFolder('exported_by_users');
-
-		// make sure filename is unique
-		$cnt = 1;
-		while($node->nodeExists($zipName)){
-			$zipName= $data['name'].'_'.$cnt. ".zip";
-			$cnt++;
-		}
+	private function zipFiles($files, $zipName, $node){
 		// create new file in dSpace_user_dir/exported_by_users
 		$file = $node->newFile($zipName);
 		$absoluteZipFilePath = \OC::$server->getSystemConfig()->getValue("datadirectory").$file->getPath();
@@ -100,10 +71,41 @@ class PageController extends Controller {
 		$commentManager->save($comment);
 
 		$urlGenerator = \OC::$server->getURLGenerator();
+		return $urlGenerator->getAbsoluteURL("index.php/s/" . $share->getToken()."/download");
+	}
+
+	/**
+	 * 	handle post request
+	 *	zip files provided in files filed => put them in dSpace user catalog
+	 *  => share those files with user
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function	zipDSpace(){
+		$data = $this->request->getParam('data');
+		$files = json_decode($data['files'], true);
+		$formFields = $data['formFields'];
+		$zipName = $data['name'] . ".zip";
+
+//		$fields = array_map()
+
+		// make sure filename is unique
+		$dSpaceHome = \OC::$server->getUserFolder($this->dSpaceUserId);
+		$node = $dSpaceHome->newFolder('exported_by_users');
+		$cnt = 1;
+		while($node->nodeExists($zipName)){
+			$zipName= $data['name'].'_'.$cnt. ".zip";
+			$cnt++;
+		}
+
+		$urlZip = $this->zipFiles($files, $zipName, $node);
+
 		$response = [
-			"success" => true,
-			"link_zip" =>  $urlGenerator->getAbsoluteURL("index.php/s/" . $share->getToken()."/download")
+			"link" =>  $urlZip,
+			"form" => $formFields,
 		];
+
 		return new JSONResponse($response);
 	}
 

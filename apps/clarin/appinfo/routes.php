@@ -13,6 +13,7 @@ return [
 //	   ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
 		['name' => 'page#ccl', 'url' => '/ccl', 'verb' => 'POST'],
 		['name' => 'page#zip', 'url' => '/zip', 'verb' => 'POST'],
+		['name' => 'page#zipdspace', 'url' => '/zip-dspace', 'verb' => 'POST'],
 		['name' => 'page#exporttodspace', 'url' => '/dspace_export', 'verb' => 'POST'],
     ]
 ];

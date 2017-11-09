@@ -412,13 +412,16 @@ class OC_Files {
 	}
 
 	/**
+	 *
+	 * CHANGED ACCESS MODE TO PUBLIC - for clarin app
+	 *
 	 * @param string $dir
 	 * @param $files
 	 * @param integer $getType
 	 * @param View $view
 	 * @param string $filename
 	 */
-	private static function unlockAllTheFiles($dir, $files, $getType, $view, $filename) {
+	public static function unlockAllTheFiles($dir, $files, $getType, $view, $filename) {
 		if ($getType === self::FILE) {
 			$view->unlockFile($filename, ILockingProvider::LOCK_SHARED);
 		}

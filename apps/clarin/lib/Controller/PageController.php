@@ -108,15 +108,8 @@ class PageController extends Controller {
 	}
 
 	private static function addFilesToZip($zipPath, $userHomePath, $files){
-
-		$zip = new ZipCreator($userHomePath);
-
-		if ($zip->open($zipPath,\ZIPARCHIVE::CREATE | \ZIPARCHIVE::OVERWRITE) != TRUE) {
-			die ("Could not open archive");
-		}
-		$zip->addFiles($files);
-		$zip->setArchiveComment('test comment');
-		$zip->close();
+		$zip = new ZipCreator();
+		$zip->addFilesFromStream($files, $zipPath);
 	}
 
 

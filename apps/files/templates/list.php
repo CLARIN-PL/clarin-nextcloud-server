@@ -58,22 +58,23 @@
 							<span><?php p($l->t('Download as zip'))?></span>
 						</a>
 
-						<a href="" class="dspace">
-							<span class="icon icon-external"></span>
-							<span><?php p($l->t('Export to dspace'))?></span>
-						</a>
+						<span class="conditional-actions">
+							<a href="" class="dspace">
+								<span class="icon icon-external"></span>
+								<span><?php p($l->t('Export to dspace'))?></span>
+							</a>
 
-						<a href="" class="ccl">
-							<span class="icon icon-download"></span>
-							<span><?php p($l->t('Export to ccl'))?></span>
-						</a>
+<!--						<a href="" class="ccl">-->
+<!--							<span class="icon icon-download"></span>-->
+<!--							<span>--><?php //p($l->t('Export to ccl'))?><!--</span>-->
+<!--						</a>-->
 
 <!--						try to zip files-->
-						<a href="" class="zip">
-							<span class="icon icon-download"></span>
-							<span><?php p($l->t('Zip files'))?></span>
-						</a>
-
+<!--						<a href="" class="zip">-->
+<!--							<span class="icon icon-download"></span>-->
+<!--							<span>--><?php //p($l->t('Zip files'))?><!--</span>-->
+<!--						</a>-->
+						</span>
 					</span>
 				</div>
 			</th>

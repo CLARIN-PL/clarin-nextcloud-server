@@ -34,14 +34,14 @@ class Streamer {
 	// streamer instance
 	private $streamerInstance;
 	
-	public function __construct(){
+	public function __construct($outStream = null){
 		/** @var \OCP\IRequest */
 		$request = \OC::$server->getRequest();
-		
+
 		if ($request->isUserAgent($this->preferTarFor)) {
-			$this->streamerInstance = new TarStreamer();
+			$this->streamerInstance = new TarStreamer(['outstream'=>$outStream]);
 		} else {
-			$this->streamerInstance = new ZipStreamer(['zip64' => PHP_INT_SIZE !== 4]);
+			$this->streamerInstance = new ZipStreamer(['zip64' => PHP_INT_SIZE !== 4, 'outstream'=>$outStream]);
 		}
 	}
 	

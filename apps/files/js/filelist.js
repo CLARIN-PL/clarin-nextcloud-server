@@ -679,6 +679,7 @@
 			}
 			//Clarin block Download Buttton
 			var summary = this._selectionSummary.summary;
+			console.log(this._selectionSummary.summary);
 			if(summary.totalFiles < 2 && summary.totalDirs < 1){
 
 				$('#selectedActionsList').find('.download').show();

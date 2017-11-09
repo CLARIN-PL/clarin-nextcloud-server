@@ -1,14 +1,36 @@
 $(document).ready(function() {
 	function DSpaceConnector(){
-		// this.submitBtn = $('#submit-dspace-form-btn');
 		this.form = $('#export-form');
-		// this.submitBtn.on('click', this.submit.bind(this));
+		this.noFilesSelectedError = $('#no-files-selected-msg');
 		this.dSpacePossibleFiles = dSpacePossibleFiles;
 		this.init();
 	}
 	DSpaceConnector.prototype.init = function(){
 		this.initForm();
+		this.initCheckboxBtns();
 		this.initPossibleFieldValues();
+	};
+	DSpaceConnector.prototype.initCheckboxBtns = function(){
+		var self = this;
+		var masterBtn = $('#all-files-select-checkbox');
+		var slaveBtns = $('.single-file-checkbox');
+
+		masterBtn.change(function(){
+			var isChecked = !!$(this).attr('checked');
+			slaveBtns.prop('checked', isChecked);
+			self.showNoFilesSelectedErrorMsg(!isChecked);
+		});
+
+		slaveBtns.change(function(){
+			// get number of checked buttons
+			var checked = 0;
+			$.each(slaveBtns, function(i, it){
+				if($(it).prop('checked'))
+					checked++;
+			});
+			masterBtn.prop('checked', slaveBtns.length === checked);
+			self.showNoFilesSelectedErrorMsg(checked === 0);
+		});
 	};
 
 	DSpaceConnector.prototype.initForm = function () {
@@ -40,6 +62,10 @@ $(document).ready(function() {
 		}
 	};
 
+	DSpaceConnector.prototype.showNoFilesSelectedErrorMsg = function(showOrHide){
+		this.noFilesSelectedError.attr('hidden', !showOrHide);
+	};
+
 	DSpaceConnector.prototype.submit = function(){
 		var self = this;
 		var formData = self.form.serializeArray();
@@ -51,7 +77,8 @@ $(document).ready(function() {
 			}
 		});
 		if(selectedFiles.length === 0){
-			// todo - no files selected
+			console.log('no files selected');
+			this.showNoFilesSelectedErrorMsg(true);
 		} else{
 			var zipSuccess = function(response){
 				console.log('success');

@@ -43,13 +43,14 @@ style('clarin', 'style');
 										<?php
 										foreach($_['files'] as $key => $file){
 											echo("<tr>
-													<td><input name=\"file-select-".$key."\" type=\"checkbox\" checked></td>
+													<td><input class=\"single-file-checkbox\" name=\"file-select-".$key."\" type=\"checkbox\" checked></td>
 													<td>".$file['name']."</td>
 													<td>".$file['path']."</td>
 												</tr>");
 										} ?>
 										</tbody>
 									</table>
+									<label id="no-files-selected-msg" class="error error-external" hidden>No files seleted.</label>
 								</div>
 							</div>
 						</div>

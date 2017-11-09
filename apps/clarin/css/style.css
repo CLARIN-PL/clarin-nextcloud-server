@@ -18,6 +18,8 @@ input[type="text"], input[type="password"], input[type="search"], input[type="nu
 #app-content #app-content-wrapper form.form-horizontal .form-group {
 	width: 100% !important;
 }
+
+.error-external,
 #app-content #app-content-wrapper form.form-horizontal .form-group label.error{
 	color: #fb6b6b;
 	font-size: 0.9em;

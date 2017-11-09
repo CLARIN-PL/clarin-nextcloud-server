@@ -47,7 +47,8 @@ input[type="text"], input[type="password"], input[type="search"], input[type="nu
 }
 /* Top navigation */
 #body-user #header {
-	background-color: #a7a7a7;
+	background-color: #343b75;
+	color: #fff;
 }
 
 #body-user #header a.menutoggle {
@@ -174,7 +175,9 @@ input::-webkit-calendar-picker-indicator {
 	color: white;
 	background-color: #333a74;
 	padding: 7px 15px;
-	border-radius: 0;
+	border-radius: 3px;
+	font-weight: 700;
+	font-size: 1.1em;
 	-o-transition: all .3s;
 	-moz-transition: all .3s;
 	-webkit-transition: all .3s;
@@ -185,4 +188,26 @@ input::-webkit-calendar-picker-indicator {
 
 #app-content #app-content-wrapper form.form-horizontal .form-group button:hover {
 	filter: brightness(150%);
+}
+
+.panel-default>.panel-heading{
+	padding: 0;
+	background-color: #333a74;
+	color: #fff;
+	text-align: center;
+}
+.panel-default>.panel-heading:hover{
+	filter: brightness(150%);
+}
+
+.panel-heading a{
+	width: 100%;
+	display: block;
+	padding: 10px 15px;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.panel-heading a span.glyphicon{
+	font-size: 1.2em;
 }

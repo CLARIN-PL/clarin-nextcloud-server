@@ -3,12 +3,12 @@
 <script src="https://ctj.clarin-pl.eu/clarin_bar/script.js"></script>
 <script nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>" type="text/javascript">
 	window.onload = function() {
-		new ClarinModule({
+		var c =new ClarinModule({
 			offset:{
 				'top': null,
 				'right': null,
 				'bottom': '200px',
-				'left': 0,
+				'left': 0
 			},
 			arrow:{
 				'initial-orientation': "right",// 'up' || 'down' || 'right' || 'left'
@@ -17,10 +17,9 @@
 			themeColor: '#337ab7',
 			horizontal: false // false || true
 		});
-		c.hookFunctionTo('logout', function(){
-
-			$.get('<?php print_unescaped(\OC_User::getLogoutAttribute()); ?>'.replace('href="','').replace('"',''));
-		});
+//		c.hookFunctionTo('logout', function(){
+//			$.get('<?php //print_unescaped(\OC_User::getLogoutAttribute()); ?>//'.replace('href="','').replace('"',''));
+//		});
 	};
 
 	</script>

@@ -64,10 +64,10 @@
 								<span><?php p($l->t('Export to dspace'))?></span>
 							</a>
 
-<!--						<a href="" class="ccl">-->
-<!--							<span class="icon icon-download"></span>-->
-<!--							<span>--><?php //p($l->t('Export to ccl'))?><!--</span>-->
-<!--						</a>-->
+							<a href="" class="ccl">
+								<span class="icon icon-file"></span>
+								<span><?php p($l->t('Convert to CCL file'))?></span>
+							</a>
 
 <!--						try to zip files-->
 <!--						<a href="" class="zip">-->

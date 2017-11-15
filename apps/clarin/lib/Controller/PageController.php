@@ -7,7 +7,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 use OCA\Clarin\Utils\ZipCreator;
-use OCA\Clarin\Utils\DbUtil;
+use OCA\Clarin\Utils\Ws;
 
 
 class PageController extends Controller {
@@ -19,8 +19,33 @@ class PageController extends Controller {
 		$this->userId = $UserId;
 	}
 
+
+	/**
+	 * convert user files to CCL format
+	 *
+	* @NoAdminRequired
+	* @NoCSRFRequired
+	*/
 	public function ccl() {
-		return new DataResponse('Test');
+		$files = json_decode($this->request->getParam('files'), true);
+		$destFolder = json_decode($this->request->getParam('destFolder'), true);
+		$resultFileName = json_decode($this->request->getParam('resultName'), true);
+
+		$lpmnString="any2txt|wcrft2({\"morfeusz2\":false})|liner2|wsd|dir|makezip";
+
+		// upload files to ws
+		$urls = Ws::uploadFilesToWs($files);
+
+		var_dump($urls);
+		die();
+
+
+		$requestBody = [
+			"user"=> $this->userId,
+			"application"=> "nextcloud",
+		];
+
+		return new JSONResponse(["files"=> $files, "destFolder" => $destFolder, "resultFileName"=>$resultFileName]);
 	}
 
 	/**

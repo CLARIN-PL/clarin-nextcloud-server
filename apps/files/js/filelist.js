@@ -679,13 +679,19 @@
 			}
 			//Clarin block Download Buttton
 			var summary = this._selectionSummary.summary;
-			console.log(this._selectionSummary.summary);
 			if(summary.totalFiles < 2 && summary.totalDirs < 1){
-
 				$('#selectedActionsList').find('.download').show();
 			} else{
 				$('#selectedActionsList').find('.download').hide();
 			}
+
+			var mimetypes = this.getSelectedFiles().map(function(it){return it.mimetype.split('/')[1]});
+			if(this._areMimetypesCCLConvertable(mimetypes)){
+				$('#selectedActionsList').find('.ccl').show();
+			} else{
+				$('#selectedActionsList').find('.ccl').hide();
+			}
+
 		},
 
 		/**
@@ -884,9 +890,7 @@
 			event.preventDefault();
 			console.log('sending files to dspace');
 			console.log(this.getSelectedFiles());
-			// return;
-			var response;
-			var links = [];
+
 			var files = this.getSelectedFiles();
 			for(var i=0; i<files.length; ++i){
 				var path = files[i]['path'];
@@ -894,9 +898,7 @@
 
 				var filepath = path+name;
 				this._makeClarinDSpacePost(files);
-				// this._saveLinkShare(filepath,links,this._makeClarinDSpacePost, files.length);
 			}
-			// this._makeClarinDSpacePost(files);
 
 		},
 		_onZipFiles: function(event){
@@ -920,37 +922,76 @@
 			});
 		},
 
-		_onCCLExportSelected: function(event){
-			event.preventDefault();
-			console.log('sending files to dspace');
-			console.log(this.getSelectedFiles());
-
-			var response;
-			var links = [];
-			var files = this.getSelectedFiles();
-			for(var i=0; i<files.length; ++i){
-				var path = files[i]['path'];
-				var name = files[i]['name'];
-
-				var filepath = path+name;
+		_areMimetypesCCLConvertable: function(mimetypes){
+			var convertible = ['plain', 'doc', 'docx', 'pdf', 'txt', 'odt', 'xlsx', 'pptx', 'xls', 'ppt', 'html', 'rtf', 'csv'];
+			for(var i = 0; i < mimetypes.length; i++){
+				if (convertible.indexOf(mimetypes[i]) === -1)
+					return false;
 			}
+			return true;
+		},
 
+		_convertFilesToCCL: function(files, resultName,targetPath){
+			var self = this;
 			$.ajax({
 				type: 'POST',
-				url:  OC.generateUrl('/apps/clarin/ccl/'),
-				data: files,
+				url:  OC.generateUrl('/apps/clarin/ccl'),
+				data: jQuery.param({
+					files:JSON.stringify(files),
+					resultName:JSON.stringify(resultName),
+					destFolder:JSON.stringify(targetPath)
+				}),
 				dataType: 'json',
 				success: function(res) {
-					callback(links,res,endcallback,tablelength);
-					// then you can manipulate your text as you wish
+					console.log(res);
 				},
-				error: function(res){
-					callback(links,res,endcallback,tablelength);
+				error: function(err, res){
+					console.log(res, err);
 				}
 			});
-			/*
-			TO DO!
-			 */
+		},
+
+		_onCCLExportSelected: function(event){
+			event.preventDefault();
+			var self = this;
+
+			var files = this.getSelectedFiles(); // make sure only txt files
+
+			var html = '<div class="clarin-ccl-modal-inside" style="min-width:570px"><h3 style="float: left">Name for created file: &nbsp;</h3>' +
+				'<input class="clarin-converted-file-name" type="text" value="result_name"> <span><i>.zip</i></span>' +
+				'</div>';
+			html += '<div style="clear: both; margin-left:23px">' +
+				'<h3>Selected files: </h3>' +
+				'<ul id="clarin-file-list" style="margin-left:50px;list-style:disc;">';
+			for(var i = 0; i < files.length; i++){
+				html += '<li>' +files[i].name + '</li>';
+			}
+			html += '</ul></div>';
+
+			var callback = function(answer){
+					if(answer){
+						OC.dialogs.filepicker(t('files', 'Choose folder to save the result:'), function(targetPath) {
+							self._convertFilesToCCL(files, $('.clarin-converted-file-name').last().val(), targetPath);
+						}, false, "httpd/unix-directory", true);
+					}
+			};
+
+			var message = OC.dialogs.message(
+				html,
+				'Convert to CCL?',
+				null,
+				OCdialogs.YES_NO_BUTTONS,
+				callback,
+				null,
+				true
+			);
+			console.log(message);
+			message.then(function(){
+				console.log('done');
+			});
+			message.fail(function(){
+				console.log('fail');
+			});
 		},
 
 

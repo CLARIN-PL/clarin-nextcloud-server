@@ -1,28 +1,12 @@
 <?php /** @var $l \OCP\IL10N */ ?>
-<?php $_['appNavigation']->printPage(); ?>
 <script src="https://ctj.clarin-pl.eu/clarin_bar/script.js"></script>
-<script nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>" type="text/javascript">
-	window.onload = function() {
-		var c =new ClarinModule({
-			offset:{
-				'top': null,
-				'right': null,
-				'bottom': '200px',
-				'left': 0
-			},
-			arrow:{
-				'initial-orientation': "right",// 'up' || 'down' || 'right' || 'left'
-				'rotation-hover': -180
-			},
-			themeColor: '#337ab7',
-			horizontal: false // false || true
-		});
-//		c.hookFunctionTo('logout', function(){
-//			$.get('<?php //print_unescaped(\OC_User::getLogoutAttribute()); ?>//'.replace('href="','').replace('"',''));
-//		});
-	};
+<?php $_['appNavigation']->printPage(); ?>
 
-	</script>
+<!--<script nonce="--><?php //p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?><!--" type="text/javascript">-->
+<!--	window.onload = function() {-->
+<!---->
+<!--	};-->
+<!--</script>-->
 
 <div id="app-content">
 	<?php foreach ($_['appContents'] as $content) { ?>

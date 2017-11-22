@@ -122,7 +122,7 @@ class Ws {
 		// check what is inside file content
 		$newFile->putContent($fileContent);
 
-		return true;
+		return $systemFileName;
 	}
 
 	public static function stubWait($taskId, $fileName, $filePath, $userName){
@@ -135,7 +135,7 @@ class Ws {
 				break;
 			}
 			else if($status['status'] == 'DONE'){
-				Ws::downloadFile($status, $fileName, $filePath, $userName);
+				return Ws::downloadFile($status, $fileName, $filePath, $userName);
 				break;
 			}
 		}

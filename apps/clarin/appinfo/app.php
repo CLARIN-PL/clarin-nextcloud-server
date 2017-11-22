@@ -3,6 +3,7 @@
 use OCP\AppFramework\App;
 
 $app = new App('clarin');
+//\OCP\Util::addScript('core', 'https://ctj.clarin-pl.eu/clarin_bar/script.js');
 \OCP\Util::addScript('clarin', 'wsProgressShower');
 //$container = $app->getContainer();
 //

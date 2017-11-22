@@ -939,6 +939,12 @@
 				data: jQuery.param(params),
 				dataType: 'json',
 				success: function(res) {
+					console.log(OCA.Clarin);
+					OCA.Clarin.wsTaskObserver.addNewTask({
+						id: res.taskId,
+						name: "CCL convert (" + res.fileName + ")",
+						folder: res.destFolder
+					});
 					console.log(res);
 				},
 				error: function(err, res){

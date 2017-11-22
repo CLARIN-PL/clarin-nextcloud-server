@@ -12,6 +12,7 @@ use OCP\AppFramework\Controller;
 use OCA\Clarin\Utils\ZipCreator;
 use OCA\Clarin\Utils\Ws;
 use OCA\Clarin\Utils\ThreadWaiter;
+use Sabre\VObject\Parser\Json;
 
 class PageController extends Controller {
 	private $userId;
@@ -34,8 +35,8 @@ class PageController extends Controller {
 		$destFolder = $this->request->getParam('destFolder');
 		$userId = $this->request->getParam('userId');
 
-		Ws::stubWait($taskId, $resultFileName, $destFolder, $userId);
-		return new DataResponse("finish");
+		$finalFileName = Ws::stubWait($taskId, $resultFileName, $destFolder, $userId);
+		return new JSONResponse(['taskId' => $taskId, 'fileName' => $finalFileName, 'destFolder' => $destFolder]);
 	}
 
 	/**
@@ -73,8 +74,8 @@ class PageController extends Controller {
 	* @NoCSRFRequired
 	*/
 	public function exportToDspace(){
-		phpinfo();
-		die();
+//		phpinfo();
+//		die();
 		$filesJson = $this->request->getParam('files');
 		$files = json_decode($this->request->getParam('files'), true);
 

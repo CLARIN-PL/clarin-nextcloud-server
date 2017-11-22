@@ -9,7 +9,7 @@ style('clarin', 'style');
 
 <div id="app">
 	<?php print_unescaped($this->inc('navigation/index')); ?>
-	<?php //print_unescaped($this->inc('settings/index')); ?>
+	<?php print_unescaped($this->inc('settings/index')); ?>
 
 	<div id="app-content" class="app-content">
 		<div id="app-content-wrapper">

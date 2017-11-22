@@ -49,6 +49,7 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	/** @var array Domains from which scripts can get loaded */
 	protected $allowedScriptDomains = [
 		'\'self\'',
+		'http://ws.clarin-pl.eu',
 		'http://ctj.clarin-pl.eu/',
 		'https://maxcdn.bootstrapcdn.com/',
 	];
@@ -74,6 +75,7 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	/** @var array Domains to which connections can be done */
 	protected $allowedConnectDomains = [
 		'http://clarin-pl.eu/',
+		'http://ws.clarin-pl.eu',
 		'\'self\'',
 	];
 	/** @var array Domains from which media elements can be loaded */

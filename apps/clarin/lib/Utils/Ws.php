@@ -9,10 +9,17 @@
 namespace OCA\Clarin\Utils;
 
 
+use OC\Files\Filesystem;
+
 class Ws {
-	static $url = "http://ws.clarin-pl.eu/nlprest2/base";
-	static $uploadPath = '/upload/';
-	static $downloadPath = '/download/';
+	static $url = 'http://ws.clarin-pl.eu/nlprest2/base/';
+	static $uploadPath = 'upload/';
+	static $startTaskPath = 'startTask/';
+	static $downloadPath = 'download';
+	static $statusPath = 'getStatus/';
+
+	// https://github.com/CLARIN-PL/clarin-pl-dspace/blob/federation.key/dspace-rest/src/main/java/org/dspace/rest/ProcessItems.java
+	static private $lpmnConvertToCCL = "|any2txt|wcrft2({\"morfeusz2\":false})|liner2|wsd|dir|makezip";
 
 	public static function uploadFilesToWs($files){
 		// create curl multi
@@ -28,11 +35,11 @@ class Ws {
 			curl_setopt_array($ch, array(
 				CURLOPT_RETURNTRANSFER => 1,
 				CURLOPT_POST => 1,
-				CURLOPT_URL => self::$url . '/upload/',
+				CURLOPT_URL => self::$url . self::$uploadPath,
 				CURLOPT_HTTPHEADER => array("Content-Type: binary/octet-stream"),
 				CURLOPT_POSTFIELDS=> $fileContent
 			));
-			$curlResources[] = $ch;
+			$curlResources[] = ['name' => $file['name'], 'resource' => $ch];
 			curl_multi_add_handle($mh,$ch);
 		}
 
@@ -44,11 +51,93 @@ class Ws {
 		$result = [];
 		//close the handles
 		foreach($curlResources as $curlRes){
-			curl_multi_remove_handle($mh, $curlRes);
-			$result[] = curl_multi_getcontent($curlRes);
+			curl_multi_remove_handle($mh, $curlRes['resource']);
+			$result[] = ['name' => $curlRes['name'], 'id' => curl_multi_getcontent($curlRes['resource'])];
 		}
 		curl_multi_close($mh);
 
 		return $result;
+	}
+
+	public static function startTaskCCLConvert($files, $userId){
+		$ch = curl_init();
+
+		$filesLpmn = 'files('.json_encode($files).')';
+
+		curl_setopt_array($ch, array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_POST => 1,
+			CURLOPT_URL => self::$url.self::$startTaskPath,
+			CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
+			CURLOPT_POSTFIELDS=> json_encode(array(
+				'application' => 'nextcloud',
+				'lpmn' => $filesLpmn . self::$lpmnConvertToCCL,
+				'user' => $userId
+			))
+		));
+
+		$output = curl_exec ($ch);
+		curl_close ($ch);
+		return $output;
+	}
+
+	public static function getTaskStatus($taskId){
+		$ch = curl_init();
+
+		curl_setopt_array($ch, array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_URL => self::$url.self::$statusPath.$taskId,
+		));
+
+		$output = curl_exec ($ch);
+		curl_close ($ch);
+		return json_decode($output, true);
+//		return json_decode('{"value":0.5,"status":"PROCESSING"}', true);
+	}
+
+	private static function getFileContent($fileId){
+		$ch = curl_init();
+
+		curl_setopt_array($ch, array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_URL => self::$url.self::$downloadPath.$fileId,
+		));
+
+		$output = curl_exec ($ch);
+		curl_close ($ch);
+		return $output;
+	}
+
+	public static function downloadFile($retValue, $fileName, $filePath, $userName){
+		$destFolder = \OC::$server->getUserFolder($userName)->get($filePath);
+		$cnt = 1;
+		$systemFileName = $fileName.'.zip';
+		while($destFolder->nodeExists($systemFileName)){
+			$systemFileName= $fileName.'('.$cnt.  ').zip';
+			$cnt++;
+		}
+		$newFile = $destFolder->newFile($systemFileName);
+
+		$fileContent = self::getFileContent($retValue['value'][0]['fileID']);
+		// check what is inside file content
+		$newFile->putContent($fileContent);
+
+		return true;
+	}
+
+	public static function stubWait($taskId, $fileName, $filePath, $userName){
+		while(true){
+			$status = Ws::getTaskStatus($taskId);
+			if($status['status'] == 'PROCESSING'){
+				sleep(2);
+			}
+			else if($status['status'] == 'ERROR'){
+				break;
+			}
+			else if($status['status'] == 'DONE'){
+				Ws::downloadFile($status, $fileName, $filePath, $userName);
+				break;
+			}
+		}
 	}
 }

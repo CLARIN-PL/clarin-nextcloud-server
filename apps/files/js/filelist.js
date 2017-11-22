@@ -931,6 +931,22 @@
 			return true;
 		},
 
+		_startWatchingFile: function(params){
+			var self = this;
+			$.ajax({
+				type: 'POST',
+				url:  OC.generateUrl('/apps/clarin/watchfile'),
+				data: jQuery.param(params),
+				dataType: 'json',
+				success: function(res) {
+					console.log(res);
+				},
+				error: function(err, res){
+					console.log(res, err);
+				}
+			});
+		},
+
 		_convertFilesToCCL: function(files, resultName,targetPath){
 			var self = this;
 			$.ajax({
@@ -943,6 +959,7 @@
 				}),
 				dataType: 'json',
 				success: function(res) {
+					self._startWatchingFile(res.watchParams);
 					console.log(res);
 				},
 				error: function(err, res){

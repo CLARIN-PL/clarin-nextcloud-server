@@ -15,5 +15,6 @@ return [
 		['name' => 'page#zip', 'url' => '/zip', 'verb' => 'POST'],
 		['name' => 'page#zipdspace', 'url' => '/zip-dspace', 'verb' => 'POST'],
 		['name' => 'page#exporttodspace', 'url' => '/dspace_export', 'verb' => 'POST'],
+		['name' => 'page#watchfile', 'url' => '/watchfile', 'verb' => 'POST'],
     ]
 ];

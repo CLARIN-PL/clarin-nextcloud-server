@@ -1,6 +1,9 @@
 <?php
 namespace OCA\Clarin\Controller;
 
+
+use OCA\Clarin\Utils\Process;
+use OCP\AppFramework\Http\IOutput;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -8,7 +11,7 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 use OCA\Clarin\Utils\ZipCreator;
 use OCA\Clarin\Utils\Ws;
-
+use OCA\Clarin\Utils\ThreadWaiter;
 
 class PageController extends Controller {
 	private $userId;
@@ -19,10 +22,24 @@ class PageController extends Controller {
 		$this->userId = $UserId;
 	}
 
+	/**
+	 * start observing what is going on in a separate thread
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function watchfile(){
+		$taskId = $this->request->getParam('taskId');
+		$resultFileName = $this->request->getParam('resultFileName');
+		$destFolder = $this->request->getParam('destFolder');
+		$userId = $this->request->getParam('userId');
+
+		Ws::stubWait($taskId, $resultFileName, $destFolder, $userId);
+		return new DataResponse("finish");
+	}
 
 	/**
 	 * convert user files to CCL format
-	 *
 	* @NoAdminRequired
 	* @NoCSRFRequired
 	*/
@@ -31,21 +48,21 @@ class PageController extends Controller {
 		$destFolder = json_decode($this->request->getParam('destFolder'), true);
 		$resultFileName = json_decode($this->request->getParam('resultName'), true);
 
-		$lpmnString="any2txt|wcrft2({\"morfeusz2\":false})|liner2|wsd|dir|makezip";
-
 		// upload files to ws
-		$urls = Ws::uploadFilesToWs($files);
+		$wsFiles = Ws::uploadFilesToWs($files);
 
-		var_dump($urls);
-		die();
+		// start ws task
+		$taskId = Ws::startTaskCCLConvert($wsFiles, $this->userId);
+//		$taskId = 'bdba65cc-5744-4187-b21d-0d627749e6c9'; // for debug
+		$statusUrl = Ws::$url . Ws::$statusPath . $taskId;
 
-
-		$requestBody = [
-			"user"=> $this->userId,
-			"application"=> "nextcloud",
-		];
-
-		return new JSONResponse(["files"=> $files, "destFolder" => $destFolder, "resultFileName"=>$resultFileName]);
+		return new JSONResponse(['statusUrl' => $statusUrl,
+			'watchParams' => [
+				'taskId' => $taskId,
+				'resultFileName' => $resultFileName,
+				'destFolder' => $destFolder,
+				'userId' => $this->userId
+			],]);
 	}
 
 	/**
@@ -56,6 +73,8 @@ class PageController extends Controller {
 	* @NoCSRFRequired
 	*/
 	public function exportToDspace(){
+		phpinfo();
+		die();
 		$filesJson = $this->request->getParam('files');
 		$files = json_decode($this->request->getParam('files'), true);
 

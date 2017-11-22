@@ -1,8 +1,9 @@
 <?php
 
-//use OCP\AppFramework\App;
+use OCP\AppFramework\App;
 
-//$app = new App('clarin');
+$app = new App('clarin');
+\OCP\Util::addScript('clarin', 'wsProgressShower');
 //$container = $app->getContainer();
 //
 //$container->query('OCP\INavigationManager')->add(function () use ($container) {

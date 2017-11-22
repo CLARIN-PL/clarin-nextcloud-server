@@ -4,11 +4,15 @@
 
 OCA.Clarin = {};
 $(document).ready(function() {
+
+	if(typeof(ClarinModule) === 'undefined')
+		return;
+
 	OCA.Clarin.bar = new ClarinModule({
 		offset:{
 			'top': 0,
 			'right': null,
-			// 'bottom': '200px',
+			'bottom': null,
 			'left': 0
 		},
 		arrow:{
@@ -23,13 +27,14 @@ $(document).ready(function() {
 	$('#content-wrapper').css({'padding-left': '55px'});
 	$('#header').css({'margin-left': '55px'});
 
-	function wsTaskObserver(){
+	function WsTaskObserver(){
 		this.localStorageName = 'Clarin-ws-active-tasks';
 		this.clarinModule = OCA.Clarin.bar;
+		this.minutesToShow = 60 * 24; // full 24h
 		this.init();
 
 	}
-	wsTaskObserver.prototype.init = function(){
+	WsTaskObserver.prototype.init = function(){
 		var self = this;
 		self.tasks = JSON.parse(localStorage.getItem(self.localStorageName));
 
@@ -40,29 +45,34 @@ $(document).ready(function() {
 		self.initClarinModuleList()
 	};
 
-	wsTaskObserver.prototype.initClarinModuleList = function(){
+	WsTaskObserver.prototype.initClarinModuleList = function(){
 		var self = this;
 		self.clarinModule.addMenu('active_tasks', "Twoje zadania", "Your tasks");
 		console.log(self.tasks);
-		for(var i = 0; i < self.tasks.length; i++){
+		for(var i = self.tasks.length-1; i >= 0 ; i--){
 			var temp = function(task){
-				var callbackIsReady = null;
-				if (task.status !== 'DONE')
-					callbackIsReady = function(){
-						return self.checkTaskStatus(task.id);
-					};
-				self.clarinModule.addMenuElement('active_tasks', 'check-square-o', task.name, task.name,
-					function(){
-						window.location = OC.webroot + '/index.php/apps/files/?dir=' + encodeURIComponent(task.folder);
-					},
-					callbackIsReady
-				);
+				if(((new Date() - task.dateAdd) / 1000 / 60) > self.minutesToShow){
+					self.tasks.splice(i,1);
+				} else{
+					console.log('task not ready to be deleted');
+					var callbackIsReady = null;
+					if (task.status !== 'DONE')
+						callbackIsReady = function(){
+							return self.checkTaskStatus(task.id);
+						};
+					self.clarinModule.addMenuElement('active_tasks', 'check-square-o', task.name, task.name,
+						function(){
+							window.location = OC.webroot + '/index.php/apps/files/?dir=' + encodeURIComponent(task.folder);
+						},
+						callbackIsReady
+					);
+				}
 			}(self.tasks[i]);
 		}
 		self.clarinModule.changeLanguage(self.clarinModule.language);
 	};
 
-	wsTaskObserver.prototype.checkTaskStatus = function(taskId){
+	WsTaskObserver.prototype.checkTaskStatus = function(taskId){
 		var self = this;
 		return true; // todo
 		var response = $.ajax({
@@ -89,14 +99,14 @@ $(document).ready(function() {
 		return false;
 	};
 
-	wsTaskObserver.prototype.updateTasks = function(){
+	WsTaskObserver.prototype.updateTasks = function(){
 		var self = this;
 		localStorage.setItem(self.localStorageName, JSON.stringify(self.tasks));
 	};
 
-	wsTaskObserver.prototype.addNewTask = function(task){
+	WsTaskObserver.prototype.addNewTask = function(task){
 		var self = this;
-		task.dataAdd = + new Date();
+		task.dateAdd = + new Date();
 		self.tasks.push(task);
 		self.updateTasks();
 
@@ -115,5 +125,5 @@ $(document).ready(function() {
 		}(task);
 	};
 
-	OCA.Clarin.wsTaskObserver = new wsTaskObserver();
+	OCA.Clarin.WsTaskObserver = new WsTaskObserver();
 });

@@ -9,12 +9,8 @@ style('clarin', 'style');
 
 <div id="app">
 	<?php print_unescaped($this->inc('navigation/index')); ?>
-	<?php print_unescaped($this->inc('settings/index')); ?>
-
 	<div id="app-content" class="app-content">
 		<div id="app-content-wrapper">
-			<?php //print_unescaped($this->inc('content/index')); ?>
-
 				<div class="form-main-container container-fluid">
 					<div class="row">
 						<div class="col-xs-12">
@@ -109,7 +105,20 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Contact: </label>
 																	<div class="col-sm-7">
-																		<textarea name="contact" type="text" class="form-control" placeholder="Optional contact information... (Person, Address, Email, Organisation, Telephone, Website)"></textarea>
+																		<br>
+<!--																		<textarea name="contact" type="text" class="form-control" placeholder="Optional contact information... (Person, Address, Email, Organisation, Telephone, Website)"></textarea>-->
+																		<label>Person:</label>
+																		<input name="contact-person" placeholder="Optional contact person" type="text">
+																		<label>Address:</label>
+																		<input name="contact-address" placeholder="Optional contact address" type="text">
+																		<label>Email:</label>
+																		<input name="contact-email" placeholder="Optional contact email" type="email">
+																		<label>Organisation:</label>
+																		<input name="contact-organisation" placeholder="Optional contact organisation" type="text">
+																		<label>Telephone:</label>
+																		<input name="contact-telephone" placeholder="Optional contact telephone" type="tel">
+																		<label>Website:</label>
+																		<input name="contact-website" placeholder="Optional contact website" type="text">
 																	</div>
 																</div>
 																<div class="form-group">
@@ -209,7 +218,7 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Creator: </label>
 																	<div class="col-sm-7">
-																		<input name="creator" type="text" class="form-control" placeholder="optional creator name...">
+																		<input name="creator" type="text" class="form-control" placeholder="optional creator name and surname...">
 																	</div>
 																</div>
 																<div class="form-group">
@@ -249,6 +258,12 @@ style('clarin', 'style');
 													<input name="license" type="text" class="form-control" placeholder="license name..." required>
 												</div>
 											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">License URL*: </label>
+												<div class="col-sm-7">
+													<input name="license-url" type="text" class="form-control" placeholder="license url..." required>
+												</div>
+											</div>
 										</div>
 										<div class="col-sm-5">
 											<div class="panel-group">
@@ -268,7 +283,7 @@ style('clarin', 'style');
 																	</div>
 																</div>
 																<div class="form-group">
-																	<label class="control-label col-sm-5">Demo link: </label>
+																	<label class="control-label col-sm-5">Demo URL: </label>
 																	<div class="col-sm-7">
 																		<input name="demoLink" type="text" class="form-control" placeholder="optional demo link...">
 																	</div>
@@ -298,6 +313,14 @@ style('clarin', 'style');
 													</select>
 												</div>
 											</div>
+											<div class="form-group">
+												<label class="control-label col-sm-5">Modality*: </label>
+												<div class="col-sm-7">
+													<select name="modality" class="form-control" required>
+														<option value=""></option>
+													</select>
+												</div>
+											</div>
 										</div>
 										<div class="col-sm-5">
 											<div class="panel-group">
@@ -310,14 +333,6 @@ style('clarin', 'style');
 													<div id="optional-panel-content" class="panel-collapse collapse">
 														<div class="panel-body">
 															<div class="row">
-																<div class="form-group">
-																	<label class="control-label col-sm-5">Modality*: </label>
-																	<div class="col-sm-7">
-																		<select name="modality" class="form-control" required>
-																			<option value=""></option>
-																		</select>
-																	</div>
-																</div>
 																<div class="form-group">
 																	<label class="control-label col-sm-5">subject: </label>
 																	<div class="col-sm-7">
@@ -392,7 +407,7 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Descriptions: </label>
 																	<div class="col-sm-7">
-																		<input name="descriptions" type="text" class="form-control" placeholder="optional descriptions...">
+																		<textarea name="descriptions" type="text" class="form-control" placeholder="optional descriptions..."></textarea>
 																	</div>
 																</div>
 															</div>

@@ -124,6 +124,6 @@ $(document).ready(function() {
 			);
 		}(task);
 	};
-
-	OCA.Clarin.WsTaskObserver = new WsTaskObserver();
+	
+	OCA.Clarin.wsTaskObserver = new WsTaskObserver();
 });

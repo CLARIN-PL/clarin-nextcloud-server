@@ -9,12 +9,18 @@
  */
 return [
     'routes' => [
-//	   ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
-//	   ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
-		['name' => 'page#ccl', 'url' => '/ccl', 'verb' => 'POST'],
-		['name' => 'page#zip', 'url' => '/zip', 'verb' => 'POST'],
-		['name' => 'page#zipdspace', 'url' => '/zip-dspace', 'verb' => 'POST'],
-		['name' => 'page#exporttodspace', 'url' => '/dspace_export', 'verb' => 'POST'],
-		['name' => 'page#watchfile', 'url' => '/watchfile', 'verb' => 'POST'],
+//	    ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
+//	    ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
+//    	['name' => 'ws#zip', 'url' => '/zip', 'verb' => 'POST'],
+		// dSpace entries
+		['name' => 'DSpace#zipdspace', 'url' => '/zip-dspace', 'verb' => 'POST'],
+		['name' => 'DSpace#exporttodspace', 'url' => '/dspace_export', 'verb' => 'POST'],
+
+		// ws entries
+		['name' => 'ws#ccl', 'url' => '/ccl', 'verb' => 'POST'],
+		['name' => 'ws#watchfile', 'url' => '/watchfile', 'verb' => 'POST'],
+
+		// inforex entries
+		['name' => 'inforex#export', 'url' => '/inforex_export', 'verb' => 'POST'],
     ]
 ];

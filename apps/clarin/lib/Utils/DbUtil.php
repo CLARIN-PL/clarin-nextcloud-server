@@ -17,4 +17,15 @@ class DbUtil {
 			->where($query->expr()->eq('fileid', $query->createNamedParameter($fileId)));
 		$query->execute();
 	}
+
+	public static function getFilePath($fileId){
+		$query = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$query->select("path")
+			->from("filecache")
+			->where($query->expr()->eq('fileid', $query->createNamedParameter($fileId)));
+		$query->execute();
+		$result = $query->execute()->fetch();
+
+		return $result["path"];
+	}
 }

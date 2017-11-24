@@ -19,7 +19,7 @@ class Ws {
 	static $statusPath = 'getStatus/';
 
 	// https://github.com/CLARIN-PL/clarin-pl-dspace/blob/federation.key/dspace-rest/src/main/java/org/dspace/rest/ProcessItems.java
-	static private $lpmnConvertToCCL = "|any2txt|wcrft2({\"morfeusz2\":false})|liner2|wsd|dir|makezip";
+	static private $lpmnConvertToCCL = "|any2txt|wcrft2({\"morfeusz2\":false})|liner2|wsd|dir|shimext({\"ext\":\".ccl\"})|makezip";
 
 	public static function uploadFilesToWs($files){
 		// create curl multi

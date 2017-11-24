@@ -61,7 +61,12 @@
 						<span class="conditional-actions">
 							<a href="" class="dspace">
 								<span class="icon icon-external"></span>
-								<span><?php p($l->t('Export to dspace'))?></span>
+								<span><?php p($l->t('Export to dSpace'))?></span>
+							</a>
+
+							<a href="" class="inforex-export">
+								<span class="icon icon-file"></span>
+								<span><?php p($l->t('Export to Inforex'))?></span>
 							</a>
 
 							<a href="" class="ccl">

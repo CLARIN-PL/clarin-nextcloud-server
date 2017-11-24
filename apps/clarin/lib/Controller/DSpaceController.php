@@ -2,68 +2,20 @@
 namespace OCA\Clarin\Controller;
 
 
-use OCA\Clarin\Utils\Process;
-use OCP\AppFramework\Http\IOutput;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
 use OCA\Clarin\Utils\ZipCreator;
-use OCA\Clarin\Utils\Ws;
-use OCA\Clarin\Utils\ThreadWaiter;
-use Sabre\VObject\Parser\Json;
 
-class PageController extends Controller {
+
+class DSpaceController extends Controller {
 	private $userId;
 	private $dSpaceUserId = "dSpace";
 
 	public function __construct($AppName, IRequest $request, $UserId){
 		parent::__construct($AppName, $request);
 		$this->userId = $UserId;
-	}
-
-	/**
-	 * start observing what is going on in a separate thread
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 */
-	public function watchfile(){
-		$taskId = $this->request->getParam('taskId');
-		$resultFileName = $this->request->getParam('resultFileName');
-		$destFolder = $this->request->getParam('destFolder');
-		$userId = $this->request->getParam('userId');
-
-		$finalFileName = Ws::stubWait($taskId, $resultFileName, $destFolder, $userId);
-		return new JSONResponse(['taskId' => $taskId, 'fileName' => $finalFileName, 'destFolder' => $destFolder]);
-	}
-
-	/**
-	 * convert user files to CCL format
-	* @NoAdminRequired
-	* @NoCSRFRequired
-	*/
-	public function ccl() {
-		$files = json_decode($this->request->getParam('files'), true);
-		$destFolder = json_decode($this->request->getParam('destFolder'), true);
-		$resultFileName = json_decode($this->request->getParam('resultName'), true);
-
-		// upload files to ws
-		$wsFiles = Ws::uploadFilesToWs($files);
-
-		// start ws task
-		$taskId = Ws::startTaskCCLConvert($wsFiles, $this->userId);
-//		$taskId = 'bdba65cc-5744-4187-b21d-0d627749e6c9'; // for debug
-		$statusUrl = Ws::$url . Ws::$statusPath . $taskId;
-
-		return new JSONResponse(['statusUrl' => $statusUrl,
-			'watchParams' => [
-				'taskId' => $taskId,
-				'resultFileName' => $resultFileName,
-				'destFolder' => $destFolder,
-				'userId' => $this->userId
-			],]);
 	}
 
 	/**
@@ -74,8 +26,6 @@ class PageController extends Controller {
 	* @NoCSRFRequired
 	*/
 	public function exportToDspace(){
-//		phpinfo();
-//		die();
 		$filesJson = $this->request->getParam('files');
 		$files = json_decode($this->request->getParam('files'), true);
 
@@ -132,8 +82,6 @@ class PageController extends Controller {
 		$files = json_decode($data['files'], true);
 		$formFields = $data['formFields'];
 		$zipName = $data['name'] . ".zip";
-
-//		$fields = array_map()
 
 		// make sure filename is unique
 		$dSpaceHome = \OC::$server->getUserFolder($this->dSpaceUserId);

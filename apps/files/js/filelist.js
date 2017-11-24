@@ -333,6 +333,7 @@
 			this.$el.find('.download-zip').click(_.bind(this.onClickDownloadZipSelected, this));
 			this.$el.find('.dspace').click(_.bind(this._onDspaceExport, this));
 			this.$el.find('.ccl').click(_.bind(this._onCCLExportSelected, this));
+			this.$el.find('.inforex-export').click(_.bind(this._onInforexExport, this));
 
 			this.$el.find('.zip').click(_.bind(this._onZipFiles, this));
 
@@ -677,6 +678,7 @@
 				// hide sidebar
 				this._updateDetailsView(null);
 			}
+
 			//Clarin block Download Buttton
 			var summary = this._selectionSummary.summary;
 			if(summary.totalFiles < 2 && summary.totalDirs < 1){
@@ -685,6 +687,7 @@
 				$('#selectedActionsList').find('.download').hide();
 			}
 
+			// show or hide ccl convert button
 			var mimetypes = this.getSelectedFiles().map(function(it){return it.mimetype.split('/')[1]});
 			if(this._areMimetypesCCLConvertable(mimetypes)){
 				$('#selectedActionsList').find('.ccl').show();
@@ -692,6 +695,15 @@
 				$('#selectedActionsList').find('.ccl').hide();
 			}
 
+			// show or hide inforex export button
+			var inforexButton = $('#selectedActionsList').find('.inforex-export');
+			if(summary.totalDirs > 0 || summary.totalFiles > 1){
+				inforexButton.hide();
+			} else if (mimetypes[0] !== 'zip'){
+				inforexButton.hide();
+			} else{
+				inforexButton.show();
+			}
 		},
 
 		/**
@@ -790,12 +802,7 @@
 
 		/**
 		 * DSPace Event Handler CLARIN!
-		 *
-		 *
 		 */
-
-
-
 		_makeClarinDSpacePost: function(data){
 			files = JSON.stringify(data);
 			var baseUrl = OC.generateUrl('/apps/clarin');
@@ -886,6 +893,87 @@
 			});
 		},
 
+		// _makeClarinInforexPost: function(data){
+		// 	files = JSON.stringify(data);
+		// 	var baseUrl = OC.generateUrl('/apps/clarin');
+		// 	var url = baseUrl + '/inforex_export';
+		//
+		// 	console.log(url);
+		//
+		// 	var form = document.createElement('form');
+		// 	form.method = 'post';
+		// 	form.action = url;
+		//
+		// 	var input = document.createElement('input');
+		// 	input.type = "text";
+		// 	input.name = "files";
+		// 	input.value = JSON.stringify(data);
+		// 	form.appendChild(input);
+		//
+		// 	document.body.appendChild(form);
+		// 	console.log(form);
+		// 	form.submit();
+		// },
+
+		_showInforexModal: function(callback, filename){
+
+			var html = '<div class="clarin-ccl-modal-inside" style="min-width:570px">' +
+				'<h3>Selected file: <i>' + filename + '</i></h3>'+
+				'<div>'+
+				'<h3 style="float: left">Name for inforex corpus: &nbsp;</h3>' +
+				'<input class="form-control inforex-corpus-name" style="width: 50%" type="text" value="'+
+				filename.substring(0, filename.lastIndexOf('.')) +'">'+
+				'</div>' +
+				'</div>';
+
+			OC.dialogs.message(
+				html,
+				'Do you want to export selected file to Inforex?',
+				null,
+				OCdialogs.YES_NO_BUTTONS,
+				callback,
+				null,
+				true
+			);
+		},
+
+		_onInforexExport: function(event){
+			event.preventDefault();
+			var self = this;
+			var file = this.getSelectedFiles()[0];
+
+			var callback = function(decision){
+				if(!decision) return;
+				console.log('sending files to inforex');
+				var path = file['path'];
+				var name = file['name'];
+				var filepath = path+name;
+				console.log(file);
+				var corpName = $('.inforex-corpus-name').last().val();
+
+				$.ajax({
+					type: 'POST',
+					url:  OC.generateUrl('/apps/clarin/inforex_export'),
+					data: jQuery.param({file: file, corpusName: corpName}),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res);
+						OCA.Clarin.wsTaskObserver.addNewTask({
+							id: res.filename + (+new Date()),
+							name: "Inforex export- <b>"+ corpName +"</b> (see progres)",
+							url: res.url,
+							type: "inforex-export",
+							status: 'DONE'
+						});
+					},
+					error: function(res){
+						console.log(res);
+					}
+				});
+			};
+			self._showInforexModal(callback, file['name']);
+		},
+
 		_onDspaceExport: function(event){
 			event.preventDefault();
 			console.log('sending files to dspace');
@@ -942,8 +1030,9 @@
 					console.log(OCA.Clarin);
 					OCA.Clarin.wsTaskObserver.addNewTask({
 						id: res.taskId,
-						name: "CCL convert (" + res.fileName + ")",
-						folder: res.destFolder
+						name: "CCL convert <b>" + res.fileName + "</b>",
+						folder: res.destFolder,
+						type: "dspace-export"
 					});
 					console.log(res);
 				},

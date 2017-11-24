@@ -60,12 +60,8 @@ $(document).ready(function() {
 						callbackIsReady = function(){
 							return self.checkTaskStatus(task.id);
 						};
-					self.clarinModule.addMenuElement('active_tasks', 'check-square-o', task.name, task.name,
-						function(){
-							window.location = OC.webroot + '/index.php/apps/files/?dir=' + encodeURIComponent(task.folder);
-						},
-						callbackIsReady
-					);
+					self.clarinModule.addMenuElement('active_tasks', 'check-square-o', task.name,
+						task.name, self.getClickFunction(task), callbackIsReady);
 				}
 			}(self.tasks[i]);
 		}
@@ -86,8 +82,7 @@ $(document).ready(function() {
 		}).responseText;
 
 		response = JSON.parse(response);
-		console.log(response);
-		return true;
+
 		var isReady = response.status === 'DONE';
 		if (isReady){
 			var task = self.tasks.find(function(t){return t.id === taskId});
@@ -116,14 +111,27 @@ $(document).ready(function() {
 				callbackIsReady = function(){
 					return self.checkTaskStatus(task.id);
 				};
-			self.clarinModule.addMenuElement('active_tasks', 'check-square-o', task.name, task.name,
-				function(){
-					window.location = OC.webroot + '/index.php/apps/files/?dir=' + encodeURIComponent(task.folder);
-				},
-				callbackIsReady
-			);
+			self.clarinModule.addMenuElement('active_tasks', 'check-square-o', task.name,
+				task.name, self.getClickFunction(task), callbackIsReady);
 		}(task);
 	};
-	
+
+	WsTaskObserver.prototype.getClickFunction = function(task){
+		var self = this;
+		if (task.type === "dspace-export"){
+			return  function(){
+				window.location = OC.webroot + '/index.php/apps/files/?dir=' + encodeURIComponent(task.folder);
+			};
+		}
+		else return function(){
+			self.openInNewTab(task.url);
+		};
+	};
+
+	WsTaskObserver.prototype.openInNewTab = function (url) {
+		var win = window.open(url, '_blank');
+		win.focus();
+	};
+
 	OCA.Clarin.wsTaskObserver = new WsTaskObserver();
 });

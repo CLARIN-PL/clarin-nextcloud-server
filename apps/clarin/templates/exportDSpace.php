@@ -277,12 +277,6 @@ style('clarin', 'style');
 														<div class="panel-body">
 															<div class="row">
 																<div class="form-group">
-																	<label class="control-label col-sm-5">License label: </label>
-																	<div class="col-sm-7">
-																		<input name="license" type="text" class="form-control" placeholder="optional license label...">
-																	</div>
-																</div>
-																<div class="form-group">
 																	<label class="control-label col-sm-5">Demo URL: </label>
 																	<div class="col-sm-7">
 																		<input name="demoLink" type="text" class="form-control" placeholder="optional demo link...">

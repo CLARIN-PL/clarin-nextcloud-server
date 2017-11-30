@@ -88,7 +88,6 @@ $(document).ready(function() {
 				console.log('error');
 				console.log(response);
 			};
-			// console.log(formData); return;
 			self.zipFiles(selectedFiles, formData,zipSuccess, zipFail)
 		}
 

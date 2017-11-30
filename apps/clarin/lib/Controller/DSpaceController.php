@@ -95,11 +95,19 @@ class DSpaceController extends Controller {
 		$urlZip = $this->zipFiles($files, $zipName, $node);
 
 		$response = [
-			"link" =>  $urlZip,
-			"form" => $formFields,
+			"item" => [
+				"token" => $this->getUserClarinToken(),
+				"filename" => $zipName,
+				"link" =>  $urlZip,
+				"metadata" => $formFields,
+			]
 		];
 
 		return new JSONResponse($response);
+	}
+
+	private function getUserClarinToken(){
+		return $this->request->getCookie("clarin-pl-token");
 	}
 
 	private static function addFilesToZip($zipPath, $userHomePath, $files){

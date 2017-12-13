@@ -95,12 +95,10 @@ class DSpaceController extends Controller {
 		$urlZip = $this->zipFiles($files, $zipName, $node);
 
 		$response = [
-			"item" => [
-				"token" => $this->getUserClarinToken(),
-				"filename" => $zipName,
-				"link" =>  $urlZip,
-				"metadata" => $formFields,
-			]
+			"token" => $this->getUserClarinToken(),
+			"filename" => $zipName,
+			"link" =>  $urlZip,
+			"metadata" => $formFields
 		];
 
 		return new JSONResponse($response);

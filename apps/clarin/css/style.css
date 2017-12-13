@@ -215,3 +215,55 @@ input::-webkit-calendar-picker-indicator {
 hr{
 	margin: 10px;
 }
+
+/* Style the list items */
+ul.expandable-list li {
+	position: relative;
+	padding: 4px 12px;
+	list-style-type: none;
+	background: #eee;
+
+	/* make the list items unselectable */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/* Set all odd list items to a different color (zebra-stripes) */
+ul.expandable-list li:nth-child(odd) {
+	background: #f9f9f9;
+}
+
+/* Style the close button */
+ul.expandable-list li .close {
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 5px 16px;
+	background-color: #919191;
+}
+
+ul.expandable-list li .close:hover {
+	background-color: #f44336;
+	color: white;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group button.addOptionButton{
+	margin-top: 2px;
+	padding: 3px 10px;
+	min-width: 34px;
+}
+
+.glyphicon-add-option{
+	font-size: 1.5em;
+}
+#submit-dspace-form-btn{
+	color: white;
+	font-weight: bold;
+	font-size: 1.2em;
+	background-color: #333a74;
+}
+.padding-top-column{
+	padding-top: 10px;
+}

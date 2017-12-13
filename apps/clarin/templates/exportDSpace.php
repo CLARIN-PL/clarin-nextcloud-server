@@ -53,39 +53,62 @@ style('clarin', 'style');
 						<div class="col-lg-9 col-lg-pull-3 main-form-content">
 							<div id="resource-basic-information" class="block">
 								<div class="row">
-
-									<form id="export-form" class="form-horizontal">
+									<div id="main-export-div" class="form-horizontal">
 									<div class="row">
 										<h4>Basic Information</h4>
-										<div class="col-sm-7">
-											<div class="form-group">
-												<label class="control-label col-sm-5">Resource name*: </label>
-												<div class="col-sm-7">
-													<input name="name" class="form-control" placeholder="resource name" required>
+										<div class="col-sm-6">
+											<form class="form-horizontal">
+												<div class="form-group">
+													<label class="control-label col-sm-5">Resource name*: </label>
+													<div class="col-sm-7">
+														<input name="dc.title" class="form-control" placeholder="resource name" required>
+													</div>
 												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-sm-5">Resource class*: </label>
-												<div class="col-sm-7">
-													<select name="resourceClass" class="form-control" required>
-														<option value=""></option>
-													</select>
+												<div class="form-group">
+													<label class="control-label col-sm-5">Resource type*: </label>
+													<div class="col-sm-7">
+														<select name="dc.type" class="form-control" required>
+															<option value=""></option>
+														</select>
+													</div>
 												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-sm-5">Date issued*: </label>
-												<div class="col-sm-7">
-													<input name="date" class="form-control" type="date" required>
+<!--												<div class="form-group">-->
+<!--													<label class="control-label col-sm-5">Resource class*: </label>-->
+<!--													<div class="col-sm-7">-->
+<!--														<select name="resourceClass" class="form-control" required>-->
+<!--															<option value=""></option>-->
+<!--														</select>-->
+<!--													</div>-->
+<!--												</div>-->
+												<div class="form-group">
+													<label class="control-label col-sm-5">Date issued*: </label>
+													<div class="col-sm-7">
+														<input name="dc.date.issued" class="form-control" type="date" value="<?php echo date('Y-m-d'); ?>" required>
+													</div>
 												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-sm-5" for="email">Keywords*: </label>
-												<div class="col-sm-7">
-													<input name="keywords" type="text" class="form-control" placeholder="keywords" required>
+												<div class="form-group">
+													<label class="control-label col-sm-5">Description: </label>
+													<div class="col-sm-7">
+														<textarea name="dc.description" type="text" class="form-control" placeholder="description" required></textarea>
+													</div>
 												</div>
-											</div>
+											</form>
+											<form class="form-horizontal form-multiple-options">
+												<div class="form-group">
+													<label class="control-label col-sm-5">Subject Keywords*: </label>
+													<div class="col-sm-7 padding-top-column">
+														<label id="keywords-error-label" style="display:none" class="error"></label>
+														<ul class="expandable-list" id="keywords-list">
+														</ul>
+														<div class="row">
+															<div class="col-sm-9"><input name="dc.subject" type="text" class="form-control input-add" placeholder="keywords" required></div>
+															<div class="col-sm-3"><button type="submit" class="btn btn-default addOptionButton">Add <span class="glyphicon glyphicon-plus glyphicon-add-option"></span></button></div>
+														</div>
+													</div>
+												</div>
+											</form>
 										</div>
-										<div class="col-sm-5">
+										<div class="col-sm-6">
 											<div class="panel-group">
 												<div class="panel panel-default">
 													<div class="panel-heading">
@@ -96,36 +119,53 @@ style('clarin', 'style');
 													<div id="optional-panel-basic-info" class="panel-collapse collapse">
 														<div class="panel-body">
 															<div class="row">
-																<div class="form-group">
-																	<label class="control-label col-sm-5">Description: </label>
-																	<div class="col-sm-7">
-																		<textarea name="description" type="text" class="form-control" placeholder="description"></textarea>
+<!--																<form class="form-horizontal">-->
+<!---->
+<!--																</form>-->
+																<form class="form-horizontal form-multiple-options">
+																	<div class="form-group">
+																		<label class="control-label col-sm-5">Contacts: </label>
+																		<div class="col-sm-7">
+																			<ul class="expandable-list" id="contact-list">
+																			</ul>
+																			<br>
+																			<label>Person:</label>
+																			<input name="contact-person" placeholder="Optional contact person" type="text" required>
+
+																			<br>
+																			<label>Address:</label>
+																			<input name="contact-address" placeholder="Optional contact address" type="text" required>
+
+																			<br>
+																			<label>Email:</label>
+																			<input name="contact-email" placeholder="Optional contact email" type="email" required>
+
+																			<br>
+																			<label>Organisation:</label>
+																			<input name="contact-organisation" placeholder="Optional contact organisation" type="text" required>
+
+																			<br>
+																			<label>Telephone:</label>
+																			<input name="contact-telephone" placeholder="Optional contact telephone" type="tel" required>
+
+																			<br>
+																			<label>Website:</label>
+																			<input name="contact-website" placeholder="Optional contact website" type="text" required>
+
+																			<button type="submit" class="btn btn-default addOptionButton">Add contact</button>
+
+																		</div>
 																	</div>
-																</div>
-																<div class="form-group">
-																	<label class="control-label col-sm-5">Contact: </label>
-																	<div class="col-sm-7">
-																		<br>
-<!--																		<textarea name="contact" type="text" class="form-control" placeholder="Optional contact information... (Person, Address, Email, Organisation, Telephone, Website)"></textarea>-->
-																		<label>Person:</label>
-																		<input name="contact-person" placeholder="Optional contact person" type="text">
-																		<label>Address:</label>
-																		<input name="contact-address" placeholder="Optional contact address" type="text">
-																		<label>Email:</label>
-																		<input name="contact-email" placeholder="Optional contact email" type="email">
-																		<label>Organisation:</label>
-																		<input name="contact-organisation" placeholder="Optional contact organisation" type="text">
-																		<label>Telephone:</label>
-																		<input name="contact-telephone" placeholder="Optional contact telephone" type="tel">
-																		<label>Website:</label>
-																		<input name="contact-website" placeholder="Optional contact website" type="text">
-																	</div>
-																</div>
+																</form>
+																<form class="form-horizontal form-multiple-options">
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Size: </label>
 																	<div class="col-sm-7 form-inline">
-																		<input name="size" min="0" step="1" type="number" class="form-control" placeholder="optional size">
-																		<select name="sizeUnit"class="form-control">
+																		<ul class="expandable-list" id="size-list">
+																		</ul>
+
+																		<input name="size" min="0" step="1" type="number" class="form-control" placeholder="optional size" required>
+																		<select name="sizeUnit"class="form-control" required>
 																			<option value="">N/A</option>
 																			<option value="terms">terms</option>
 																			<option value="entries">entries</option>
@@ -178,8 +218,15 @@ style('clarin', 'style');
 																			<option value="rules">rules</option>
 																			<option value="other">other</option>
 																		</select>
+
+																		<button type="submit" class="btn btn-default addOptionButton">Add size</button>
+																		<br>
+																		<br>
+
+
 																	</div>
 																</div>
+																</form>
 															</div>
 														</div>
 													</div>
@@ -190,15 +237,31 @@ style('clarin', 'style');
 									<hr>
 									<div class="row">
 										<h4>Creation Circumstances</h4>
-										<div class="col-sm-7">
-											<div class="form-group">
-												<label class="control-label col-sm-5">Organization*: </label>
-												<div class="col-sm-7">
-													<input name="organization" class="form-control" placeholder="organization..." required>
+										<div class="col-sm-6">
+											<form class="form-horizontal">
+												<div class="form-group">
+													<label class="control-label col-sm-5 col-md-4">Organization*: </label>
+													<div class="col-sm-7 col-md-8">
+														<input name="metashare.ResourceInfo#ContactInfo#PersonInfo#OrganizationInfo.organizationName" class="form-control" placeholder="organization..." required>
+													</div>
 												</div>
-											</div>
+												<div class="form-group">
+													<label class="control-label col-sm-5 col-md-4">Project name: </label>
+													<div class="col-sm-7  col-md-8">
+														<input name="metashare.ResourceInfo#CreationInfo#FundingInfo#ProjectInfo.projectName" class="form-control" placeholder="optional project name...">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="control-label col-sm-5 col-md-4">Country: </label>
+													<div class="col-sm-7 col-md-8">
+														<select name="local.country" class="form-control" value="">
+															<option></option>
+														</select>
+													</div>
+												</div>
+											</form>
 										</div>
-										<div class="col-sm-5">
+										<div class="col-sm-6">
 											<div class="panel-group">
 												<div class="panel panel-default">
 													<div class="panel-heading">
@@ -209,26 +272,22 @@ style('clarin', 'style');
 													<div id="optional-panel-creation-circumstances" class="panel-collapse collapse">
 														<div class="panel-body">
 															<div class="row">
+																<form class="form-horizontal form-multiple-options">
 																<div class="form-group">
-																	<label class="control-label col-sm-5">Project name: </label>
-																	<div class="col-sm-7">
-																		<input name="projectName" class="form-control" placeholder="optional project name...">
+																	<label class="control-label col-sm-5 col-md-4">Creators: </label>
+																	<div class="col-sm-7 col-md-8">
+																		<ul class="expandable-list" id="creators-list">
+																		</ul>
+																		<br>
+																		<label class="control-label">Surname:</label>
+																		<input name="creator-surname" type="text" class="form-control" placeholder="optional creator name and surname..." required>
+																		<br>
+																		<label class="control-label">Name: </label>
+																		<input name="creator" type="text" class="form-control" placeholder="optional creator name and surname..." required>
+																		<button type="submit" class="btn btn-default addOptionButton">Add creator</button>
 																	</div>
 																</div>
-																<div class="form-group">
-																	<label class="control-label col-sm-5">Creator: </label>
-																	<div class="col-sm-7">
-																		<input name="creator" type="text" class="form-control" placeholder="optional creator name and surname...">
-																	</div>
-																</div>
-																<div class="form-group">
-																	<label class="control-label col-sm-5">Country: </label>
-																	<div class="col-sm-7">
-																		<select name="country" class="form-control" value="">
-																			<option></option>
-																		</select>
-																	</div>
-																</div>
+																</form>
 															</div>
 														</div>
 													</div>
@@ -239,70 +298,66 @@ style('clarin', 'style');
 									<hr>
 									<div class="row">
 										<h4>Access information</h4>
-										<div class="col-sm-7">
+										<div class="col-sm-6">
+											<form class="form-horizontal">
 											<div class="form-group">
 												<label class="control-label col-sm-5">Availability*: </label>
 												<div class="col-sm-7">
-													<input name="availability" type="text" class="form-control" placeholder="availability..." required>
+													<input title="e.g. free; free for academic use; restricted use; request required; user licence required; registration required; unknown"
+															name="dcterms.accessRights" type="text" class="form-control" placeholder="availability in simple words..." required>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-sm-5">Rights holder*: </label>
 												<div class="col-sm-7">
-													<input name="rightsHolder" type="text" class="form-control" placeholder="rights holder..." required>
+													<input name="dc.rights.holder" type="text" class="form-control" placeholder="rights holder..." required>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-sm-5">License*: </label>
 												<div class="col-sm-7">
-													<input name="license" type="text" class="form-control" placeholder="license name..." required>
+													<!--todo make selectable + text -->
+													<input title="A description of the licensing conditions under which the resource can be used."
+															name="dc.rights" type="text" class="form-control" placeholder="license name..." required>
 												</div>
 											</div>
-											<div class="form-group">
-												<label class="control-label col-sm-5">License URL*: </label>
-												<div class="col-sm-7">
-													<input name="license-url" type="text" class="form-control" placeholder="license url..." required>
-												</div>
-											</div>
+											</form>
 										</div>
-										<div class="col-sm-5">
-											<div class="panel-group">
-												<div class="panel panel-default">
-													<div class="panel-heading">
-														<h4 class="panel-title">
-															<a data-toggle="collapse" href="#optional-panel-access-info">Optional fields <span class="glyphicon glyphicon-plus"></span></a>
-														</h4>
+										<div class="col-sm-6">
+											<form class="form-horizontal">
+												<div class="form-group">
+													<div class="form-group">
+														<label class="control-label col-sm-5">License Label*: </label>
+														<div class="col-sm-7">
+															<input name="dc.rights.label" type="text" class="form-control" placeholder="license label..." required>
+														</div>
 													</div>
-													<div id="optional-panel-access-info" class="panel-collapse collapse">
-														<div class="panel-body">
-															<div class="row">
-																<div class="form-group">
-																	<label class="control-label col-sm-5">Demo URL: </label>
-																	<div class="col-sm-7">
-																		<input name="demoLink" type="text" class="form-control" placeholder="optional demo link...">
-																	</div>
-																</div>
-																<div class="form-group">
-																	<label class="control-label col-sm-5">License label: </label>
-																	<div class="col-sm-7">
-																		<input name="licenseLabel" type="text" class="form-control" placeholder="optional license label...">
-																	</div>
-																</div>
-															</div>
+													<div class="form-group">
+														<label class="control-label col-sm-5">License URL*: </label>
+														<div class="col-sm-7">
+															<input name="dc.rights.uri" type="text" class="form-control" placeholder="license url..." required>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="control-label col-sm-5">Demo URL: </label>
+														<div class="col-sm-7">
+															<input name="demo.uri" type="text" class="form-control" placeholder="demo link..." required>
 														</div>
 													</div>
 												</div>
-											</div>
+											</form>
+
 										</div>
 									</div>
 									<hr>
 									<div class="row">
 										<h4>Content</h4>
-										<div class="col-sm-7">
+										<div class="col-sm-6">
+											<form class="form-horizontal">
 											<div class="form-group">
 												<label class="control-label col-sm-5">Language*: </label>
 												<div class="col-sm-7">
-													<select name="language" type="text" class="form-control"required>
+													<select name="dc.language | dc.language.iso" type="text" class="form-control"required>
 														<option value=""></option>
 													</select>
 												</div>
@@ -310,13 +365,14 @@ style('clarin', 'style');
 											<div class="form-group">
 												<label class="control-label col-sm-5">Modality*: </label>
 												<div class="col-sm-7">
-													<select name="modality" class="form-control" required>
+													<select name="local.modality.info" class="form-control" required>
 														<option value=""></option>
 													</select>
 												</div>
 											</div>
+											</form>
 										</div>
-										<div class="col-sm-5">
+										<div class="col-sm-6">
 											<div class="panel-group">
 												<div class="panel panel-default">
 													<div class="panel-heading">
@@ -327,24 +383,26 @@ style('clarin', 'style');
 													<div id="optional-panel-content" class="panel-collapse collapse">
 														<div class="panel-body">
 															<div class="row">
+																<form class="form-horizontal">
 																<div class="form-group">
 																	<label class="control-label col-sm-5">subject: </label>
 																	<div class="col-sm-7">
-																		<input name="subject" type="text" class="form-control" placeholder="optional subject...">
+																		<input name="dc.subject--??" type="text" class="form-control" placeholder="optional subject...">
 																	</div>
 																</div>
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Genre: </label>
 																	<div class="col-sm-7">
-																		<input name="genre" type="text" class="form-control" placeholder="optional genre...">
+																		<input name="local.genre" type="text" class="form-control" placeholder="optional genre...">
 																	</div>
 																</div>
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Temporal Coverage: </label>
 																	<div class="col-sm-7">
-																		<input name="temporalCoverage" type="text" class="form-control" placeholder="optional temporal coverage...">
+																		<input name="dc.covarage.temporal" type="text" class="form-control" placeholder="optional temporal coverage...">
 																	</div>
 																</div>
+																</form>
 															</div>
 														</div>
 													</div>
@@ -365,45 +423,49 @@ style('clarin', 'style');
 												<div id="collapse-optional-pub-details" class="panel-collapse collapse">
 													<div class="panel-body">
 														<div class="row">
-															<div class="col-sm-7">
+															<div class="col-sm-6">
+																<form class="form-horizontal">
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Title: </label>
 																	<div class="col-sm-7">
-																		<input name="title" type="text" class="form-control" placeholder="optional title...">
+																		<input name="local.publication.title" type="text" class="form-control" placeholder="optional title...">
 																	</div>
 																</div>
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Author: </label>
 																	<div class="col-sm-7">
-																		<input name="author" type="text" class="form-control" placeholder="optional author...">
+																		<input name="local.publication.author" type="text" class="form-control" placeholder="optional author...">
 																	</div>
 																</div>
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Url: </label>
 																	<div class="col-sm-7">
-																		<input name="url" type="text" class="form-control" placeholder="optional url...">
+																		<input name="local.publication.url" type="text" class="form-control" placeholder="optional url...">
 																	</div>
 																</div>
+																</form>
 															</div>
-															<div class="col-sm-5">
+															<div class="col-sm-6">
+																<form class="form-horizontal">
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Publication Place: </label>
 																	<div class="col-sm-7">
-																		<input name="publicationPlace" type="text" class="form-control" placeholder="optional publication place...">
+																		<input name="local.publication.place" type="text" class="form-control" placeholder="optional publication place...">
 																	</div>
 																</div>
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Publication date: </label>
 																	<div class="col-sm-7">
-																		<input name="publicationDate" type="text" class="form-control" placeholder="optional publication date...">
+																		<input name="local.publication.date" type="text" class="form-control" placeholder="optional publication date...">
 																	</div>
 																</div>
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Descriptions: </label>
 																	<div class="col-sm-7">
-																		<textarea name="descriptions" type="text" class="form-control" placeholder="optional descriptions..."></textarea>
+																		<textarea name="local.publication.descritpions" type="text" class="form-control" placeholder="optional descriptions..."></textarea>
 																	</div>
 																</div>
+																</form>
 															</div>
 														</div>
 													</div>
@@ -416,7 +478,7 @@ style('clarin', 'style');
 											<button type="submit" id="submit-dspace-form-btn" class="btn btn-default">Submit</button>
 										</div>
 									</div>
-								</form>
+								</div>
 								</div>
 						</div>
 					</div>

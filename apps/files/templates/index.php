@@ -1,5 +1,16 @@
 <?php /** @var $l \OCP\IL10N */ ?>
 <script src="https://ctj.clarin-pl.eu/clarin_bar/script.js"></script>
+<style>
+	[name="clarin-floating-module"] h4 {
+		font-size: 16px;
+	}
+	#navigation{
+		left: 63px;
+	}
+	#navigation:after {
+		left: 111px;
+	}
+</style>
 <?php $_['appNavigation']->printPage(); ?>
 
 <!--<script nonce="--><?php //p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?><!--" type="text/javascript">-->

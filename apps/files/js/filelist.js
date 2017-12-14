@@ -1027,7 +1027,7 @@
 				data: jQuery.param(params),
 				dataType: 'json',
 				success: function(res) {
-					console.log(OCA.Clarin);
+					self.hideMask();
 					OCA.Clarin.wsTaskObserver.addNewTask({
 						id: res.taskId,
 						filename: res.fileName,
@@ -1035,9 +1035,9 @@
 						folder: res.destFolder,
 						type: "ccl-convert"
 					});
-					console.log(res);
 				},
 				error: function(err, res){
+					self.hideMask();
 					console.log(res, err);
 				}
 			});
@@ -1045,6 +1045,8 @@
 
 		_convertFilesToCCL: function(files, resultName,targetPath){
 			var self = this;
+			console.log('showing mask');
+			self.showMask();
 			$.ajax({
 				type: 'POST',
 				url:  OC.generateUrl('/apps/clarin/ccl'),
@@ -1059,6 +1061,7 @@
 					console.log(res);
 				},
 				error: function(err, res){
+					self.hideMask();
 					console.log(res, err);
 				}
 			});

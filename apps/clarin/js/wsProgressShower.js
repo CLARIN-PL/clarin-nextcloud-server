@@ -89,6 +89,12 @@ $(document).ready(function() {
 		var isReady = response.status === 'DONE';
 		if (isReady){
 			var task = self.tasks.find(function(t){return t.id === taskId});
+
+			if (task.type === "ccl-convert" || task.type === "dspace-export"){
+				OCA.Files.App.fileList.addAndFetchFileInfo(task.filename, task.folder);
+
+			}
+
 			task.response = response;
 			task.status = 'DONE';
 			self.updateTasks();

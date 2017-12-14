@@ -68,6 +68,7 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	/** @var array Domains from which images can get loaded */
 	protected $allowedImageDomains = [
 		'http://ctj.clarin-pl.eu/',
+		'https://ctj.clarin-pl.eu/',
 		'\'self\'',
 		'data:',
 		'blob:',
@@ -75,6 +76,7 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	/** @var array Domains to which connections can be done */
 	protected $allowedConnectDomains = [
 		'http://clarin-pl.eu/',
+		'https://clarin-pl.eu/',
 		'http://ws.clarin-pl.eu',
 		'\'self\'',
 	];

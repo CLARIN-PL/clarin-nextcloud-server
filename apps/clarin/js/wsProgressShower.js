@@ -92,7 +92,11 @@ $(document).ready(function() {
 
 			if (task.type === "ccl-convert" || task.type === "dspace-export"){
 				OCA.Files.App.fileList.addAndFetchFileInfo(task.filename, task.folder);
-
+				if (task.type === "ccl-convert" || task.type === "dspace-export"){
+					setTimeout(function(){
+						OCA.Files.App.fileList.highlightFiles([task.filename]);
+					}, 100);
+				}
 			}
 
 			task.response = response;

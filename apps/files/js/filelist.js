@@ -1030,9 +1030,10 @@
 					console.log(OCA.Clarin);
 					OCA.Clarin.wsTaskObserver.addNewTask({
 						id: res.taskId,
+						filename: res.fileName,
 						name: "CCL convert <b>" + res.fileName + "</b>",
 						folder: res.destFolder,
-						type: "dspace-export"
+						type: "ccl-convert"
 					});
 					console.log(res);
 				},
@@ -1068,18 +1069,26 @@
 			var self = this;
 
 			var files = this.getSelectedFiles(); // make sure only txt files
-
-			var html = '<div class="clarin-ccl-modal-inside" style="min-width:570px"><h3 style="float: left">Name for created file: &nbsp;</h3>' +
+			console.log(files);
+			var html =
+				'<div class="clarin-ccl-modal-inside" style="min-width:570px"><h3 style="float: left">' +
+				'Name for created file: &nbsp;</h3>' +
 				'<input class="clarin-converted-file-name" type="text" value="result_name"> <span><i>.zip</i></span>' +
-				'</div>';
-			html += '<div style="clear: both; margin-left:23px">' +
+				'</div>' +
+			    '<div class="clarin-ccl-modal-inside" style="clear: both;">' +
 				'<h3>Selected files: </h3>' +
-				'<ul id="clarin-file-list" style="margin-left:50px;list-style:disc;">';
+				'<table id="clarin-file-list" class="filelist">';
 			for(var i = 0; i < files.length; i++){
-				html += '<li>' +files[i].name + '</li>';
+				html += //'<li>' +files[i].name + '</li>';
+				'<tr data-entryname="files" data-type="file">' +
+				'<td class="filename">' +// style="background-image:url(/nextcloud-dev/index.php/apps/theming/img/core/filetypes/file.svg?v=0)">' +
+				'<span class="icon-file"></span>' +
+				files[i].name +
+				'<td></td><td></td></tr>'
 			}
-			html += '</ul></div>';
-
+			html += '</table></div>';
+			html += '<div style="width: 100%;padding: 10px 0px;text-align: center;">' +
+				'<span><i>(you will be able to choose where to save the files later)</i></span></div>';
 			var callback = function(answer){
 					if(answer){
 						OC.dialogs.filepicker(t('files', 'Choose folder to save the result:'), function(targetPath) {

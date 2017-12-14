@@ -70,10 +70,13 @@ $(document).ready(function() {
 
 	WsTaskObserver.prototype.checkTaskStatus = function(taskId){
 		var self = this;
-		return true; // todo
+
+		// var ajaxBase = "http://ws.clarin-pl.eu/";
+		var ajaxBase = "/ws-clarin/";
+
 		var response = $.ajax({
 			type:"GET",
-			url:"http://ws.clarin-pl.eu/nlprest2/base/getStatus/"+taskId,
+			url: ajaxBase + "nlprest2/base/getStatus/"+taskId,
 			cache: false,
 			crossDomain: true,
 			processData: false,
@@ -118,9 +121,21 @@ $(document).ready(function() {
 
 	WsTaskObserver.prototype.getClickFunction = function(task){
 		var self = this;
-		if (task.type === "dspace-export"){
+
+		if (task.type === "ccl-convert" || task.type === "dspace-export"){
 			return  function(){
-				window.location = OC.webroot + '/index.php/apps/files/?dir=' + encodeURIComponent(task.folder);
+				if(OCA.Files.App.fileList.getCurrentDirectory() === task.folder){
+					OCA.Files.App.fileList.highlightFiles([task.filename]);
+					OCA.Files.App.fileList.showDetailsView(task.filename);
+				}
+				else{
+					OCA.Files.App.fileList.changeDirectory(task.folder);
+					setTimeout(function(){
+						OCA.Files.App.fileList.highlightFiles([task.filename]);
+						OCA.Files.App.fileList.showDetailsView(task.filename);
+					},200);
+				}
+				OCA.Clarin.bar.shrink()
 			};
 		}
 		else return function(){

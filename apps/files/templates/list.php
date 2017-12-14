@@ -58,16 +58,16 @@
 							<span><?php p($l->t('Download as zip'))?></span>
 						</a>
 
-<!--						<span class="conditional-actions">-->
-<!--							<a href="" class="dspace">-->
-<!--								<span class="icon icon-external"></span>-->
-<!--								<span>--><?php //p($l->t('Export to dSpace'))?><!--</span>-->
-<!--							</a>-->
+						<span class="conditional-actions">
+							<a href="" class="dspace">
+								<span class="icon icon-external"></span>
+								<span><?php p($l->t('Export to dSpace'))?></span>
+							</a>
 
-<!--							<a href="" class="inforex-export">-->
-<!--								<span class="icon icon-file"></span>-->
-<!--								<span>--><?php //p($l->t('Export to Inforex'))?><!--</span>-->
-<!--							</a>-->
+							<a href="" class="inforex-export">
+								<span class="icon icon-file"></span>
+								<span><?php p($l->t('Export to Inforex'))?></span>
+							</a>
 
 							<a href="" class="ccl">
 								<span class="icon icon-file"></span>

@@ -304,7 +304,7 @@ style('clarin', 'style');
 												<label class="control-label col-sm-5">Availability*: </label>
 												<div class="col-sm-7">
 													<input title="e.g. free; free for academic use; restricted use; request required; user licence required; registration required; unknown"
-															name="dcterms.accessRights" type="text" class="form-control" placeholder="availability in simple words..." required>
+															name="dc.terms.accessRights" type="text" class="form-control" placeholder="availability in simple words..." required>
 												</div>
 											</div>
 											<div class="form-group">
@@ -357,7 +357,7 @@ style('clarin', 'style');
 											<div class="form-group">
 												<label class="control-label col-sm-5">Language*: </label>
 												<div class="col-sm-7">
-													<select name="dc.language | dc.language.iso" type="text" class="form-control"required>
+													<select name="dc.language.iso" type="text" class="form-control"required>
 														<option value=""></option>
 													</select>
 												</div>
@@ -387,7 +387,7 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">subject: </label>
 																	<div class="col-sm-7">
-																		<input name="dc.subject--??" type="text" class="form-control" placeholder="optional subject...">
+																		<input name="local.subject" type="text" class="form-control" placeholder="optional subject...">
 																	</div>
 																</div>
 																<div class="form-group">

@@ -808,8 +808,6 @@
 			var baseUrl = OC.generateUrl('/apps/clarin');
 			var url = baseUrl + '/dspace_export';
 
-			console.log(url);
-
 			var form = document.createElement('form');
 			form.method = 'post';
 			form.action = url;
@@ -821,7 +819,6 @@
 			form.appendChild(input);
 
 			document.body.appendChild(form);
-			console.log(form);
 			form.submit();
 
 		},
@@ -850,7 +847,6 @@
 
 		_addLinkToList: function(links, response, endcallback, tablelength) {
 			var file = {};
-			console.log(response);
 			file.url = response['ocs']['data']['url'];
 			file.path = response['ocs']['data']['path'];
 			file.mimetype = response['ocs']['data']['mimetype'];
@@ -893,27 +889,6 @@
 			});
 		},
 
-		// _makeClarinInforexPost: function(data){
-		// 	files = JSON.stringify(data);
-		// 	var baseUrl = OC.generateUrl('/apps/clarin');
-		// 	var url = baseUrl + '/inforex_export';
-		//
-		// 	console.log(url);
-		//
-		// 	var form = document.createElement('form');
-		// 	form.method = 'post';
-		// 	form.action = url;
-		//
-		// 	var input = document.createElement('input');
-		// 	input.type = "text";
-		// 	input.name = "files";
-		// 	input.value = JSON.stringify(data);
-		// 	form.appendChild(input);
-		//
-		// 	document.body.appendChild(form);
-		// 	console.log(form);
-		// 	form.submit();
-		// },
 
 		_showInforexModal: function(callback, filename){
 
@@ -944,11 +919,10 @@
 
 			var callback = function(decision){
 				if(!decision) return;
-				console.log('sending files to inforex');
+
 				var path = file['path'];
 				var name = file['name'];
 				var filepath = path+name;
-				console.log(file);
 				var corpName = $('.inforex-corpus-name').last().val();
 
 				$.ajax({
@@ -957,7 +931,6 @@
 					data: jQuery.param({file: file, corpusName: corpName}),
 					dataType: 'json',
 					success: function(res) {
-						console.log(res);
 						OCA.Clarin.wsTaskObserver.addNewTask({
 							id: res.filename + (+new Date()),
 							name: "Inforex export- <b>"+ corpName +"</b> (see progres)",
@@ -976,8 +949,6 @@
 
 		_onDspaceExport: function(event){
 			event.preventDefault();
-			console.log('sending files to dspace');
-			console.log(this.getSelectedFiles());
 
 			var files = this.getSelectedFiles();
 			for(var i=0; i<files.length; ++i){
@@ -992,7 +963,7 @@
 		_onZipFiles: function(event){
 			event.preventDefault();
 			var files = this.getSelectedFiles();
-			console.log(files);
+
 			$.ajax({
 				type: 'POST',
 				url:  OC.generateUrl('/apps/clarin/zip'),
@@ -1045,7 +1016,6 @@
 
 		_convertFilesToCCL: function(files, resultName,targetPath){
 			var self = this;
-			console.log('showing mask');
 			self.showMask();
 			$.ajax({
 				type: 'POST',
@@ -1058,7 +1028,6 @@
 				dataType: 'json',
 				success: function(res) {
 					self._startWatchingFile(res.watchParams);
-					console.log(res);
 				},
 				error: function(err, res){
 					self.hideMask();
@@ -1072,7 +1041,7 @@
 			var self = this;
 
 			var files = this.getSelectedFiles(); // make sure only txt files
-			console.log(files);
+
 			var html =
 				'<div class="clarin-ccl-modal-inside" style="min-width:570px"><h3 style="float: left">' +
 				'Name for created file: &nbsp;</h3>' +
@@ -1109,12 +1078,12 @@
 				null,
 				true
 			);
-			console.log(message);
+
 			message.then(function(){
-				console.log('done');
+				// console.log('done');
 			});
 			message.fail(function(){
-				console.log('fail');
+				// console.log('fail');
 			});
 		},
 

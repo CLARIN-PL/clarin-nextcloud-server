@@ -48,13 +48,11 @@ $(document).ready(function() {
 	WsTaskObserver.prototype.initClarinModuleList = function(){
 		var self = this;
 		self.clarinModule.addMenu('active_tasks', "Twoje zadania", "Your tasks");
-		console.log(self.tasks);
 		for(var i = self.tasks.length-1; i >= 0 ; i--){
 			var temp = function(task){
 				if(((new Date() - task.dateAdd) / 1000 / 60) > self.minutesToShow){
 					self.tasks.splice(i,1);
 				} else{
-					console.log('task not ready to be deleted');
 					var callbackIsReady = null;
 					if (task.status !== 'DONE')
 						callbackIsReady = function(){

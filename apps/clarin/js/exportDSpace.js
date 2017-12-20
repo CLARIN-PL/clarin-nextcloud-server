@@ -143,7 +143,9 @@ $(document).ready(function() {
 		if(formData === null)
 			return;
 
-		console.log(formData);
+		formData = formData.filter(function(it){
+			return it.value !== '';
+		});
 
 		var selectedFiles = [];
 		$('#filesTable tbody tr td input').map(function(idx, el){
@@ -158,13 +160,14 @@ $(document).ready(function() {
 			var zipSuccess = function(response){
 				console.log('success');
 				console.log(response);
+				alert('Export successful.\nYou will be now redirected to main site.');
+				window.location.href = window.location.host;
 			};
 			var zipFail = function(error){
 				console.log(error);
 			};
 			self.zipFiles(selectedFiles, formData,zipSuccess, zipFail)
 		}
-
 	};
 
 	DSpaceConnector.prototype.zipFiles = function(files, formData,callbackSuccess, callbackFail){
@@ -198,8 +201,6 @@ $(document).ready(function() {
 				self.lists[list.attr('id')] =  new ExpandableList(list, form, self);
 			}();
 		}
-		console.log(self.lists);
-
 	};
 
 	function ExpandableList(listHandle, formHandle, parent){

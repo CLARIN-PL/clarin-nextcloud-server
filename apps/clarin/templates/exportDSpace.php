@@ -248,7 +248,7 @@ style('clarin', 'style');
 												<div class="form-group">
 													<label class="control-label col-sm-5 col-md-4">Project name: </label>
 													<div class="col-sm-7  col-md-8">
-														<input name="metashare.ResourceInfo#CreationInfo#FundingInfo#ProjectInfo.projectName" class="form-control" placeholder="optional project name...">
+														<input name="metashare.ResourceInfo#ResourceCreationInfo#FundingInfo#ProjectInfo.projectName" class="form-control" placeholder="optional project name...">
 													</div>
 												</div>
 												<div class="form-group">
@@ -304,7 +304,7 @@ style('clarin', 'style');
 												<label class="control-label col-sm-5">Availability*: </label>
 												<div class="col-sm-7">
 													<input title="e.g. free; free for academic use; restricted use; request required; user licence required; registration required; unknown"
-															name="dc.terms.accessRights" type="text" class="form-control" placeholder="availability in simple words..." required>
+															name="dcterms.accessRights" type="text" class="form-control" placeholder="availability in simple words..." required>
 												</div>
 											</div>
 											<div class="form-group">
@@ -341,7 +341,7 @@ style('clarin', 'style');
 													<div class="form-group">
 														<label class="control-label col-sm-5">Demo URL: </label>
 														<div class="col-sm-7">
-															<input name="demo.uri" type="text" class="form-control" placeholder="demo link..." required>
+															<input name="local.demo.uri" type="text" class="form-control" placeholder="demo link..." required>
 														</div>
 													</div>
 												</div>
@@ -399,7 +399,7 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Temporal Coverage: </label>
 																	<div class="col-sm-7">
-																		<input name="dc.covarage.temporal" type="text" class="form-control" placeholder="optional temporal coverage...">
+																		<input name="dc.coverage.temporal" type="text" class="form-control" placeholder="optional temporal coverage...">
 																	</div>
 																</div>
 																</form>
@@ -456,13 +456,13 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Publication date: </label>
 																	<div class="col-sm-7">
-																		<input name="local.publication.date" type="text" class="form-control" placeholder="optional publication date...">
+																		<input name="local.publication.date" type="date" class="form-control" placeholder="optional publication date...">
 																	</div>
 																</div>
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Descriptions: </label>
 																	<div class="col-sm-7">
-																		<textarea name="local.publication.descritpions" type="text" class="form-control" placeholder="optional descriptions..."></textarea>
+																		<textarea name="local.publication.descriptions" type="text" class="form-control" placeholder="optional descriptions..."></textarea>
 																	</div>
 																</div>
 																</form>

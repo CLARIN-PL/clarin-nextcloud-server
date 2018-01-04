@@ -48,20 +48,27 @@ $(document).ready(function() {
 	WsTaskObserver.prototype.initClarinModuleList = function(){
 		var self = this;
 		self.clarinModule.addMenu('active_tasks', "Twoje zadania", "Your tasks");
+
+		// going through array backwards to delete old tasks
 		for(var i = self.tasks.length-1; i >= 0 ; i--){
-			var temp = function(task){
+			(function(task){
 				if(((new Date() - task.dateAdd) / 1000 / 60) > self.minutesToShow){
 					self.tasks.splice(i,1);
-				} else{
-					var callbackIsReady = null;
-					if (task.status !== 'DONE')
-						callbackIsReady = function(){
-							return self.checkTaskStatus(task.id);
-						};
-					self.clarinModule.addMenuElement('active_tasks', 'check-square-o', task.name,
-						task.name, self.getClickFunction(task), callbackIsReady);
 				}
-			}(self.tasks[i]);
+			})(self.tasks[i]);
+		}
+
+		// displaying tasks in separate loop to preserve order
+		for (var i = 0; i < self.tasks.length; i++){
+			(function(task){
+				var callbackIsReady = null;
+				if (task.status !== 'DONE')
+					callbackIsReady = function(){
+						return self.checkTaskStatus(task.id);
+					};
+				self.clarinModule.addMenuElement('active_tasks', 'check-square-o', task.name,
+					task.name, self.getClickFunction(task), callbackIsReady);
+			})(self.tasks[i]);
 		}
 		self.clarinModule.changeLanguage(self.clarinModule.language);
 	};

@@ -893,12 +893,19 @@
 		_showInforexModal: function(callback, filename){
 
 			var html = '<div class="clarin-ccl-modal-inside" style="min-width:570px">' +
-				'<h3>Selected file: <i>' + filename + '</i></h3>'+
-				'<div>'+
+				'<h3 style="float:left;">Selected file:</h3><h3 style="width: 50%; float:right;"><i>' + filename + '</i></h3>' +
+				'<div style="clear:both">'+
 				'<h3 style="float: left">Name for inforex corpus: &nbsp;</h3>' +
-				'<input class="form-control inforex-corpus-name" style="width: 50%" type="text" value="'+
-				filename.substring(0, filename.lastIndexOf('.')) +'">'+
+				'<input class="form-control inforex-corpus-name" style="width: 50%; float:right;" type="text" value="'+
+				filename.substring(0, filename.lastIndexOf('.')) +'">' +
 				'</div>' +
+				'<div style="clear:both">' +
+				'<h3 style="float: left">Inforex description: &nbsp;</h3>' +
+				'<input class="form-control inforex-corpus-desc" style="width: 50%; float:right;" type="text" value="Corpus imported from Nextcloud">'+
+				'</div>' +
+				'<br>' +
+				'<div style="clear:both"></div><hr>' +
+				'<p><i>Please remember that files contained in the archive have to be in CCL format.<br>You can create it by selecting text files and choosing "Convert to CCL" option.</i></p>';
 				'</div>';
 
 			OC.dialogs.message(
@@ -924,11 +931,12 @@
 				var name = file['name'];
 				var filepath = path+name;
 				var corpName = $('.inforex-corpus-name').last().val();
+				var corpDesc = $('.inforex-corpus-desc').last().val();
 
 				$.ajax({
 					type: 'POST',
 					url:  OC.generateUrl('/apps/clarin/inforex_export'),
-					data: jQuery.param({file: file, corpusName: corpName}),
+					data: jQuery.param({file: file, corpusName: corpName, corpusDesc: corpDesc}),
 					dataType: 'json',
 					success: function(res) {
 						OCA.Clarin.wsTaskObserver.addNewTask({

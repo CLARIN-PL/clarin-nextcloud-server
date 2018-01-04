@@ -71,7 +71,7 @@
 
 							<a href="" class="ccl">
 								<span class="icon icon-file"></span>
-								<span><?php p($l->t('Convert to CCL file'))?></span>
+								<span><?php p($l->t('Convert to CCL'))?></span>
 							</a>
 
 <!--						try to zip files-->

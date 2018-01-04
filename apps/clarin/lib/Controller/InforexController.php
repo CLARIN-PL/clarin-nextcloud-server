@@ -27,6 +27,7 @@ class InforexController extends Controller {
 	public function export(){
 		$fileData = $this->request->getParam('file');
 		$corpName = $this->request->getParam('corpusName');
+		$corpDesc = $this->request->getParam('corpusDesc');
 
 		$fileOwnerId = $this->userId;
 		if($fileData['shareOwner'] != ""){
@@ -43,7 +44,7 @@ class InforexController extends Controller {
 		if(!$success)
 			return new DataResponse("error while copying file", 406);
 
-		$retVal = json_decode($this->informInforex($destFileName, $corpName, $this->userId));
+		$retVal = json_decode($this->informInforex($destFileName, $corpName, $corpDesc, $this->userId));
 		$error = property_exists($retVal, "error");
 		if($error){
 			return new JSONResponse(["error" => $retVal->error], 406);
@@ -52,8 +53,10 @@ class InforexController extends Controller {
 		return new JSONResponse(["url" => $retVal->redirect, "filename"=> $fileData['name']]);
 	}
 
-	public function informInforex($filename, $corpName, $userId){
+	public function informInforex($filename, $corpName, $corpDesc, $userId){
 		$ch = curl_init();
+
+		$tempRootSharedDir = '/public-dspace/';
 
 		curl_setopt_array($ch, array(
 			CURLOPT_RETURNTRANSFER => 1,
@@ -63,7 +66,8 @@ class InforexController extends Controller {
 				'ajax' => 'nextcloud_import',
 				'email' => $userId,
 				'name' => $corpName,
-				'path' => "nextcloud/".$filename
+				'path' => $tempRootSharedDir.'nextcloud/'.$filename,
+				'description' => $corpDesc
 			)
 		));
 

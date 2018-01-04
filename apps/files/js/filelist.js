@@ -665,20 +665,7 @@
 			}
 		},
 
-		/**
-		 * Event handler for when clicking on a file's checkbox
-		 */
-		_onClickFileCheckbox: function(e) {
-			var $tr = $(e.target).closest('tr');
-			var state = !$tr.hasClass('selected');
-			this._selectFileEl($tr, state);
-			this._lastChecked = $tr;
-			this.updateSelectionSummary();
-			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
-				// hide sidebar
-				this._updateDetailsView(null);
-			}
-
+		_updateClarinActions: function(){
 			//Clarin block Download Buttton
 			var summary = this._selectionSummary.summary;
 			if(summary.totalFiles < 2 && summary.totalDirs < 1){
@@ -707,6 +694,22 @@
 		},
 
 		/**
+		 * Event handler for when clicking on a file's checkbox
+		 */
+		_onClickFileCheckbox: function(e) {
+			var $tr = $(e.target).closest('tr');
+			var state = !$tr.hasClass('selected');
+			this._selectFileEl($tr, state);
+			this._lastChecked = $tr;
+			this.updateSelectionSummary();
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
+			}
+			this._updateClarinActions();
+		},
+
+		/**
 		 * Event handler for when selecting/deselecting all files
 		 */
 		_onClickSelectAll: function(e) {
@@ -727,6 +730,7 @@
 				// hide sidebar
 				this._updateDetailsView(null);
 			}
+			this._updateClarinActions();
 		},
 
 		/**

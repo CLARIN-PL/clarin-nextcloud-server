@@ -3,8 +3,10 @@ script('clarin', 'bootstrap.min');
 script('clarin', 'exportDSpace');
 script('clarin', 'jquery.validate.min');
 script('clarin', 'additional-methods.min');
+script('clarin', 'bootstrap-select.min');
 style('clarin', 'bootstrap.min');
 style('clarin', 'style');
+style('clarin', 'bootstrap-select.min');
 ?>
 
 <div id="app">
@@ -313,35 +315,23 @@ style('clarin', 'style');
 													<input name="dc.rights.holder" type="text" class="form-control" placeholder="rights holder..." required>
 												</div>
 											</div>
-											<div class="form-group">
-												<label class="control-label col-sm-5">License*: </label>
-												<div class="col-sm-7">
-													<!--todo make selectable + text -->
-													<input title="A description of the licensing conditions under which the resource can be used."
-															name="dc.rights" type="text" class="form-control" placeholder="license name..." required>
-												</div>
-											</div>
 											</form>
 										</div>
 										<div class="col-sm-6">
 											<form class="form-horizontal">
 												<div class="form-group">
 													<div class="form-group">
-														<label class="control-label col-sm-5">License Label*: </label>
-														<div class="col-sm-7">
-															<input name="dc.rights.label" type="text" class="form-control" placeholder="license label..." required>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="control-label col-sm-5">License URL*: </label>
-														<div class="col-sm-7">
-															<input name="dc.rights.uri" type="text" class="form-control" placeholder="license url..." required>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="control-label col-sm-5">Demo URL: </label>
+														<label class="control-label col-sm-5">Demo URL*: </label>
 														<div class="col-sm-7">
 															<input name="local.demo.uri" type="text" class="form-control" placeholder="demo link..." required>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="control-label col-sm-5">License*: </label>
+														<div class="col-sm-7">
+															<!--todo make selectable + text -->
+
+															<select name="dc.rights" class="form-control selectpicker" data-size="8" required></select>
 														</div>
 													</div>
 												</div>
@@ -462,7 +452,7 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Descriptions: </label>
 																	<div class="col-sm-7">
-																		<textarea name="local.publication.descriptions" type="text" class="form-control" placeholder="optional descriptions..."></textarea>
+																		<textarea name="local.publication.descriptions" class="form-control" placeholder="optional descriptions..."></textarea>
 																	</div>
 																</div>
 																</form>

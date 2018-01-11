@@ -67,6 +67,8 @@ $(document).ready(function() {
 				}
 			}
 		}
+
+		this.initPossibleLicenses();
 	};
 
 	DSpaceConnector.prototype.showNoFilesSelectedErrorMsg = function(showOrHide){
@@ -124,6 +126,13 @@ $(document).ready(function() {
 		return returnData;
 	};
 
+	DSpaceConnector.prototype.getAdditionalFormFields = function(choosenLic){
+		var self = this;
+		console.log(choosenLic);
+		console.log(self.possibleLicenses);
+		return [];
+	};
+
 	DSpaceConnector.prototype.getAllFormsData = function(){
 		var self = this;
 
@@ -133,7 +142,22 @@ $(document).ready(function() {
 		if(regularFormsData === null || multipleChoiceFormsData === null)
 			return null;
 
-		return regularFormsData.concat(multipleChoiceFormsData);
+
+		var licElementIdx = regularFormsData.findIndex(function(it){ return it.name === 'dc.rights';});
+		var licIdx = parseInt(regularFormsData[licElementIdx]['value']);
+		regularFormsData.splice(licElementIdx, 1);
+
+
+		var licensesFields = [
+			{ name: 'dc.rights', value: self.possibleLicenses[licIdx]['rights']},
+			{ name: 'dc.rights.uri', value: self.possibleLicenses[licIdx]['uri']},
+			{ name: 'dc.rights.label', value: self.possibleLicenses[licIdx]['label']}
+		];
+
+		return regularFormsData
+			.concat(multipleChoiceFormsData)
+			.concat(licensesFields);
+
 	};
 
 	DSpaceConnector.prototype.submit = function(){
@@ -186,6 +210,43 @@ $(document).ready(function() {
 			},
 			error: function(res){
 				callbackFail(res);
+			}
+		});
+	};
+
+	DSpaceConnector.prototype.initPossibleLicenses = function(){
+		var self = this;
+		var updateView = function(data){
+			var selectName = 'dc.rights';
+			self.possibleLicenses = data;
+			var fields = {
+				'dc.rights.label': data.map(function(obj){return obj.label}),
+				'dc.rights.uri': data.map(function(obj){return obj.uri}),
+				'dc.rights': data.map(function(obj){return obj.rights})
+			};
+
+			var i;
+			var selectHandle = $('[name="'+ selectName +'"]');
+			for(i=0; i < fields['dc.rights'].length; i++){
+				selectHandle.append('<option ' +
+					'data-content="'+fields['dc.rights'][i]
+					+' <br>\'' + fields['dc.rights.label'][i] + '\' - '
+					+ '<i>' + fields['dc.rights.uri'][i] + '</i>"'
+					+ ' value= '+ i +'>'
+
+					+ '</option>');
+			}
+			$('.selectpicker').selectpicker();
+		};
+		var dspaceUrlLic = 'https://clarin-pl.eu/rest/licenses';
+		$.ajax({
+			type: 'GET',
+			url:  dspaceUrlLic,
+			success: function(data, res) {
+				updateView(data);
+			},
+			error: function(res){
+				console.log(res);
 			}
 		});
 	};

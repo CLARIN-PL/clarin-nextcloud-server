@@ -115,13 +115,19 @@ class DSpaceController extends Controller {
 	}
 
 	private function sendInfoToDspace($data){
+		// possible licenses:
+		//http://156.17.135.55:8090/rest/licenses
+
+
 		//156.17.135.55:8090/rest/collection/2/nextcloud/items <- post
+		$sentToUrl = '156.17.135.55:8090/';
+		$sentToUrl = 'https://clarin-pl.eu/';
 		$ch = curl_init();
 
 		curl_setopt_array($ch, array(
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_POST => 1,
-			CURLOPT_URL => "156.17.135.55:8090/rest/collections/2/nextcloud/items",
+			CURLOPT_URL => $sentToUrl."/rest/collections/2/nextcloud/items",
 			CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
 			CURLOPT_POSTFIELDS=> json_encode($data)
 		));

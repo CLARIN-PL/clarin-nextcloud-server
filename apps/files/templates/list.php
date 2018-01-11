@@ -64,16 +64,37 @@
 								<span><?php p($l->t('Export to dSpace'))?></span>
 							</a>
 
-							<a href="" class="inforex-export">
-								<span class="icon icon-file"></span>
-								<span><?php p($l->t('Export to Inforex'))?></span>
-							</a>
+<!--							<a href="" class="inforex-export">-->
+<!--								<span class="icon icon-file"></span>-->
+<!--								<span>--><?php //p($l->t('Export to Inforex'))?><!--</span>-->
+<!--							</a>-->
 
 							<a href="" class="ccl">
 								<span class="icon icon-file"></span>
 								<span><?php p($l->t('Convert to CCL'))?></span>
 							</a>
 
+
+<!--							<a href="" class="ws-tasks">-->
+<!--								<span>--><?php //p($l->t('Analyse in other tools'))?>
+<!--									<span class="icon icon-triangle-s "></span>-->
+<!--								</span>-->
+<!--							</a>-->
+<!--								<div class="expandable-menu menu" style="display: block">-->
+<!--									<ul>-->
+<!--										<li>abc</li>-->
+<!--										<li>cde</li>-->
+<!--										<li>efg</li>-->
+<!--										<li>adf</li>-->
+<!--										<li>-->
+<!--											<a href="/nextcloud-dev/index.php/settings/personal">-->
+<!--												<img alt="" src="/nextcloud-dev/settings/img/personal.svg?v=d483fb5b6eaef92e24d0f8c20112c099">-->
+<!--												Element-->
+<!--											</a>-->
+<!--										</li>-->
+<!--									</ul>-->
+<!--								</div>-->
+<!--							</a>-->
 <!--						try to zip files-->
 <!--						<a href="" class="zip">-->
 <!--							<span class="icon icon-download"></span>-->

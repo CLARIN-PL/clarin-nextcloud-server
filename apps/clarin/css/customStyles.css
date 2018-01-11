@@ -18,3 +18,82 @@
 .clarin-ccl-modal-inside{
 	padding-left: 23px;
 }
+
+/*
+ * overrides in filelist styles
+ */
+
+.expandable-menu {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.expandable-menu:after {
+	bottom: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(0, 0, 0, 0);
+	border-bottom-color: rgba(255, 255, 255, .97);
+	border-width: 10px;
+	margin-left: -10px;
+	right: 15px;
+}
+
+
+.expandable-menu {
+	position: absolute;
+	right: 10px;
+	top: 45px;
+	z-index: 2000;
+	display: none;
+	background: rgb(255, 255, 255);
+	border: 1px solid rgb(204, 204, 204);
+	box-shadow: 0 1px 10px rgba(50, 50, 50, .7);
+	border-radius: 3px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	box-sizing: border-box;
+}
+.expandable-menu:after {
+	border-color: rgba(0, 0, 0, 0);
+	border-bottom-color: rgba(255, 255, 255, 1);
+}
+.expandable-menu a {
+	display: block;
+	height: 40px;
+	color: #000;
+	padding: 4px 12px 0;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	opacity: .5;
+	box-sizing: border-box;
+}
+.expandable-menu a img {
+	margin-bottom: -3px;
+	margin-right: 6px;
+}
+.expandable-menu a:hover,
+.expandable-menu a:focus,
+.expandable-menu a:active,
+.expandable-menu a.active {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+}
+
+/*for multi line select*/
+.dropdown-menu.inner.selectpicker li:nth-child(odd){
+	background-color: #f3f3f3;
+}
+
+#app-content #app-content-wrapper form.form-horizontal .form-group
+button.btn.dropdown-toggle.selectpicker.btn-default{
+	color: #333;
+	background-color: #fff;
+	padding: 6px 25px 6px 12px;
+	font-weight: 400;
+	font-size: 14px;
+}

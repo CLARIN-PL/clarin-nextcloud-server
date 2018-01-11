@@ -97,7 +97,7 @@ $(document).ready(function() {
 		var self = this;
 		var keyMapping = {
 			'keywords-list': 'dc.subject',
-			'contact-list': 'contact.person',
+			'contact-list': 'local.contact.person',
 			'size-list': 'local.size.info',
 			'creators-list': 'dc.contributor.author'
 		};

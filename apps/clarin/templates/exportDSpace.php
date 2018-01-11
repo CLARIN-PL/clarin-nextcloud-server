@@ -3,8 +3,10 @@ script('clarin', 'bootstrap.min');
 script('clarin', 'exportDSpace');
 script('clarin', 'jquery.validate.min');
 script('clarin', 'additional-methods.min');
+script('clarin', 'bootstrap-select.min');
 style('clarin', 'bootstrap.min');
 style('clarin', 'style');
+style('clarin', 'bootstrap-select.min');
 ?>
 
 <div id="app">
@@ -248,7 +250,7 @@ style('clarin', 'style');
 												<div class="form-group">
 													<label class="control-label col-sm-5 col-md-4">Project name: </label>
 													<div class="col-sm-7  col-md-8">
-														<input name="metashare.ResourceInfo#CreationInfo#FundingInfo#ProjectInfo.projectName" class="form-control" placeholder="optional project name...">
+														<input name="metashare.ResourceInfo#ResourceCreationInfo#FundingInfo#ProjectInfo.projectName" class="form-control" placeholder="optional project name...">
 													</div>
 												</div>
 												<div class="form-group">
@@ -313,35 +315,23 @@ style('clarin', 'style');
 													<input name="dc.rights.holder" type="text" class="form-control" placeholder="rights holder..." required>
 												</div>
 											</div>
-											<div class="form-group">
-												<label class="control-label col-sm-5">License*: </label>
-												<div class="col-sm-7">
-													<!--todo make selectable + text -->
-													<input title="A description of the licensing conditions under which the resource can be used."
-															name="dc.rights" type="text" class="form-control" placeholder="license name..." required>
-												</div>
-											</div>
 											</form>
 										</div>
 										<div class="col-sm-6">
 											<form class="form-horizontal">
 												<div class="form-group">
 													<div class="form-group">
-														<label class="control-label col-sm-5">License Label*: </label>
+														<label class="control-label col-sm-5">Demo URL*: </label>
 														<div class="col-sm-7">
-															<input name="dc.rights.label" type="text" class="form-control" placeholder="license label..." required>
+															<input name="local.demo.uri" type="text" class="form-control" placeholder="demo link..." required>
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="control-label col-sm-5">License URL*: </label>
+														<label class="control-label col-sm-5">License*: </label>
 														<div class="col-sm-7">
-															<input name="dc.rights.uri" type="text" class="form-control" placeholder="license url..." required>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="control-label col-sm-5">Demo URL: </label>
-														<div class="col-sm-7">
-															<input name="demo.uri" type="text" class="form-control" placeholder="demo link..." required>
+															<!--todo make selectable + text -->
+
+															<select name="dc.rights" class="form-control selectpicker" data-size="8" required></select>
 														</div>
 													</div>
 												</div>
@@ -357,7 +347,7 @@ style('clarin', 'style');
 											<div class="form-group">
 												<label class="control-label col-sm-5">Language*: </label>
 												<div class="col-sm-7">
-													<select name="dc.language | dc.language.iso" type="text" class="form-control"required>
+													<select name="dc.language.iso" type="text" class="form-control"required>
 														<option value=""></option>
 													</select>
 												</div>
@@ -387,7 +377,7 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">subject: </label>
 																	<div class="col-sm-7">
-																		<input name="dc.subject--??" type="text" class="form-control" placeholder="optional subject...">
+																		<input name="local.subject" type="text" class="form-control" placeholder="optional subject...">
 																	</div>
 																</div>
 																<div class="form-group">
@@ -399,7 +389,7 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Temporal Coverage: </label>
 																	<div class="col-sm-7">
-																		<input name="dc.covarage.temporal" type="text" class="form-control" placeholder="optional temporal coverage...">
+																		<input name="dc.coverage.temporal" type="text" class="form-control" placeholder="optional temporal coverage...">
 																	</div>
 																</div>
 																</form>
@@ -456,13 +446,13 @@ style('clarin', 'style');
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Publication date: </label>
 																	<div class="col-sm-7">
-																		<input name="local.publication.date" type="text" class="form-control" placeholder="optional publication date...">
+																		<input name="local.publication.date" type="date" class="form-control" placeholder="optional publication date...">
 																	</div>
 																</div>
 																<div class="form-group">
 																	<label class="control-label col-sm-5">Descriptions: </label>
 																	<div class="col-sm-7">
-																		<textarea name="local.publication.descritpions" type="text" class="form-control" placeholder="optional descriptions..."></textarea>
+																		<textarea name="local.publication.descriptions" class="form-control" placeholder="optional descriptions..."></textarea>
 																	</div>
 																</div>
 																</form>

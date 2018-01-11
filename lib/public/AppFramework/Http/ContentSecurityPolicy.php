@@ -75,6 +75,7 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	];
 	/** @var array Domains to which connections can be done */
 	protected $allowedConnectDomains = [
+		'http://156.17.135.55:8090', // todo- change to final dspace account
 		'http://clarin-pl.eu/',
 		'https://clarin-pl.eu/',
 		'http://ws.clarin-pl.eu',

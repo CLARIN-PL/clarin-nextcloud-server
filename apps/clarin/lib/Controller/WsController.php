@@ -57,4 +57,17 @@ class WsController extends Controller {
 				'userId' => $this->userId
 			],]);
 	}
+
+	public function exportWsTask(){
+		$file = json_decode($this->request->getParam('file'), true);
+		$wsToolName = json_decode($this->request->getParam('toolName'), true);
+
+//		$wsToolName = 'summarize';
+		$file = 'http%3A%2F%2Fws1-clarind.esc.rzg.mpg.de%2Fdrop-off%2Fstorage%2F1515072187261.txt';
+		$wsLink = 'http://ws.clarin-pl.eu/'.$wsToolName.'.shtml?weblicht-file='.$file;
+
+		return new JSONResponse([
+			'link' => $wsLink
+		]);
+	}
 }

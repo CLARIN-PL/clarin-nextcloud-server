@@ -665,20 +665,7 @@
 			}
 		},
 
-		/**
-		 * Event handler for when clicking on a file's checkbox
-		 */
-		_onClickFileCheckbox: function(e) {
-			var $tr = $(e.target).closest('tr');
-			var state = !$tr.hasClass('selected');
-			this._selectFileEl($tr, state);
-			this._lastChecked = $tr;
-			this.updateSelectionSummary();
-			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
-				// hide sidebar
-				this._updateDetailsView(null);
-			}
-
+		_updateClarinActions: function(){
 			//Clarin block Download Buttton
 			var summary = this._selectionSummary.summary;
 			if(summary.totalFiles < 2 && summary.totalDirs < 1){
@@ -707,6 +694,22 @@
 		},
 
 		/**
+		 * Event handler for when clicking on a file's checkbox
+		 */
+		_onClickFileCheckbox: function(e) {
+			var $tr = $(e.target).closest('tr');
+			var state = !$tr.hasClass('selected');
+			this._selectFileEl($tr, state);
+			this._lastChecked = $tr;
+			this.updateSelectionSummary();
+			if (this._detailsView && !this._detailsView.$el.hasClass('disappear')) {
+				// hide sidebar
+				this._updateDetailsView(null);
+			}
+			this._updateClarinActions();
+		},
+
+		/**
 		 * Event handler for when selecting/deselecting all files
 		 */
 		_onClickSelectAll: function(e) {
@@ -727,6 +730,7 @@
 				// hide sidebar
 				this._updateDetailsView(null);
 			}
+			this._updateClarinActions();
 		},
 
 		/**
@@ -893,12 +897,19 @@
 		_showInforexModal: function(callback, filename){
 
 			var html = '<div class="clarin-ccl-modal-inside" style="min-width:570px">' +
-				'<h3>Selected file: <i>' + filename + '</i></h3>'+
-				'<div>'+
+				'<h3 style="float:left;">Selected file:</h3><h3 style="width: 50%; float:right;"><i>' + filename + '</i></h3>' +
+				'<div style="clear:both">'+
 				'<h3 style="float: left">Name for inforex corpus: &nbsp;</h3>' +
-				'<input class="form-control inforex-corpus-name" style="width: 50%" type="text" value="'+
-				filename.substring(0, filename.lastIndexOf('.')) +'">'+
+				'<input class="form-control inforex-corpus-name" style="width: 50%; float:right;" type="text" value="'+
+				filename.substring(0, filename.lastIndexOf('.')) +'">' +
 				'</div>' +
+				'<div style="clear:both">' +
+				'<h3 style="float: left">Inforex description: &nbsp;</h3>' +
+				'<input class="form-control inforex-corpus-desc" style="width: 50%; float:right;" type="text" value="Corpus imported from Nextcloud">'+
+				'</div>' +
+				'<br>' +
+				'<div style="clear:both"></div><hr>' +
+				'<p><i>Please remember that files contained in the archive have to be in CCL format.<br>You can create it by selecting text files and choosing "Convert to CCL" option.</i></p>';
 				'</div>';
 
 			OC.dialogs.message(
@@ -924,11 +935,12 @@
 				var name = file['name'];
 				var filepath = path+name;
 				var corpName = $('.inforex-corpus-name').last().val();
+				var corpDesc = $('.inforex-corpus-desc').last().val();
 
 				$.ajax({
 					type: 'POST',
 					url:  OC.generateUrl('/apps/clarin/inforex_export'),
-					data: jQuery.param({file: file, corpusName: corpName}),
+					data: jQuery.param({file: file, corpusName: corpName, corpusDesc: corpDesc}),
 					dataType: 'json',
 					success: function(res) {
 						OCA.Clarin.wsTaskObserver.addNewTask({

@@ -115,10 +115,10 @@ $(document).ready(function() {
 							.css('display', 'block')
 							.text(text);
 						allNecessaryFieldsGiven = false;
-					}
-				} else{
-					for(var i = 0; i < data.length; i++){
-						returnData.push({name: keyMapping[key], value: data[i]});
+					}else{
+						for(var i = 0; i < data.length; i++){
+							returnData.push({name: keyMapping[key], value: data[i]});
+						}
 					}
 				}
 			}

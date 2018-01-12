@@ -69,19 +69,10 @@ style('clarin', 'bootstrap-select.min');
 												<div class="form-group">
 													<label class="control-label col-sm-5">Resource type*: </label>
 													<div class="col-sm-7">
-														<select name="dc.type" class="form-control" required>
-															<option value=""></option>
+														<select name="dc.type" data-live-search="true" class="form-control selectpicker" required>
 														</select>
 													</div>
 												</div>
-<!--												<div class="form-group">-->
-<!--													<label class="control-label col-sm-5">Resource class*: </label>-->
-<!--													<div class="col-sm-7">-->
-<!--														<select name="resourceClass" class="form-control" required>-->
-<!--															<option value=""></option>-->
-<!--														</select>-->
-<!--													</div>-->
-<!--												</div>-->
 												<div class="form-group">
 													<label class="control-label col-sm-5">Date issued*: </label>
 													<div class="col-sm-7">
@@ -89,7 +80,7 @@ style('clarin', 'bootstrap-select.min');
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="control-label col-sm-5">Description: </label>
+													<label class="control-label col-sm-5">Description*: </label>
 													<div class="col-sm-7">
 														<textarea name="dc.description" type="text" class="form-control" placeholder="description" required></textarea>
 													</div>
@@ -99,7 +90,7 @@ style('clarin', 'bootstrap-select.min');
 												<div class="form-group">
 													<label class="control-label col-sm-5">Subject Keywords*: </label>
 													<div class="col-sm-7 padding-top-column">
-														<label id="keywords-error-label" style="display:none" class="error"></label>
+														<label id="keywords-list-error-label" style="display:none" class="error">This field is required. Add at least one keyword using the button on the right.</label>
 														<ul class="expandable-list" id="keywords-list">
 														</ul>
 														<div class="row">
@@ -115,119 +106,158 @@ style('clarin', 'bootstrap-select.min');
 												<div class="panel panel-default">
 													<div class="panel-heading">
 														<h4 class="panel-title">
-															<a data-toggle="collapse" href="#optional-panel-basic-info">Optional fields <span class="glyphicon glyphicon-plus"></span></a>
+															<a data-toggle="collapse" href="#optional-panel-basic-info">Optional contact information<span class="glyphicon glyphicon-plus"></span></a>
 														</h4>
 													</div>
 													<div id="optional-panel-basic-info" class="panel-collapse collapse">
 														<div class="panel-body">
 															<div class="row">
-<!--																<form class="form-horizontal">-->
-<!---->
-<!--																</form>-->
 																<form class="form-horizontal form-multiple-options">
 																	<div class="form-group">
-																		<label class="control-label col-sm-5">Contacts: </label>
-																		<div class="col-sm-7">
+																		<div class="col-sm-12">
+																			<div class="col-sm-8 col-sm-offset-4 expandable-list-container">
+																			<small><i class="info-expandable-list help-block">You have to input data and press "add contact" button to add contact person.</i></small>
 																			<ul class="expandable-list" id="contact-list">
 																			</ul>
-																			<br>
-																			<label>Person:</label>
-																			<input name="contact-person" placeholder="Optional contact person" type="text" required>
-
-																			<br>
-																			<label>Address:</label>
+																			</div>
+																			<label class=" control-label col-sm-4">Person:</label>
+																			<div class="col-sm-8">
+																				<input name="contact-person" placeholder="Optional contact person" type="text" required>
+																			</div>
+																			<label  class=" control-label col-sm-4">Address:</label>
+																			<div class="col-sm-8">
 																			<input name="contact-address" placeholder="Optional contact address" type="text" required>
-
+																			</div>
 																			<br>
-																			<label>Email:</label>
+																			<label class=" control-label col-sm-4">Email:</label>
+																			<div class="col-sm-8">
 																			<input name="contact-email" placeholder="Optional contact email" type="email" required>
-
+																			</div>
 																			<br>
-																			<label>Organisation:</label>
+																			<label class=" control-label col-sm-4">Organisation:</label>
+																			<div class="col-sm-8">
 																			<input name="contact-organisation" placeholder="Optional contact organisation" type="text" required>
-
+																			</div>
 																			<br>
-																			<label>Telephone:</label>
+																			<label class=" control-label col-sm-4">Telephone:</label>
+																			<div class="col-sm-8">
 																			<input name="contact-telephone" placeholder="Optional contact telephone" type="tel" required>
-
+																			</div>
 																			<br>
-																			<label>Website:</label>
+																			<label class=" control-label col-sm-4">Website:</label>
+																			<div class="col-sm-8">
 																			<input name="contact-website" placeholder="Optional contact website" type="text" required>
-
+																			</div>
+																			<div class="col-sm-8 col-sm-offset-4">
 																			<button type="submit" class="btn btn-default addOptionButton">Add contact</button>
-
+																			</div>
 																		</div>
 																	</div>
 																</form>
+
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="panel-group">
+												<div class="panel panel-default">
+													<div class="panel-heading">
+														<h4 class="panel-title">
+															<a data-toggle="collapse" href="#optional-panel-size-info">Optional size information<span class="glyphicon glyphicon-plus"></span></a>
+														</h4>
+													</div>
+													<div id="optional-panel-size-info" class="panel-collapse collapse">
+														<div class="panel-body">
+															<div class="row">
 																<form class="form-horizontal form-multiple-options">
-																<div class="form-group">
-																	<label class="control-label col-sm-5">Size: </label>
-																	<div class="col-sm-7 form-inline">
-																		<ul class="expandable-list" id="size-list">
-																		</ul>
-
-																		<input name="size" min="0" step="1" type="number" class="form-control" placeholder="optional size" required>
-																		<select name="sizeUnit"class="form-control" required>
-																			<option value="">N/A</option>
-																			<option value="terms">terms</option>
-																			<option value="entries">entries</option>
-																			<option value="turns">turns</option>
-																			<option value="utterances">utterances</option>
-																			<option value="articles">articles</option>
-																			<option value="files">files</option>
-																			<option value="items">items</option>
-																			<option value="seconds">seconds</option>
-																			<option value="elements">elements</option>
-																			<option value="units">units</option>
-																			<option value="minutes">minutes</option>
-																			<option value="hours">hours</option>
-																			<option value="texts">texts</option>
-																			<option value="sentences">sentences</option>
-																			<option value="pages">pages</option>
-																			<option value="bytes">bytes</option>
-																			<option value="tokens">tokens</option>
-																			<option value="words">words</option>
-																			<option value="keywords">keywords</option>
-																			<option value="idiomaticExpressions">idiomaticExpressions</option>
-																			<option value="neologisms">neologisms</option>
-																			<option value="multiWordUnits">multiWordUnits</option>
-																			<option value="expressions">expressions</option>
-																			<option value="synsets">synsets</option>
-																			<option value="classes">classes</option>
-																			<option value="concepts">concepts</option>
-																			<option value="lexicalTypes">lexicalTypes</option>
-																			<option value="phoneticUnits">phoneticUnits</option>
-																			<option value="syntacticUnits">syntacticUnits</option>
-																			<option value="semanticUnits">semanticUnits</option>
-																			<option value="predicates">predicates</option>
-																			<option value="phonemes">phonemes</option>
-																			<option value="diphones">diphones</option>
-																			<option value="T-HPairs">T-HPairs</option>
-																			<option value="syllables">syllables</option>
-																			<option value="frames">frames</option>
-																			<option value="images">images</option>
-																			<option value="kb">kb</option>
-																			<option value="mb">mb</option>
-																			<option value="gb">gb</option>
-																			<option value="rb">rb</option>
-																			<option value="shots">shots</option>
-																			<option value="unigrams">unigrams</option>
-																			<option value="bigrams">bigrams</option>
-																			<option value="trigrams">trigrams</option>
-																			<option value="4-grams">4-grams</option>
-																			<option value="5-grams">5-grams</option>
-																			<option value="n-grams">n-grams</option>
-																			<option value="rules">rules</option>
-																			<option value="other">other</option>
-																		</select>
-
-																		<button type="submit" class="btn btn-default addOptionButton">Add size</button>
-																		<br>
-																		<br>
-
-
+																	<div class="form-group">
+																		<div class="col-sm-12">
+																		</div>
 																	</div>
-																</div>
+																	<form class="form-horizontal form-multiple-options">
+																		<div class="form-group">
+																			<div class="col-sm-12 form-inline">
+																				<div class="col-sm-8 col-sm-offset-4 expandable-list-container">
+																				<small><i class="info-expandable-list help-block">You have to input data and press "add contact" button to add contact person.</i></small>
+																				<ul class="expandable-list" id="size-list">
+																				</ul>
+																				</div>
+																				<label class="col-sm-4">
+																					Size:
+																				</label>
+																				<div class="col-sm-8">
+																				<input name="size" min="0" step="1" type="number" class="form-control" placeholder="optional size" required>
+																				</div>
+																				<label class="col-sm-4">
+																					Size unit:
+																				</label>
+																				<div class="col-sm-8">
+																				<select name="sizeUnit" data-live-search="true" data-size="10" class="form-control selectpicker" required>
+																					<option value="">N/A</option>
+																					<option value="terms">terms</option>
+																					<option value="entries">entries</option>
+																					<option value="turns">turns</option>
+																					<option value="utterances">utterances</option>
+																					<option value="articles">articles</option>
+																					<option value="files">files</option>
+																					<option value="items">items</option>
+																					<option value="seconds">seconds</option>
+																					<option value="elements">elements</option>
+																					<option value="units">units</option>
+																					<option value="minutes">minutes</option>
+																					<option value="hours">hours</option>
+																					<option value="texts">texts</option>
+																					<option value="sentences">sentences</option>
+																					<option value="pages">pages</option>
+																					<option value="bytes">bytes</option>
+																					<option value="tokens">tokens</option>
+																					<option value="words">words</option>
+																					<option value="keywords">keywords</option>
+																					<option value="idiomaticExpressions">idiomaticExpressions</option>
+																					<option value="neologisms">neologisms</option>
+																					<option value="multiWordUnits">multiWordUnits</option>
+																					<option value="expressions">expressions</option>
+																					<option value="synsets">synsets</option>
+																					<option value="classes">classes</option>
+																					<option value="concepts">concepts</option>
+																					<option value="lexicalTypes">lexicalTypes</option>
+																					<option value="phoneticUnits">phoneticUnits</option>
+																					<option value="syntacticUnits">syntacticUnits</option>
+																					<option value="semanticUnits">semanticUnits</option>
+																					<option value="predicates">predicates</option>
+																					<option value="phonemes">phonemes</option>
+																					<option value="diphones">diphones</option>
+																					<option value="T-HPairs">T-HPairs</option>
+																					<option value="syllables">syllables</option>
+																					<option value="frames">frames</option>
+																					<option value="images">images</option>
+																					<option value="kb">kb</option>
+																					<option value="mb">mb</option>
+																					<option value="gb">gb</option>
+																					<option value="rb">rb</option>
+																					<option value="shots">shots</option>
+																					<option value="unigrams">unigrams</option>
+																					<option value="bigrams">bigrams</option>
+																					<option value="trigrams">trigrams</option>
+																					<option value="4-grams">4-grams</option>
+																					<option value="5-grams">5-grams</option>
+																					<option value="n-grams">n-grams</option>
+																					<option value="rules">rules</option>
+																					<option value="other">other</option>
+																				</select>
+																				</div>
+																				<div class="col-sm-8 col-sm-offset-4">
+																				<button type="submit" class="btn btn-default addOptionButton">Add size</button>
+																				</div>
+																				<br>
+																				<br>
+
+
+																			</div>
+																		</div>
+																	</form>
 																</form>
 															</div>
 														</div>
@@ -248,53 +278,47 @@ style('clarin', 'bootstrap-select.min');
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="control-label col-sm-5 col-md-4">Project name: </label>
+													<label class="control-label col-sm-5 col-md-4">Project name*: </label>
 													<div class="col-sm-7  col-md-8">
 														<input name="metashare.ResourceInfo#ResourceCreationInfo#FundingInfo#ProjectInfo.projectName" class="form-control" placeholder="optional project name...">
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="control-label col-sm-5 col-md-4">Country: </label>
+													<label class="control-label col-sm-5 col-md-4">Country*: </label>
 													<div class="col-sm-7 col-md-8">
-														<select name="local.country" class="form-control" value="">
-															<option></option>
+														<select name="local.country" data-size="10" data-live-search="true" class="form-control selectpicker">
 														</select>
 													</div>
 												</div>
 											</form>
 										</div>
 										<div class="col-sm-6">
-											<div class="panel-group">
-												<div class="panel panel-default">
-													<div class="panel-heading">
-														<h4 class="panel-title">
-															<a data-toggle="collapse" href="#optional-panel-creation-circumstances">Optional fields <span class="glyphicon glyphicon-plus"></span></a>
-														</h4>
-													</div>
-													<div id="optional-panel-creation-circumstances" class="panel-collapse collapse">
-														<div class="panel-body">
-															<div class="row">
-																<form class="form-horizontal form-multiple-options">
-																<div class="form-group">
-																	<label class="control-label col-sm-5 col-md-4">Creators: </label>
-																	<div class="col-sm-7 col-md-8">
-																		<ul class="expandable-list" id="creators-list">
-																		</ul>
-																		<br>
-																		<label class="control-label">Surname:</label>
-																		<input name="creator-surname" type="text" class="form-control" placeholder="optional creator name and surname..." required>
-																		<br>
-																		<label class="control-label">Name: </label>
-																		<input name="creator" type="text" class="form-control" placeholder="optional creator name and surname..." required>
-																		<button type="submit" class="btn btn-default addOptionButton">Add creator</button>
-																	</div>
-																</div>
-																</form>
-															</div>
+											<form class="form-horizontal form-multiple-options">
+												<div class="form-group">
+														<label class=" control-label col-sm-5">Creators*: </label>
+														<div class="col-sm-7">
+															<small><i class="info-expandable-list help-block">You have to input data and press "add creator" button to add creator.</i></small>
+															<label id="creators-list-error-label" style="display:none" class="error">This field is required. Add at least one creator using the button "add creator" button.</label>
+															<ul class="expandable-list" id="creators-list">
+															</ul>
 														</div>
-													</div>
+														<br>
+														<label class="col-sm-5 control-label">Surname:</label>
+														<div class="col-sm-7">
+														<input name="creator-surname" type="text" class="form-control" placeholder="optional creator name and surname..." required>
+														</div>
+														<br>
+														<label class="col-sm-5 control-label">Name: </label>
+														<div class="col-sm-7">
+														<input name="creator" type="text" class="form-control" placeholder="optional creator name and surname..." required>
+														</div>
+														<div class="col-sm-7 col-sm-offset-5">
+														<button type="submit" class="btn btn-default addOptionButton">Add creator</button>
+														</div>
 												</div>
-											</div>
+											</form>
+
+										</div>
 										</div>
 									</div>
 									<hr>
@@ -331,7 +355,7 @@ style('clarin', 'bootstrap-select.min');
 														<div class="col-sm-7">
 															<!--todo make selectable + text -->
 
-															<select name="dc.rights" class="form-control selectpicker" data-size="8" required></select>
+															<select name="dc.rights"  data-live-search="true" class="form-control selectpicker" data-size="8" required></select>
 														</div>
 													</div>
 												</div>
@@ -347,16 +371,14 @@ style('clarin', 'bootstrap-select.min');
 											<div class="form-group">
 												<label class="control-label col-sm-5">Language*: </label>
 												<div class="col-sm-7">
-													<select name="dc.language.iso" type="text" class="form-control"required>
-														<option value=""></option>
+													<select name="dc.language.iso" data-live-search="true" data-size="10" class="form-control selectpicker"required>
 													</select>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-sm-5">Modality*: </label>
 												<div class="col-sm-7">
-													<select name="local.modality.info" class="form-control" required>
-														<option value=""></option>
+													<select name="local.modality.info" data-live-search="true" data-size="10" class="form-control selectpicker" required>
 													</select>
 												</div>
 											</div>
@@ -367,7 +389,7 @@ style('clarin', 'bootstrap-select.min');
 												<div class="panel panel-default">
 													<div class="panel-heading">
 														<h4 class="panel-title">
-															<a data-toggle="collapse" href="#optional-panel-content">Optional fields <span class="glyphicon glyphicon-plus"></span></a>
+															<a data-toggle="collapse" href="#optional-panel-content">Optional content information <span class="glyphicon glyphicon-plus"></span></a>
 														</h4>
 													</div>
 													<div id="optional-panel-content" class="panel-collapse collapse">

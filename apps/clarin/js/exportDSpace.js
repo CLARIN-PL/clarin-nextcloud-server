@@ -102,40 +102,30 @@ $(document).ready(function() {
 			'creators-list': 'dc.contributor.author'
 		};
 		var returnData = [];
+		var allNecessaryFieldsGiven = true;
 		for(var key in self.lists) {
 			if(self.lists.hasOwnProperty(key)) {
-				var data;
-				if (key === 'creators-list')
-					data = self.lists[key].get(', ');
-				else
-					data = self.lists[key].get('@@');
-
-				if(key === 'keywords-list' && data === null){
-					if(data === null){
-						$('#keywords-error-label')
+				var data = (key === 'creators-list' ?  self.lists[key].get(', ') : self.lists[key].get('@@'));
+				if((key === 'keywords-list' || key === 'creators-list') && (data === null || data.length === 0)){
+						var selector = '#' + key + '-error-label';
+						var text = key === 'keywords-list' ?
+							'This field is required. Add at least one keyword using the button on the right.' :
+							'This field is required. Add at least one creator using the button "add creator" button.';
+						$(selector)
 							.css('display', 'block')
-							.text('This field is required. Add at least one keyword using the button on the right.');
-						return null;
+							.text(text);
+						allNecessaryFieldsGiven = false;
 					}
-					for(var i = 0; i < data.length; i++){
-						returnData.push({name: 'dc.subject', value: data[i]});
-					}
-				}
-				else{
+				} else{
 					for(var i = 0; i < data.length; i++){
 						returnData.push({name: keyMapping[key], value: data[i]});
 					}
 				}
 			}
-		}
-		return returnData;
-	};
 
-	DSpaceConnector.prototype.getAdditionalFormFields = function(choosenLic){
-		var self = this;
-		console.log(choosenLic);
-		console.log(self.possibleLicenses);
-		return [];
+		if(allNecessaryFieldsGiven)
+			return returnData;
+		return null;
 	};
 
 	DSpaceConnector.prototype.getAllFormsData = function(){
@@ -187,12 +177,11 @@ $(document).ready(function() {
 			this.showNoFilesSelectedErrorMsg(true);
 		} else{
 			var zipSuccess = function(response){
-				console.log('success');
-				console.log(response);
 				alert('Export successful.\nYou will be now redirected to main site.');
-				// window.location.href = window.location.host;
+				window.location.href = window.location.host;
 			};
 			var zipFail = function(error){
+				alert('Error occurred, contact our staff for help');
 				console.log(error);
 			};
 			self.zipFiles(selectedFiles, formData,zipSuccess, zipFail)
@@ -264,16 +253,18 @@ $(document).ready(function() {
 			var closureFcn = function(){
 				var list  = $(lists[i]);
 				var form = list.closest('form');
-				self.lists[list.attr('id')] =  new ExpandableList(list, form, self);
+				var info = list.parent().find('.info-expandable-list');
+				self.lists[list.attr('id')] =  new ExpandableList(list, form, self, info);
 			}();
 		}
 	};
 
-	function ExpandableList(listHandle, formHandle, parent){
+	function ExpandableList(listHandle, formHandle, parent, info){
 		this.parent = parent;
 
 		this.list = listHandle;
 		this.form = formHandle;
+		this.infoBox = info;
 		this.userAdded = [];
 		this.init();
 	}
@@ -315,6 +306,7 @@ $(document).ready(function() {
 		for(var i = 0; i < self.userAdded.length; i++) {
 			self.list.append('<li data-idx="'+ i +'"><span>' + self.userAdded[i].str + '</span><span class="close">×</span></li>');
 		}
+		self.infoBox.toggle(self.userAdded.length === 0);
 		self.form.trigger('reset');
 	};
 

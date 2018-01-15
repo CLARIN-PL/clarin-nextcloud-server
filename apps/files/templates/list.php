@@ -64,10 +64,10 @@
 								<span><?php p($l->t('Export to dSpace'))?></span>
 							</a>
 
-<!--							<a href="" class="inforex-export">-->
-<!--								<span class="icon icon-file"></span>-->
-<!--								<span>--><?php //p($l->t('Export to Inforex'))?><!--</span>-->
-<!--							</a>-->
+							<a href="" class="inforex-export">
+								<span class="icon icon-file"></span>
+								<span><?php p($l->t('Export to Inforex'))?></span>
+							</a>
 
 							<a href="" class="ccl">
 								<span class="icon icon-file"></span>

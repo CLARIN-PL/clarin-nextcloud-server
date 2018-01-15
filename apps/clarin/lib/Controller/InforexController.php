@@ -39,7 +39,14 @@ class InforexController extends Controller {
 
 		$filePath = DbUtil::getFilePath($fileData['id']);
 
+		// checking if file exists
 		$destFileName = $fileData['id'].'_'.$fileData['name'];
+		$i=1;
+		while (file_exists($this->pathToShareMount.$destFileName)){
+			$destFileName = $fileData['id'].'('.$i.')_'.$fileData['name'];
+			$i++;
+		}
+
 		$success = \copy($fileOwnerPath.'/'.$filePath, $this->pathToShareMount.$destFileName);
 		if(!$success)
 			return new DataResponse("error while copying file", 406);

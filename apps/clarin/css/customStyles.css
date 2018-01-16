@@ -37,8 +37,10 @@
 	width: 0;
 	position: absolute;
 	pointer-events: none;
-	border-color: rgba(0, 0, 0, 0);
-	border-bottom-color: rgba(255, 255, 255, .97);
+	/*border-color: rgba(0, 0, 0, 0);*/
+	/*border-bottom-color: rgba(255, 255, 255, .97);*/
+	/*border-bottom-color: rgba(213, 213, 213, 0.97);*/
+	border-bottom-color: rgb(255, 255, 255);
 	border-width: 10px;
 	margin-left: -10px;
 	right: 15px;
@@ -51,6 +53,7 @@
 	top: 45px;
 	z-index: 2000;
 	display: none;
+	/*background: rgb(255, 255, 255);*/
 	background: rgb(255, 255, 255);
 	border: 1px solid rgb(204, 204, 204);
 	box-shadow: 0 1px 10px rgba(50, 50, 50, .7);
@@ -59,10 +62,10 @@
 	border-top-right-radius: 0;
 	box-sizing: border-box;
 }
-.expandable-menu:after {
-	border-color: rgba(0, 0, 0, 0);
-	border-bottom-color: rgba(255, 255, 255, 1);
-}
+/*.expandable-menu:after {*/
+	/*border-color: rgba(0, 0, 0, 0);*/
+	/*border-bottom-color: rgba(255, 255, 255, 1);*/
+/*}*/
 .expandable-menu a {
 	display: block;
 	height: 40px;

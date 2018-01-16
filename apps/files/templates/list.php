@@ -59,25 +59,7 @@
 						</a>
 
 						<span class="conditional-actions">
-							<a href="" class="dspace">
-								<span class="icon icon-external"></span>
-								<span><?php p($l->t('Export to dSpace'))?></span>
-							</a>
 
-							<a href="" class="inforex-export one-zip-export">
-								<span class="icon icon-file"></span>
-								<span><?php p($l->t('Export to Inforex'))?></span>
-							</a>
-
-							<a href="" class="wosedon-export one-zip-export">
-								<span class="icon icon-file"></span>
-								<span><?php p($l->t('Export to Wosedon'))?></span>
-							</a>
-
-							<a href="" class="mewex-export one-zip-export">
-								<span class="icon icon-file"></span>
-								<span><?php p($l->t('Export to Mewex'))?></span>
-							</a>
 
 							<a href="" class="ccl">
 								<span class="icon icon-file"></span>
@@ -85,25 +67,42 @@
 							</a>
 
 
-<!--							<a href="" class="ws-tasks">-->
-<!--								<span>--><?php //p($l->t('Analyse in other tools'))?>
-<!--									<span class="icon icon-triangle-s "></span>-->
-<!--								</span>-->
-<!--							</a>-->
-<!--								<div class="expandable-menu menu" style="display: block">-->
-<!--									<ul>-->
-<!--										<li>abc</li>-->
-<!--										<li>cde</li>-->
-<!--										<li>efg</li>-->
-<!--										<li>adf</li>-->
-<!--										<li>-->
-<!--											<a href="/nextcloud-dev/index.php/settings/personal">-->
-<!--												<img alt="" src="/nextcloud-dev/settings/img/personal.svg?v=d483fb5b6eaef92e24d0f8c20112c099">-->
-<!--												Element-->
-<!--											</a>-->
-<!--										</li>-->
-<!--									</ul>-->
-<!--								</div>-->
+							<a href="#" class="clarin-tasks">
+								<span><?php p($l->t('Export to Clarin services'))?>
+									<span class="icon icon-triangle-s "></span>
+								</span>
+							</a>
+								<div id="clarin-export-services" class="expandable-menu menu" style="display: none">
+									<ul>
+
+										<li>
+										<a href="" class="dspace">
+											<span class="icon icon-external"></span>
+											<span><?php p($l->t('Export to'))?> <b>dSpace</b></span>
+										</a>
+										</li>
+
+										<li>
+										<a href="" class="inforex-export one-zip-export">
+											<span class="icon icon-external"></span>
+											<span><?php p($l->t('Export to'))?> <b>Inforex</b></span>
+										</a>
+										</li>
+
+										<li>
+										<a href="" class="wosedon-export one-zip-export">
+											<span class="icon icon-external"></span>
+											<span><?php p($l->t('Export to'))?> <b>Wosedon</b></span>
+										</a>
+										</li>
+										<li>
+										<a href="" class="mewex-export one-zip-export">
+											<span class="icon icon-external"></span>
+											<span><?php p($l->t('Export to'))?> <b>Mewex</b></span>
+										</a>
+										</li>
+									</ul>
+								</div>
 <!--							</a>-->
 <!--						try to zip files-->
 <!--						<a href="" class="zip">-->

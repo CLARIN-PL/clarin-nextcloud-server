@@ -337,6 +337,8 @@
 			this.$el.find('.wosedon-export').click(_.bind(this._onWosedonExport, this));
 			this.$el.find('.mewex-export').click(_.bind(this._onMewexExport, this));
 
+			this.$el.find('.clarin-tasks').click(_.bind(this._clarinTasksExpand, this));
+
 			this.$el.find('.zip').click(_.bind(this._onZipFiles, this));
 
 			this.$el.find('.delete-selected').click(_.bind(this._onClickDeleteSelected, this));
@@ -987,6 +989,14 @@
 					}
 				}
 			});
+		},
+
+		_clarinTasksExpand: function(event){
+			event.preventDefault();
+			var self = this;
+			$('#clarin-export-services').toggle();
+			console.log(self);
+
 		},
 
 		_onMewexExport: function(event){

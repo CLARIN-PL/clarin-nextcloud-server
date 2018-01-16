@@ -82,12 +82,12 @@
 										</a>
 										</li>
 
-										<li>
-										<a href="" class="inforex-export one-zip-export">
-											<span class="icon icon-external"></span>
-											<span><?php p($l->t('Export to'))?> <b>Inforex</b></span>
-										</a>
-										</li>
+<!--										<li>-->
+<!--										<a href="" class="inforex-export one-zip-export">-->
+<!--											<span class="icon icon-external"></span>-->
+<!--											<span>--><?php //p($l->t('Export to'))?><!-- <b>Inforex</b></span>-->
+<!--										</a>-->
+<!--										</li>-->
 
 										<li>
 										<a href="" class="wosedon-export one-zip-export">

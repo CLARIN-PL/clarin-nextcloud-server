@@ -334,6 +334,8 @@
 			this.$el.find('.dspace').click(_.bind(this._onDspaceExport, this));
 			this.$el.find('.ccl').click(_.bind(this._onCCLExportSelected, this));
 			this.$el.find('.inforex-export').click(_.bind(this._onInforexExport, this));
+			this.$el.find('.wosedon-export').click(_.bind(this._onWosedonExport, this));
+			this.$el.find('.mewex-export').click(_.bind(this._onMewexExport, this));
 
 			this.$el.find('.zip').click(_.bind(this._onZipFiles, this));
 
@@ -683,13 +685,17 @@
 			}
 
 			// show or hide inforex export button
-			var inforexButton = $('#selectedActionsList').find('.inforex-export');
+			// var inforexButton = $('#selectedActionsList').find('.inforex-export');
+			// var inforexButton = $('#selectedActionsList').find('.inforex-export');
+
+			var oneZipButtons = $('#selectedActionsList').find('.one-zip-export');
+
 			if(summary.totalDirs > 0 || summary.totalFiles > 1){
-				inforexButton.hide();
+				oneZipButtons.hide();
 			} else if (mimetypes[0] !== 'zip'){
-				inforexButton.hide();
+				oneZipButtons.hide();
 			} else{
-				inforexButton.show();
+				oneZipButtons.show();
 			}
 		},
 
@@ -921,6 +927,125 @@
 				null,
 				true
 			);
+		},
+
+		_showMewexModal: function(callback, filename){
+			var html = '<div class="clarin-ccl-modal-inside" style="min-width:570px">' +
+				'<h3 style="float:left;">Selected file:</h3><h3 style="width: 50%; float:right;"><i>' + filename + '</i></h3>' +
+				'<div style="clear:both">'+
+				'<h3 style="float: left">Name for Wosedon corpus: &nbsp;</h3>' +
+				'<input class="form-control mewex-corpus-name" style="width: 50%; float:right;" type="text" value="'+
+				filename.substring(0, filename.lastIndexOf('.')) +'">' +
+				'</div>' +
+				// '<div style="clear:both">' +
+				// '<h3 style="float: left">Your Mewex login (<a href="">click here to register</a>): &nbsp;</h3>' +
+				// '<input class="form-control inforex-corpus-desc" style="width: 50%; float:right;" type="text" value="Corpus imported from Nextcloud">'+
+				// '</div>' +
+				'<br>' +
+				'<div style="clear:both"></div><hr>' +
+				'<p><i>Please remember that files contained in the archive have to be in CCL format.<br>You can create it by selecting text files and choosing "Convert to CCL" option.</i></p>';
+			'</div>';
+
+			OC.dialogs.message(
+				html,
+				'Do you want to export selected file to Mewex?',
+				null,
+				OCdialogs.YES_NO_BUTTONS,
+				callback,
+				null,
+				true
+			);
+		},
+
+		_sendMewexRequest: function(name, email, url){
+			$.ajax({
+				type: 'POST',
+				// using proxy-pass to get around CORS
+				url:  '/mewex-clarin/import_dspace_corpus',
+				data: jQuery.param({name: name, email: email, url: url}),
+				dataType: 'json',
+				success: function(res) {
+					// add clarin bar task
+					if(res.error){
+						OC.dialogs.alert('Mewex returned error: ' + res.error, 'Error occurred')
+					}
+					else{
+						OCA.Clarin.wsTaskObserver.addNewTask({
+							id: name + '-mewex-' + (+new Date()),
+							name: "Mewex export- <b>"+ name +"</b>",
+							url: res.redirect,
+							type: "mewex-export",
+							status: 'DONE'
+						});
+						// redirect to site in separate tab
+						window.open(res.redirect, '_blank');
+					}
+				},
+				error: function(res){
+					if(res.error){
+						OC.dialogs.alert('Mewex returned error: ' + res.error, 'Error occurred')
+					}
+				}
+			});
+		},
+
+		_onMewexExport: function(event){
+			event.preventDefault();
+
+			var self = this;
+			var file = this.getSelectedFiles()[0];
+
+			var callback = function(decision){
+				console.log(self);
+				if(!decision) return;
+
+				$.ajax({
+					type: 'POST',
+					url:  OC.generateUrl('/apps/clarin/mewex_export'),
+					data: jQuery.param({file: file, corpName: $('.mewex-corpus-name').last().val()}),
+					dataType: 'json',
+					success: function(res) {
+						console.log(res);
+						self._sendMewexRequest($('.mewex-corpus-name').last().val(), OC.getCurrentUser().uid, res.mewexPathToFile);
+					},
+					error: function(res){
+						console.log(res);
+					}
+				});
+				console.log(decision);
+			};
+
+			self._showMewexModal(callback, file['name']);
+		},
+
+		_onWosedonExport:function(event){
+			event.preventDefault();
+			var self = this;
+			var file = this.getSelectedFiles()[0];
+
+			$.ajax({
+				type: 'POST',
+				url:  OC.generateUrl('/apps/clarin/wosedon_export'),
+				data: jQuery.param({file: file}),
+				dataType: 'json',
+				success: function(res) {
+					OCA.Clarin.wsTaskObserver.addNewTask({
+						id: file.name + (+new Date()),
+						name: "Wosedon export- <b>"+ file.name +"</b> (see progres)",
+						form: res.form,
+						type: "wosedon-export",
+						status: 'DONE'
+					});
+					var form = $('<form  target="_blank" action="' +  res.form.action + '" method="post">' +
+						'<input type="text" name="token" value="' + res.form.token + '" />' +
+						'</form>');
+					$('body').append(form);
+					form.submit();
+				},
+				error: function(res){
+					console.log(res);
+				}
+			});
 		},
 
 		_onInforexExport: function(event){

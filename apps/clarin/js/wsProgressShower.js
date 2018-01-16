@@ -153,6 +153,15 @@ $(document).ready(function() {
 				OCA.Clarin.bar.shrink()
 			};
 		}
+		else if(task.type === "wosedon-export"){
+			return function(){
+				var form = $('<form  target="_blank" action="' +  task.form.action + '" method="post">' +
+					'<input type="text" name="token" value="' + task.form.token + '" />' +
+					'</form>');
+				$('body').append(form);
+				form.submit();
+			}
+		}
 		else return function(){
 			self.openInNewTab(task.url);
 		};

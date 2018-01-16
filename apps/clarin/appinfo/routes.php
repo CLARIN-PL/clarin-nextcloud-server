@@ -9,9 +9,6 @@
  */
 return [
     'routes' => [
-//	    ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
-//	    ['name' => 'page#do_echo', 'url' => '/echo', 'verb' => 'POST'],
-//    	['name' => 'ws#zip', 'url' => '/zip', 'verb' => 'POST'],
 		// dSpace entries
 		['name' => 'DSpace#zipdspace', 'url' => '/zip-dspace', 'verb' => 'POST'],
 		['name' => 'DSpace#exporttodspace', 'url' => '/dspace_export', 'verb' => 'POST'],
@@ -22,5 +19,11 @@ return [
 
 		// inforex entries
 		['name' => 'inforex#export', 'url' => '/inforex_export', 'verb' => 'POST'],
+
+		// wosedon entries
+		['name' => 'wosedon#export', 'url' => '/wosedon_export', 'verb' => 'POST'],
+
+		// mewex entries
+		['name' => 'mewex#export', 'url' => '/mewex_export', 'verb' => 'POST'],
     ]
 ];

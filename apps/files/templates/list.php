@@ -64,9 +64,19 @@
 								<span><?php p($l->t('Export to dSpace'))?></span>
 							</a>
 
-							<a href="" class="inforex-export">
+							<a href="" class="inforex-export one-zip-export">
 								<span class="icon icon-file"></span>
 								<span><?php p($l->t('Export to Inforex'))?></span>
+							</a>
+
+							<a href="" class="wosedon-export one-zip-export">
+								<span class="icon icon-file"></span>
+								<span><?php p($l->t('Export to Wosedon'))?></span>
+							</a>
+
+							<a href="" class="mewex-export one-zip-export">
+								<span class="icon icon-file"></span>
+								<span><?php p($l->t('Export to Mewex'))?></span>
 							</a>
 
 							<a href="" class="ccl">

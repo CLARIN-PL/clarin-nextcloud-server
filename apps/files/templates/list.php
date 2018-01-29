@@ -67,7 +67,7 @@
 							</a>
 
 
-							<a href="#" class="clarin-tasks">
+							<a class="clarin-tasks" onclick="return false;">
 								<span><?php p($l->t('Export to Clarin services'))?>
 									<span class="icon icon-triangle-s "></span>
 								</span>

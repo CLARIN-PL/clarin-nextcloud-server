@@ -964,12 +964,25 @@
 				type: 'POST',
 				// using proxy-pass to get around CORS
 				url:  '/mewex-clarin/import_dspace_corpus',
-				data: jQuery.param({name: name, email: email, url: url}),
+				data: jQuery.param({name: name, email: 'abc', url: url}),
 				dataType: 'json',
 				success: function(res) {
 					// add clarin bar task
 					if(res.error){
-						OC.dialogs.alert('Mewex returned error: ' + res.error, 'Error occurred')
+						var errorMsg = 'Mewex returned error: ' + res.error;
+						if (res.error = 'Podany użytkownik nie istnieje.'){
+							errorMsg += '<br><br>In order to use this feature please register with your dSpace email (' + email+  ') <i><b><a href="https://mewex.clarin-pl.eu/login">here</a></b></i>.';						}
+
+						OC.dialogs.message(
+							errorMsg,
+							'Error occurred',
+							'alert',
+							OCdialogs.OK_BUTTON,
+							null,
+							null,
+							true
+						);
+
 					}
 					else{
 						OCA.Clarin.wsTaskObserver.addNewTask({

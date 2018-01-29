@@ -935,7 +935,7 @@
 			var html = '<div class="clarin-ccl-modal-inside" style="min-width:570px">' +
 				'<h3 style="float:left;">Selected file:</h3><h3 style="width: 50%; float:right;"><i>' + filename + '</i></h3>' +
 				'<div style="clear:both">'+
-				'<h3 style="float: left">Name for Wosedon corpus: &nbsp;</h3>' +
+				'<h3 style="float: left">Name for Mewex corpus: &nbsp;</h3>' +
 				'<input class="form-control mewex-corpus-name" style="width: 50%; float:right;" type="text" value="'+
 				filename.substring(0, filename.lastIndexOf('.')) +'">' +
 				'</div>' +

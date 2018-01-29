@@ -964,7 +964,7 @@
 				type: 'POST',
 				// using proxy-pass to get around CORS
 				url:  '/mewex-clarin/import_dspace_corpus',
-				data: jQuery.param({name: name, email: 'abc', url: url}),
+				data: jQuery.param({name: name, email: email, url: url}),
 				dataType: 'json',
 				success: function(res) {
 					// add clarin bar task

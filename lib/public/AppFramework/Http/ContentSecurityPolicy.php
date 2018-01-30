@@ -71,6 +71,7 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	protected $allowedImageDomains = [
 		'http://ctj.clarin-pl.eu/',
 		'https://ctj.clarin-pl.eu/',
+		'https://www.google-analytics.com',
 		'\'self\'',
 		'data:',
 		'blob:',

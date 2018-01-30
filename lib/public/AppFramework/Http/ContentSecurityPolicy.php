@@ -52,7 +52,8 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 		'http://ws.clarin-pl.eu',
 		'http://ctj.clarin-pl.eu/',
 		'https://maxcdn.bootstrapcdn.com/',
-		'https://www.googletagmanager.com'
+		'https://www.googletagmanager.com',
+		'https://www.google-analytics.com'
 	];
 	/**
 	 * @var bool Whether inline CSS is allowed
@@ -80,6 +81,8 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 		'http://clarin-pl.eu/',
 		'https://clarin-pl.eu/',
 		'http://ws.clarin-pl.eu',
+		'https://www.googletagmanager.com',
+		'https://www.google-analytics.com',
 		'\'self\'',
 	];
 	/** @var array Domains from which media elements can be loaded */

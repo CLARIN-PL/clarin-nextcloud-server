@@ -52,7 +52,7 @@ class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 		'http://ws.clarin-pl.eu',
 		'http://ctj.clarin-pl.eu/',
 		'https://maxcdn.bootstrapcdn.com/',
-		'https://www.googletagmanager'
+		'https://www.googletagmanager.com'
 	];
 	/**
 	 * @var bool Whether inline CSS is allowed

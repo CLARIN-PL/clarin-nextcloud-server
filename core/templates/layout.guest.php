@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html class="ng-csp" data-placeholder-focus="false" lang="<?php p($_['language']); ?>" >
 	<head data-requesttoken="<?php p($_['requesttoken']); ?>">
+
+		<?php include 'google_analytics.php' ?>
+
 		<meta charset="utf-8">
 		<title>
 		<?php p($theme->getTitle()); ?>

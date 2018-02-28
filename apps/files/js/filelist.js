@@ -1100,7 +1100,7 @@
 						});
 					},
 					error: function(res){
-						console.log(res);
+						OC.dialogs.alert("Error", "Error occurred while trying to connect to Inforex.");
 					}
 				});
 			};

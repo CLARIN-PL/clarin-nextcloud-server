@@ -10,12 +10,15 @@ use OCP\AppFramework\Controller;
 
 class InforexController extends Controller {
 	private $userId;
-	private $pathToShareMount = "/public-dspace/nextcloud/";
-	private $inforexUrl = "http://inforex-dev.clarin-pl.eu/inforex_svn/index.php";
+	private $pathToShareMount;
+	private $inforexUrl;
 
 	public function __construct($AppName, IRequest $request, $UserId) {
 		parent::__construct($AppName, $request);
+
 		$this->userId = $UserId;
+		$this->pathToShareMount = \OC::$server->getSystemConfig()->getValue('clarinmountpath');
+		$this->inforexUrl = \OC::$server->getSystemConfig()->getValue('clarininforexurl');
 	}
 
 	/**

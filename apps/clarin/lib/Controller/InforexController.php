@@ -57,7 +57,7 @@ class InforexController extends Controller {
 		$retVal = json_decode($this->informInforex($destFileName, $corpName, $corpDesc, $this->userId));
 		$error = property_exists($retVal, "error");
 		if($error){
-			return new JSONResponse(["error" => $retVal->error], 406);
+			return new DataResponse("Error while performing the task, check if your inforex account for user ".$this->userId." (at www.inforex.clarin-pl.eu) is active.", 406);
 		}
 
 		return new JSONResponse(["url" => $retVal->redirect, "filename"=> $fileData['name']]);

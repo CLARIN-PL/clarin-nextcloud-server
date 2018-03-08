@@ -1142,7 +1142,18 @@
 		},
 
 		_areMimetypesCCLConvertable: function(mimetypes){
-			var convertible = ['plain', 'doc', 'docx', 'pdf', 'txt', 'odt', 'xlsx', 'pptx', 'xls', 'ppt', 'html', 'rtf', 'csv'];
+			var convertible = ['plain', 'doc', 'docx', 'pdf', 'txt', 'odt',
+				'xlsx', 'pptx', 'xls', 'ppt', 'html', 'rtf', 'csv',
+				'vnd.openxmlformats-officedocument.wordprocessingml.document', // for docx
+				'msword',
+				'vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+				'vnd.ms-powerpoint',
+				'vnd.openxmlformats-officedocument.presentationml.presentation',
+				'vnd.ms-excel',
+				'vnd.oasis.opendocument.text', // odt
+				'vnd.oasis.opendocument.spreadsheet',
+				'vnd.oasis.opendocument.presentation'
+			];
 			for(var i = 0; i < mimetypes.length; i++){
 				if (convertible.indexOf(mimetypes[i]) === -1)
 					return false;

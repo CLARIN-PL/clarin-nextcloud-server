@@ -82,7 +82,7 @@
 		showLink: true,
 
 		events: {
-			'focusout input.linkPassText': 'onPasswordEntered',
+			// 'focusout input.linkPassText': 'onPasswordEntered',
 			'keyup input.linkPassText': 'onPasswordKeyUp',
 			'click .linkCheckbox': 'onLinkCheckBoxChange',
 			'click .linkText': 'onLinkTextClick',
@@ -123,7 +123,7 @@
 			_.bindAll(
 				this,
 				'onLinkCheckBoxChange',
-				'onPasswordEntered',
+				// 'onPasswordEntered',
 				'onPasswordKeyUp',
 				'onLinkTextClick',
 				'onShowPasswordClick',
@@ -215,7 +215,7 @@
 
 		onPasswordKeyUp: function(event) {
 			if(event.keyCode === 13) {
-				this.onPasswordEntered();
+				// this.onPasswordEntered();
 			}
 		},
 

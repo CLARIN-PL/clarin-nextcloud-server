@@ -20,7 +20,7 @@
 		'{{#if isSharingAllowed}}' +
 		'<label for="shareWith-{{cid}}" class="hidden-visually">{{shareLabel}}</label>' +
 		'<div class="oneline">' +
-		'    <input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{sharePlaceholder}}" />' +
+		'    <input id="shareWith-{{cid}}" autocomplete="off" class="shareWithField" type="text" placeholder="{{sharePlaceholder}}" />' +
 		'    <span class="shareWithLoading icon-loading-small hidden"></span>'+
 		'{{{remoteShareInfo}}}' +
 		'</div>' +

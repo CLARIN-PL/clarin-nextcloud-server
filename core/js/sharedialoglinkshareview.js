@@ -49,7 +49,7 @@
 			'    {{/if}}' +
 			'<div id="linkPass" class="linkPass {{#unless isPasswordSet}}hidden{{/unless}}">' +
 			'    <label for="linkPassText-{{cid}}" class="hidden-visually">{{passwordLabel}}</label>' +
-			'    <input id="linkPassText-{{cid}}" class="linkPassText" type="password" placeholder="{{passwordPlaceholder}}" />' +
+			'    <input id="linkPassText-{{cid}}" autocomplete="new-password" class="linkPassText" type="password" placeholder="{{passwordPlaceholder}}"/>' +
 			'    <span class="icon-loading-small hidden"></span>' +
 			'</div>' +
 			'{{else}}' +
@@ -82,7 +82,7 @@
 		showLink: true,
 
 		events: {
-			// 'focusout input.linkPassText': 'onPasswordEntered',
+			'focusout input.linkPassText': 'onPasswordEntered',
 			'keyup input.linkPassText': 'onPasswordKeyUp',
 			'click .linkCheckbox': 'onLinkCheckBoxChange',
 			'click .linkText': 'onLinkTextClick',
@@ -215,7 +215,7 @@
 
 		onPasswordKeyUp: function(event) {
 			if(event.keyCode === 13) {
-				// this.onPasswordEntered();
+				this.onPasswordEntered();
 			}
 		},
 

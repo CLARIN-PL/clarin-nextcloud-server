@@ -988,40 +988,40 @@ class OC {
 		OC_App::loadApps(['authentication']);
 
 		 //Load minimum set of apps
-		if (!self::checkUpgrade(false)
-			&& !$systemConfig->getValue('maintenance', false)) {
-			//Kamil Tagowski - zmiany Clarin
-			// For logged-in users: Load everything
-			if(OC_User::isLoggedIn()) {
-				OC_App::loadApps();
-
-			} else {
-				// For guests: Load only filesystem and logging
-				OC_App::loadApps(array('filesystem', 'logging'));
-				self::handleLogin($request);
-				//if (self::handleLogin($request))
-				//{
-				//	OC_App::loadApps(array('filesystem', 'logging'));
-				//}else//if (self::handleLogin($request))
-				//{
-				//	OC_App::loadApps(array('filesystem', 'logging'));
-				//}//else//if (self::handleLogin($request))
-
-			}
-		}
-
-		// Load minimum set of apps
 //		if (!self::checkUpgrade(false)
 //			&& !$systemConfig->getValue('maintenance', false)) {
+//			//Kamil Tagowski - zmiany Clarin
 //			// For logged-in users: Load everything
 //			if(OC_User::isLoggedIn()) {
 //				OC_App::loadApps();
+//
 //			} else {
 //				// For guests: Load only filesystem and logging
 //				OC_App::loadApps(array('filesystem', 'logging'));
 //				self::handleLogin($request);
+//				//if (self::handleLogin($request))
+//				//{
+//				//	OC_App::loadApps(array('filesystem', 'logging'));
+//				//}else//if (self::handleLogin($request))
+//				//{
+//				//	OC_App::loadApps(array('filesystem', 'logging'));
+//				//}//else//if (self::handleLogin($request))
+//
 //			}
 //		}
+
+		// Load minimum set of apps
+		if (!self::checkUpgrade(false)
+			&& !$systemConfig->getValue('maintenance', false)) {
+			// For logged-in users: Load everything
+			if(OC_User::isLoggedIn()) {
+				OC_App::loadApps();
+			} else {
+				// For guests: Load only filesystem and logging
+				OC_App::loadApps(array('filesystem', 'logging'));
+				self::handleLogin($request);
+			}
+		}
 
 		if (!self::$CLI) {
 			try {

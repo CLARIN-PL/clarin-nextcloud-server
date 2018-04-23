@@ -257,37 +257,22 @@ class Session implements IUserSession, Emitter {
 			return false;
 		}
 		global  $_COOKIE,$_SERVER;
-		$group = \OC::$server->getGroupManager()->get('admin');
-		if ($group->inGroup($user)) {
-			return $user->isEnabled();
-		}
+//		$group = \OC::$server->getGroupManager()->get('admin');
+//		if ($group->inGroup($user)) {
+//			return $user->isEnabled();
+//		}
 
-		if (
-			(!isset($_COOKIE['clarin-pl-token']))
-				&&
-			($_SERVER['HTTP_AUTHORIZATION']==='')
-			) {
-
+		if (!isset($_COOKIE['clarin-pl-token'])){ //	&& $_SERVER['HTTP_AUTHORIZATION']==='') {
 			return false;
 		}
 		else if(isset($_COOKIE['clarin-pl-token'])){
-			if(!$this->validateClarinToken($_COOKIE['clarin-pl-token'])){
+			$clarinUser = $this->validateClarinToken($_COOKIE['clarin-pl-token']);
+
+			if(!$clarinUser || $user->getUID() !== $clarinUser->login){
 				$this->logout();
 				return false;
 			}
 		}
-
-		/*$cookie_set = isset($_COOKIE['clarin-pl-token']);
-		$http_set = isset($_SERVER['HTTP_AUTHORIZATION']);
-		var_dump($cookie_set);
-		var_dump($http_set);
-		var_dump($_SERVER['HTTP_AUTHORIZATION']);
-		$test_string = '';
-		var_dump(isset($test_string));
-		var_dump($_COOKIE['clarin-pl-token']);
-		die();
-		*/
-
 
 		return $user->isEnabled();
 	}
@@ -812,22 +797,22 @@ class Session implements IUserSession, Emitter {
 		);
 		$context  = stream_context_create($options);
 		$result = file_get_contents($url, false, $context);
-		return $result;
+		if(!$result)
+			return false;
+		return json_decode($result);
 	}
 	public function clarinAuth($token){
-		$result = $this->validateClarinToken($token);
+		$user = $this->validateClarinToken($token);
 
-		if ($result === FALSE) {
+		if ($user === FALSE) {
 			return null;
 		}
 
-		$user = json_decode($result,true)['login'];
-		
+		$user = $user->login;
+
 		$loginResult = $this->manager->nonPasswordCheck($user);
 
 		if($loginResult === null){
-			#loremipsum221
-
 			$result = $this->manager->createUser($user,$this->createCryptoPass(128));
 			if($result!==false)
 				$loginResult = $this->manager->nonPasswordCheck($user);

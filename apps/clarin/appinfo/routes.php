@@ -14,8 +14,9 @@ return [
 		['name' => 'DSpace#exporttodspace', 'url' => '/dspace_export', 'verb' => 'POST'],
 
 		// ws entries
-		['name' => 'ws#ccl', 'url' => '/ccl', 'verb' => 'POST'],
-		['name' => 'ws#watchfile', 'url' => '/watchfile', 'verb' => 'POST'],
+		['name' => 'ws#ccl', 				'url' => '/ccl', 'verb' => 'POST'],
+		['name' => 'ws#speechrecognition',  'url' => '/speechrecognition', 'verb' => 'POST'],
+		['name' => 'ws#watchfile', 			'url' => '/watchfile', 'verb' => 'POST'],
 
 		// inforex entries
 		['name' => 'inforex#export', 'url' => '/inforex_export', 'verb' => 'POST'],

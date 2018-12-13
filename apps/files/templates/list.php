@@ -66,6 +66,11 @@
 								<span><?php p($l->t('Convert to CCL'))?></span>
 							</a>
 
+							<a href="" class="speechRecognition">
+								<span class="icon icon-audio"></span>
+								<span><?php p($l->t('Recognize speech'))?></span>
+							</a>
+
 
 							<a href="" class="clarin-tasks">
 								<span><?php p($l->t('Export to Clarin services'))?>

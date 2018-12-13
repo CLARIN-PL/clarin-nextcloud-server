@@ -20,6 +20,7 @@ class Ws {
 
 	// https://github.com/CLARIN-PL/clarin-pl-dspace/blob/federation.key/dspace-rest/src/main/java/org/dspace/rest/ProcessItems.java
 	static private $lpmnConvertToCCL = "|any2txt|wcrft2({\"morfeusz2\":false})|liner2({\"model\":\"all\"})|wsd|dir|shimext({\"ext\":\".ccl\"})|makezip";
+	static private $lpmnSpeechRecognition = "|speechRecognition({\"convertFromMp3\":file_in_mp3_format})";
 
 	public static function uploadFilesToWs($files){
 		// create curl multi
@@ -81,6 +82,30 @@ class Ws {
 		return $output;
 	}
 
+	public static function startTaskSpeechRecognition($file, $userId, $fileMimeType='wav'){
+		$ch = curl_init();
+
+		$filesLpmn = 'file('. $file['id'] . ')';
+
+		$convertFromMp3BoolString = ($fileMimeType == 'mp3' ? 'true' : 'false');
+
+		curl_setopt_array($ch, array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_POST => 1,
+			CURLOPT_URL => self::$url.self::$startTaskPath,
+			CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
+			CURLOPT_POSTFIELDS=> json_encode(array(
+				'application' => 'nextcloud',
+				'lpmn' => $filesLpmn . str_replace('file_in_mp3_format', $convertFromMp3BoolString,self::$lpmnSpeechRecognition),
+				'user' => $userId
+			))
+		));
+
+		$output = curl_exec ($ch);
+		curl_close ($ch);
+		return $output;
+	}
+
 	public static function getTaskStatus($taskId){
 		$ch = curl_init();
 
@@ -108,12 +133,12 @@ class Ws {
 		return $output;
 	}
 
-	public static function downloadFile($retValue, $fileName, $filePath, $userName){
+	public static function downloadFile($retValue, $fileName, $filePath, $userName, $fileExtension='zip'){
 		$destFolder = \OC::$server->getUserFolder($userName)->get($filePath);
 		$cnt = 1;
-		$systemFileName = $fileName.'.zip';
+		$systemFileName = $fileName.'.' . $fileExtension;
 		while($destFolder->nodeExists($systemFileName)){
-			$systemFileName= $fileName.'('.$cnt.  ').zip';
+			$systemFileName= $fileName.'('.$cnt.  ').' . $fileExtension;
 			$cnt++;
 		}
 		$newFile = $destFolder->newFile($systemFileName);
@@ -125,7 +150,7 @@ class Ws {
 		return $systemFileName;
 	}
 
-	public static function stubWait($taskId, $fileName, $filePath, $userName){
+	public static function stubWait($taskId, $fileName, $filePath, $userName, $downloadedFileExtention='zip'){
 		while(true){
 			$status = Ws::getTaskStatus($taskId);
 			if($status['status'] == 'PROCESSING'){
@@ -135,7 +160,7 @@ class Ws {
 				break;
 			}
 			else if($status['status'] == 'DONE'){
-				return Ws::downloadFile($status, $fileName, $filePath, $userName);
+				return Ws::downloadFile($status, $fileName, $filePath, $userName, $downloadedFileExtention);
 				break;
 			}
 		}

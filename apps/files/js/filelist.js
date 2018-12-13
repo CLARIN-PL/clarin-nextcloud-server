@@ -333,6 +333,7 @@
 			this.$el.find('.download-zip').click(_.bind(this.onClickDownloadZipSelected, this));
 			this.$el.find('.dspace').click(_.bind(this._onDspaceExport, this));
 			this.$el.find('.ccl').click(_.bind(this._onCCLExportSelected, this));
+			this.$el.find('.speechRecognition').click(_.bind(this._onSpeechRecognitionSelected, this));
 			this.$el.find('.inforex-export').click(_.bind(this._onInforexExport, this));
 			this.$el.find('.wosedon-export').click(_.bind(this._onWosedonExport, this));
 			this.$el.find('.mewex-export').click(_.bind(this._onMewexExport, this));
@@ -685,6 +686,14 @@
 			} else{
 				$('#selectedActionsList').find('.ccl').hide();
 			}
+
+			// show and hide speechRecognition button
+			if(this._areMimetypesSpeechRecognitionCompatible(mimetypes)) {
+				$('#selectedActionsList').find('.speechRecognition').show();
+			} else {
+				$('#selectedActionsList').find('.speechRecognition').hide();
+			}
+
 
 			// show or hide inforex export button
 			// var inforexButton = $('#selectedActionsList').find('.inforex-export');
@@ -1161,8 +1170,18 @@
 			return true;
 		},
 
-		_startWatchingFile: function(params){
+		_areMimetypesSpeechRecognitionCompatible: function(mimetypes){
+			if (mimetypes.length > 1) return false; // only one file at a time is allowed to be processed
+
+			// mpeg => mp3 files, wav => wav files
+			return (mimetypes[0] === 'mpeg' || mimetypes[0] === 'wav');
+		},
+
+		_startWatchingFile: function(params, taskName, taskType){
 			var self = this;
+			taskName = taskName || "CCL convert";
+			taskType = taskType || "ccl-convert";
+
 			$.ajax({
 				type: 'POST',
 				url:  OC.generateUrl('/apps/clarin/watchfile'),
@@ -1173,9 +1192,9 @@
 					OCA.Clarin.wsTaskObserver.addNewTask({
 						id: res.taskId,
 						filename: res.fileName,
-						name: "CCL convert <b>" + res.fileName + "</b>",
+						name: taskName + " <b>" + res.fileName + "</b>",
 						folder: res.destFolder,
-						type: "ccl-convert"
+						type: taskType
 					});
 				},
 				error: function(err, res){
@@ -1205,6 +1224,34 @@
 					console.log(res, err);
 				}
 			});
+		},
+
+		_performSpeechRecognition: function(files, resultName, targetPath){
+			var self = this;
+			self.showMask();
+			var mimeType = (files[0].mimetype === 'audio/mpeg' ? 'mp3' : 'wav');
+
+			$.ajax({
+				type: 'POST',
+				url:  OC.generateUrl('/apps/clarin/speechrecognition'),
+				data: jQuery.param({
+					file:JSON.stringify([files[0]]),
+					resultName:JSON.stringify(resultName),
+					destFolder:JSON.stringify(targetPath),
+					inputFileMimeType:JSON.stringify(mimeType)
+				}),
+				dataType: 'json',
+				success: function(res) {
+					console.log('speech recognition res', res);
+					self._startWatchingFile(res.watchParams, 'Speech recognition', 'speech-recognition');
+					console.log(res);
+				},
+				error: function(err, res){
+					self.hideMask();
+					console.log(res, err);
+				}
+			});
+
 		},
 
 		_onCCLExportSelected: function(event){
@@ -1258,6 +1305,55 @@
 			});
 		},
 
+
+		_onSpeechRecognitionSelected: function(event){
+			event.preventDefault();
+			var self = this;
+			var files = this.getSelectedFiles(); // make sure only txt files
+
+			var html =
+				'<div class="clarin-ccl-modal-inside" style="min-width:570px"><h3 style="float: left">' +
+				'Name for created file: &nbsp;</h3>' +
+				'<input class="clarin-converted-file-name" type="text" value="result_name"> <span><i>.txt</i></span>' +
+				'</div>' +
+				'<div class="clarin-ccl-modal-inside" style="clear: both;">' +
+				'<h3>Selected file: </h3>' +
+				'<table id="clarin-file-list" class="filelist">' +
+
+				'<tr data-entryname="files" data-type="file">' +
+				'<td class="filename">' +// style="background-image:url(/nextcloud-dev/index.php/apps/theming/img/core/filetypes/file.svg?v=0)">' +
+				'<span class="icon-file"></span>' +
+				files[0].name +
+				'<td></td><td></td></tr>' +
+
+			    '</table></div>' +
+			    '<div style="width: 100%;padding: 10px 0px;text-align: center;">' +
+				'<span><i>(you will be able to choose where to save the files later)</i></span></div>';
+
+			var callback = function(answer){
+				if(answer){
+					OC.dialogs.filepicker(t('files', 'Choose folder to save the result:'), function(targetPath) {
+						self._performSpeechRecognition(files, $('.clarin-converted-file-name').last().val(), targetPath);
+					}, false, "httpd/unix-directory", true);
+				}
+			};
+			var message = OC.dialogs.message(
+				html,
+				'Perform speech recognition?',
+				null,
+				OCdialogs.YES_NO_BUTTONS,
+				callback,
+				null,
+				true
+			);
+
+			message.then(function(){
+				// console.log('done');
+			});
+			message.fail(function(){
+				// console.log('fail');
+			});
+		},
 
 		/**
 		 * Event handler for when clicking on "Delete" for the selected files

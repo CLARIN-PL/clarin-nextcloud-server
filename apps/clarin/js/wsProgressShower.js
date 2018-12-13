@@ -137,7 +137,7 @@ $(document).ready(function() {
 	WsTaskObserver.prototype.getClickFunction = function(task){
 		var self = this;
 
-		if (task.type === "ccl-convert" || task.type === "dspace-export"){
+		if (task.type === "ccl-convert" || task.type === "dspace-export" || task.type === "speech-recognition" ){
 			return  function(){
 				if(OCA.Files.App.fileList.getCurrentDirectory() === task.folder){
 					OCA.Files.App.fileList.highlightFiles([task.filename]);

@@ -75,6 +75,11 @@ class WsController extends Controller {
 		]);
 	}
 
+	/**
+	 * perform speech recognition for user audio files mp3 or wav
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
 	public function speechRecognition(){
 		$file = json_decode($this->request->getParam('file'), true);
 		$destFolder = json_decode($this->request->getParam('destFolder'), true);

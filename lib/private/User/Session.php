@@ -246,6 +246,14 @@ class Session implements IUserSession, Emitter {
 		}
 	}
 
+	public function isLoggedInWithPassword(){
+		$user = $this->getUser();
+		if (is_null($user)) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Checks whether the user is logged in
 	 *
@@ -262,13 +270,14 @@ class Session implements IUserSession, Emitter {
 //			return $user->isEnabled();
 //		}
 
-		if (!isset($_COOKIE['clarin-pl-token'])){ //	&& $_SERVER['HTTP_AUTHORIZATION']==='') {
+		if (!isset($_COOKIE['clarin-pl-token'])	&& $_SERVER['HTTP_AUTHORIZATION']==='') {
 			return false;
 		}
 		else if(isset($_COOKIE['clarin-pl-token'])){
 			$clarinUser = $this->validateClarinToken($_COOKIE['clarin-pl-token']);
 
 			if(!$clarinUser || $user->getUID() !== $clarinUser->login){
+//			if(!$clarinUser){
 				$this->logout();
 				return false;
 			}
@@ -535,7 +544,7 @@ class Session implements IUserSession, Emitter {
 
 //			var_dump($user);
 		#	$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
-			if ($this->isLoggedIn())
+			if ($this->isLoggedInWithPassword())
 			{
 				$this->prepareUserLogin($firstTimeLogin);
 				return true;

@@ -1017,8 +1017,6 @@
 			event.preventDefault();
 			var self = this;
 			$('#clarin-export-services').toggle();
-			console.log(self);
-
 		},
 
 		_onMewexExport: function(event){
@@ -1028,7 +1026,6 @@
 			var file = this.getSelectedFiles()[0];
 
 			var callback = function(decision){
-				console.log(self);
 				if(!decision) return;
 
 				$.ajax({
@@ -1037,11 +1034,10 @@
 					data: jQuery.param({file: file, corpName: $('.mewex-corpus-name').last().val()}),
 					dataType: 'json',
 					success: function(res) {
-						console.log(res);
 						self._sendMewexRequest($('.mewex-corpus-name').last().val(), OC.getCurrentUser().uid, res.mewexPathToFile);
 					},
-					error: function(res){
-						console.log(res);
+					error: function(error, res){
+						console.log(error, res);
 					}
 				});
 				console.log(decision);
@@ -1143,8 +1139,8 @@
 					// callback(links,res,endcallback,tablelength);
 					// then you can manipulate your text as you wish
 				},
-				error: function(res){
-					console.log(res);
+				error: function(error, res){
+					console.log(error, res);
 					// callback(links,res,endcallback,tablelength);
 				}
 			});
@@ -1182,25 +1178,17 @@
 			taskName = taskName || "CCL convert";
 			taskType = taskType || "ccl-convert";
 
-			$.ajax({
-				type: 'POST',
-				url:  OC.generateUrl('/apps/clarin/watchfile'),
-				data: jQuery.param(params),
-				dataType: 'json',
-				success: function(res) {
-					self.hideMask();
-					OCA.Clarin.wsTaskObserver.addNewTask({
-						id: res.taskId,
-						filename: res.fileName,
-						name: taskName + " <b>" + res.fileName + "</b>",
-						folder: res.destFolder,
-						type: taskType
-					});
-				},
-				error: function(err, res){
-					self.hideMask();
-					console.log(res, err);
-				}
+			self.hideMask();
+			var filename = params.fileName || params.resultFileName;
+
+			OCA.Clarin.wsTaskObserver.addNewTask({
+				id: params.taskId,
+				filename: filename,
+				name: taskName + " <b>" + filename + "</b>",
+				folder: params.destFolder,
+				type: taskType,
+				params: params,
+				taskName: taskName
 			});
 		},
 

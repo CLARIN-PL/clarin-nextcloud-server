@@ -30,7 +30,7 @@ $(document).ready(function() {
 	function WsTaskObserver(){
 		this.localStorageName = 'Clarin-ws-active-tasks';
 		this.clarinModule = OCA.Clarin.bar;
-		this.minutesToShow = 60 * 24; // full 24h
+		this.minutesToShow = 60 * 48; // full 48h
 		this.init();
 
 	}
@@ -94,19 +94,37 @@ $(document).ready(function() {
 		var isReady = response.status === 'DONE';
 		if (isReady){
 			var task = self.tasks.find(function(t){return t.id === taskId});
-
-			if (task.type === "ccl-convert" || task.type === "dspace-export"){
-				OCA.Files.App.fileList.addAndFetchFileInfo(task.filename, task.folder);
-				if (task.type === "ccl-convert" || task.type === "dspace-export"){
-					setTimeout(function(){
-						OCA.Files.App.fileList.highlightFiles([task.filename]);
-					}, 100);
-				}
-			}
-
 			task.response = response;
 			task.status = 'DONE';
-			self.updateTasks();
+
+			$.ajax({
+				type: 'POST',
+				url: OC.generateUrl('/apps/clarin/watchfile'),
+				data: $.param(task.params),
+				dataType: 'json',
+				success: function(res) {
+					task.filename = res.fileName;
+					task.name = task.taskName + " <b>" + res.fileName + "</b>";
+
+					if (task.type === "ccl-convert"
+						|| task.type === "dspace-export"
+						|| task.type === "speech-recognition"
+					){
+						OCA.Files.App.fileList.addAndFetchFileInfo(task.filename, task.folder);
+						if (task.type === "ccl-convert" || task.type === "dspace-export"){
+							setTimeout(function(){
+								OCA.Files.App.fileList.highlightFiles([task.filename]);
+							}, 100);
+						}
+					}
+					self.updateTasks();
+				},
+				error: function(err, res){
+					console.log(err, res);
+				}
+			});
+
+
 			return true;
 		}
 		return false;

@@ -1170,7 +1170,7 @@
 			if (mimetypes.length > 1) return false; // only one file at a time is allowed to be processed
 
 			// mpeg => mp3 files, wav => wav files
-			return (mimetypes[0] === 'mpeg' || mimetypes[0] === 'wav');
+			return (mimetypes[0] === 'mpeg' || mimetypes[0] === 'wav' || mimetypes[0] === 'mp4');
 		},
 
 		_startWatchingFile: function(params, taskName, taskType){
@@ -1217,7 +1217,8 @@
 		_performSpeechRecognition: function(files, resultName, targetPath){
 			var self = this;
 			self.showMask();
-			var mimeType = (files[0].mimetype === 'audio/mpeg' ? 'mp3' : 'wav');
+			// input mimeType, wav for wav, mp3 for everything else
+			var mimeType = (files[0].mimetype === 'wav' ? 'wav' : 'mp3');
 
 			$.ajax({
 				type: 'POST',
